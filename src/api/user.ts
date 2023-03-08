@@ -5,7 +5,11 @@ export interface LoginData {
   password: string;
 }
 
-export function login(data: LoginData) {
+export function userLogin(data: LoginData) {
   // TODO:获取UserInfo
   return axios.post("/api/login/", data);
+}
+
+export function userLogout() {
+  return axios.get("/api/logout/");
 }

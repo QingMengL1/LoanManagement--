@@ -1,5 +1,6 @@
-import { getUserInfo } from "@/api/user";
+import { LoginData, userLogin, userLogout } from "@/api/user";
 import router from "@/router";
+import { clearToken, setToken } from "@/utils/auth";
 import { defineStore } from "pinia";
 import { UserState } from "./types";
 
@@ -36,13 +37,33 @@ export const useUserStore = defineStore("counter", {
       this.$reset();
     },
 
+    async login(loginForm: LoginData) {
+      try {
+        const res = await userLogin(loginForm);
+        setToken(res.data.token);
+      } catch (err) {
+        clearToken();
+        throw err;
+      }
+    },
+
     async info() {
-      const res = await getUserInfo();
+      // const res = await getUserInfo();
       // this.setInfo(res);
     },
 
+    logoutCallBack() {
+      this.resetInfo();
+      clearToken();
+    },
+    // Logout
     async logout() {
-      router.push({ name: "Login" });
+      try {
+        await userLogout();
+      } finally {
+        this.logoutCallBack();
+        router.push({ name: "Login" });
+      }
     },
   },
 });

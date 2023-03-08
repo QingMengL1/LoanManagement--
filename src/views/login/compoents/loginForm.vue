@@ -24,7 +24,7 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-checkbox v-model="userInfo.rememberPassword" />
+        <el-checkbox v-model="loginConfig.rememberPassword" />
         <p style="margin-left: 10px">记住密码</p>
       </el-form-item>
     </el-form>
@@ -37,19 +37,33 @@
 </template>
 
 <script setup lang="ts">
-import { login } from "@/api/user";
 import router from "@/router";
+import { useUserStore } from "@/store/user";
+import { useStorage } from "@vueuse/core";
 import { reactive } from "vue";
 
-const userInfo = reactive({
+const userStore = useUserStore();
+const loginConfig = useStorage("login-config", {
   rememberPassword: true,
   username: "",
   password: "",
 });
+const userInfo = reactive({
+  username: loginConfig.value.username,
+  password: loginConfig.value.password,
+});
 
 const onSubmit = async () => {
-  const { data } = await login(userInfo);
-  // router.push({ name: "Home" });
+  try {
+    await userStore.login(userInfo);
+    router.push({ name: "Home" });
+    const { rememberPassword } = loginConfig.value;
+    const { username, password } = userInfo;
+    loginConfig.value.username = rememberPassword ? username : "";
+    loginConfig.value.password = rememberPassword ? password : "";
+  } catch (error) {
+    router.push({ name: "Login" });
+  }
 };
 </script>
 
