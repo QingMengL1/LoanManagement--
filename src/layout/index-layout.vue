@@ -34,35 +34,39 @@
       </el-header>
       <el-container>
         <!-- 菜单 -->
-        <el-aside
-          class="common-layout-aside"
-          :width="isCollapse ? '65px' : '200px'"
-        >
-          <el-button @click="toggleShow" style="width: 100%">
-            <i-ep-Menu />
-          </el-button>
+        <el-aside class="common-layout-aside" width="200px">
           <el-menu
             mode="vertical"
-            default-active="2"
             class="el-menu-vertical-demo"
             :collapse="isCollapse"
             v-for="item in menuItem"
+            :unique-opened="true"
             router
+            :default-active="activeMenu"
+            @select="menuSelect"
           >
             <el-menu-item
               v-if="item.children && !item.meta?.isShow"
               :index="item.path"
             >
-              <i :class="item.meta?.Icon"></i>
+              <el-icon>
+                <component :is="item.meta?.Icon" />
+              </el-icon>
               <span>{{ item.children[0].meta?.title }}</span>
             </el-menu-item>
 
             <el-sub-menu v-else class="el-sub-menu" :index="item.path">
               <template #title>
+                <el-icon>
+                  <component :is="item.meta?.Icon" />
+                </el-icon>
                 {{ item.meta?.title }}
               </template>
               <div v-for="childrenItem in item.children">
                 <el-menu-item class="el-menu-item" :index="childrenItem.path">
+                  <el-icon>
+                    <component :is="childrenItem.meta?.Icon" />
+                  </el-icon>
                   {{ childrenItem.meta?.title }}
                 </el-menu-item>
               </div>
@@ -86,13 +90,16 @@ import { ref } from "vue";
 const { logout } = useUserStore();
 
 const isCollapse = ref(false);
-// const switchValue = ref(false);
-const toggleShow = () => {
-  isCollapse.value = !isCollapse.value;
-};
+
 const menuItem = router.options.routes.filter(
   (item) => item.children !== undefined || item.meta?.isShow
 );
+
+const activeMenu = ref<string>("/home");
+
+const menuSelect = (index: string) => {
+  activeMenu.value = index;
+};
 
 const handleLogout = () => {
   logout();

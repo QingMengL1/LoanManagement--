@@ -54,16 +54,17 @@ const userInfo = reactive({
 });
 
 const onSubmit = async () => {
-  try {
-    await userStore.login(userInfo);
-    router.push({ name: "Home" });
-    const { rememberPassword } = loginConfig.value;
-    const { username, password } = userInfo;
-    loginConfig.value.username = rememberPassword ? username : "";
-    loginConfig.value.password = rememberPassword ? password : "";
-  } catch (error) {
-    router.push({ name: "Login" });
-  }
+  router.push({ name: "HomeIndex" });
+  // try {
+  //   await userStore.login(userInfo);
+  //   router.push({ name: "Home" });
+  //   const { rememberPassword } = loginConfig.value;
+  //   const { username, password } = userInfo;
+  //   loginConfig.value.username = rememberPassword ? username : "";
+  //   loginConfig.value.password = rememberPassword ? password : "";
+  // } catch (error) {
+  //   router.push({ name: "Login" });
+  // }
 };
 </script>
 

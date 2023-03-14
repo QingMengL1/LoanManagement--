@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,49 +21,130 @@ const routes: Array<RouteRecordRaw> = [
     name: "Home",
     meta: {
       title: "首页",
-      Icon: "i-ep-House",
       isShow: false,
+      Icon: "House",
     },
     component: () => import("@/layout/index-layout.vue"),
     children: [
       {
         path: "/home",
-        name: "Home",
+        name: "HomeIndex",
         meta: {
           title: "首页",
           isShow: true,
           requiresAuth: true,
+          Icon: "House",
         },
         component: () => import("@/views/home/index.vue"),
       },
     ],
   },
   {
-    path: "/index",
-    name: "index",
+    path: "/myLoan",
+    name: "MyLoan",
     meta: {
-      title: "首页",
+      title: "我的贷款",
       isShow: true,
+      Icon: "MessageBox",
     },
     component: () => import("@/layout/index-layout.vue"),
     children: [
       {
-        path: "/index",
-        name: "index",
+        path: "/myLoan/application",
+        name: "Application",
         meta: {
-          title: "首页",
+          title: "申请贷款",
           isShow: true,
           requiresAuth: true,
+          Icon: "Finished",
         },
-        component: () => import("@/views/home/compoents/home.vue"),
+        component: () => import("@/views/myLoan/application/index.vue"),
+      },
+      {
+        path: "/myLoan/repay",
+        name: "Repay",
+        meta: {
+          title: "还款申请",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "Discount",
+        },
+        component: () => import("@/views/myLoan/repay/index.vue"),
+      },
+      {
+        path: "/myLoan/contract",
+        name: "Contract",
+        meta: {
+          title: "合同查看",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "Tickets",
+        },
+        component: () => import("@/views/myLoan/contract/index.vue"),
       },
     ],
+  },
+  {
+    path: "/user",
+    name: "User",
+    meta: {
+      title: "我的信息",
+      isShow: true,
+      Icon: "User",
+    },
+    component: () => import("@/layout/index-layout.vue"),
+    children: [
+      {
+        path: "/user/basic",
+        name: "Basic",
+        meta: {
+          title: "基本信息",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "User",
+        },
+        component: () => import("@/views/user/basic/index.vue"),
+      },
+      {
+        path: "/user/school",
+        name: "School",
+        meta: {
+          title: "就学信息",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "School",
+        },
+        component: () => import("@/views/user/school/index.vue"),
+      },
+      {
+        path: "/user/common",
+        name: "Common",
+        meta: {
+          title: "共同借款人信息",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "Tickets",
+        },
+        component: () => import("@/views/user/commonUser/index.vue"),
+      },
+    ],
+  },
+  {
+    path: "/audit",
+    name: "Audit",
+    meta: {
+      title: "贷款审核",
+      isShow: true,
+      Icon: "EditPen",
+    },
+    component: () => import("@/layout/index-layout.vue"),
   },
 ];
 
 const router = createRouter({
   // 4. 内部提供了 history 模式的实现。为了简单起见，我们在这里使用 hash 模式。
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes, // `routes: routes` 的缩写
 });
+
 export default router;
