@@ -128,7 +128,7 @@ const handleLogout = () => {
 }
 .common-layout-main {
   margin: 0;
-  padding: 0 20px 40px 20px;
+  padding: 10px 10px 10px 10px;
   background-color: rgb(242, 243, 245);
 }
 
