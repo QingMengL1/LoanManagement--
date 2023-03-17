@@ -27,7 +27,7 @@
           />
         </el-carousel-item>
       </el-carousel>
-      <el-row :gutter="10" style="margin-top: 10px">
+      <el-row :gutter="12" style="margin-top: 10px">
         <el-col :span="6">
           <el-card style="height: 150px">
             <el-row>
@@ -174,17 +174,63 @@
               申请贷款
             </el-button>
             <el-button
-              type="primary"
+              type="success"
               style="width: 100%; height: 60px; margin: 0"
             >
-              申请贷款
+              提前还款
             </el-button>
             <el-button
-              type="primary"
+              type="danger"
               style="width: 100%; height: 60px; margin: 0"
             >
-              申请贷款
+              进度查询
             </el-button>
+          </div>
+          <div
+            style="
+              height: 227px;
+              display: flex;
+              flex-direction: column;
+
+              justify-content: space-around;
+            "
+          >
+            <el-row :gutter="12">
+              <el-col :span="12">
+                <el-button
+                  type="primary"
+                  style="width: 100%; height: 88px; margin: 0"
+                >
+                  首贷申请流程
+                </el-button>
+              </el-col>
+              <el-col :span="12">
+                <el-button
+                  type="primary"
+                  style="width: 100%; height: 88px; margin: 0"
+                >
+                  续贷流程
+                </el-button>
+              </el-col>
+            </el-row>
+            <el-row :gutter="12">
+              <el-col :span="12">
+                <el-button
+                  type="primary"
+                  style="width: 100%; height: 88px; margin: 0"
+                >
+                  常见问题
+                </el-button>
+              </el-col>
+              <el-col :span="12">
+                <el-button
+                  type="primary"
+                  style="width: 100%; height: 88px; margin: 0"
+                >
+                  提前还款帮助
+                </el-button>
+              </el-col>
+            </el-row>
           </div>
         </el-col>
       </el-row>
@@ -221,5 +267,11 @@ const value2 = ref("2023-04-06");
 .el-statistic {
   height: 150px;
   padding-top: 25px;
+}
+.el-link {
+  font-size: 16px;
+}
+.el-button {
+  font-size: 18px;
 }
 </style>
