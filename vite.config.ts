@@ -10,7 +10,6 @@ import Icons from "unplugin-icons/vite";
 const pathResolve = (dir: string): any => {
   return resolve(__dirname, ".", dir);
 };
-
 const alias: Record<string, string> = {
   "@": pathResolve("src"),
 };
@@ -42,6 +41,16 @@ export default defineConfig({
   resolve: {
     alias,
   },
+  // server: {
+  //   proxy: {
+  //     "/api": {
+  //       target: "http://127.0.0.1:8000",
+  //       // target:
+  //       //   "https://www.fastmock.site/mock/a629962700b492c5fadfb97ed1cc4a58/",
+  //       changeOrigin: true,
+  //     },
+  //   },
+  // },
   server: {
     proxy: {
       "/api": {

@@ -6,10 +6,6 @@ import router from "@/router";
 
 axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    // let each request carry token
-    // this example using the JWT token
-    // Authorization is a custom headers key
-    // please modify it according to the actual situation
     const token = getToken();
     if (token) {
       if (!config.headers) {
@@ -37,7 +33,6 @@ axios.interceptors.response.use(
       }
       return Promise.reject(new Error(res.msg || "Error"));
     }
-    ElMessage.success(res.msg);
     return res;
   },
   (error) => {
