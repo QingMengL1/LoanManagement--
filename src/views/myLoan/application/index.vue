@@ -470,7 +470,7 @@
           <el-descriptions
             v-if="stepsNumber === 3"
             title="贷款信息确认"
-            column="2"
+            :column="2"
           >
             <el-descriptions-item label="姓名">
               {{ formOneData.name }}
