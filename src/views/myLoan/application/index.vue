@@ -494,7 +494,7 @@
           <el-descriptions
             v-if="stepsNumber === 3"
             title="共同借款人信息"
-            column="2"
+            :column="2"
           >
             <el-descriptions-item label="姓名">
               {{ formTwoData.name }}

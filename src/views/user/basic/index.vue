@@ -19,13 +19,13 @@
           >
             <el-row>
               <el-col :span="12">
-                <el-form-item label="姓名" prop="name">
-                  <el-input v-model="basicFormData.name" />
+                <el-form-item label="姓名">
+                  <el-input v-model="basicFormData.name" disabled />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="身份证号码" prop="idCard">
-                  <el-input v-model="basicFormData.idCard" />
+                <el-form-item label="身份证号码">
+                  <el-input v-model="basicFormData.idCard" disabled />
                 </el-form-item>
               </el-col>
             </el-row>

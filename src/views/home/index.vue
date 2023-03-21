@@ -168,7 +168,6 @@
               height: 227px;
               display: flex;
               flex-direction: column;
-
               justify-content: space-around;
             "
           >
@@ -198,7 +197,6 @@
               height: 227px;
               display: flex;
               flex-direction: column;
-
               justify-content: space-around;
             "
           >
