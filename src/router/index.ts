@@ -71,17 +71,6 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import("@/views/myLoan/repay/index.vue"),
       },
-      {
-        path: "/myLoan/contract",
-        name: "Contract",
-        meta: {
-          title: "合同查看",
-          isShow: true,
-          requiresAuth: true,
-          Icon: "Tickets",
-        },
-        component: () => import("@/views/myLoan/contract/index.vue"),
-      },
     ],
   },
   {
@@ -106,17 +95,6 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/user/basic/index.vue"),
       },
       {
-        path: "/user/school",
-        name: "School",
-        meta: {
-          title: "就学信息",
-          isShow: true,
-          requiresAuth: true,
-          Icon: "School",
-        },
-        component: () => import("@/views/user/school/index.vue"),
-      },
-      {
         path: "/user/common",
         name: "Common",
         meta: {
@@ -126,6 +104,17 @@ const routes: Array<RouteRecordRaw> = [
           Icon: "Tickets",
         },
         component: () => import("@/views/user/commonUser/index.vue"),
+      },
+      {
+        path: "/user/account",
+        name: "Account",
+        meta: {
+          title: "账号设置",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "Setting",
+        },
+        component: () => import("@/views/user/account/index.vue"),
       },
     ],
   },

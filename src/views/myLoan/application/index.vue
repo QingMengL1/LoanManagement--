@@ -576,7 +576,7 @@
 </template>
 
 <script setup lang="ts">
-import { FormInstance, FormRules } from "element-plus/es/components/form";
+import { FormInstance, FormRules } from "element-plus";
 import { reactive, ref, watch } from "vue";
 
 const stepsNumber = ref(1);

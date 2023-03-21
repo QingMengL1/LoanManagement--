@@ -57,6 +57,7 @@ declare module '@vue/runtime-core' {
     IEpLock: typeof import('~icons/ep/lock')['default']
     IEpMenu: typeof import('~icons/ep/menu')['default']
     IEpUser: typeof import('~icons/ep/user')['default']
+    IEpUserFilled: typeof import('~icons/ep/user-filled')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
