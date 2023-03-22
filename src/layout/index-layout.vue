@@ -86,14 +86,31 @@
 import router from "@/router";
 import { useUserStore } from "@/store/user";
 import { ref } from "vue";
+import { RouteRecordRaw } from "vue-router";
 
 const { logout } = useUserStore();
 
 const isCollapse = ref(false);
+const role = "*";
 
-const menuItem = router.options.routes.filter(
-  (item) => item.children !== undefined || item.meta?.isShow
-);
+const filterRoutes = (router: any, role: string) => {
+  const routeList = router.filter((route: any) => {
+    if (route.children && route.children.length) {
+      route.children = filterRoutes(route.children, role);
+    }
+    if (route.meta?.roles.includes(role) || route.meta?.roles.includes("*")) {
+      if (route.children !== undefined || route.meta?.isShow) {
+        return route;
+      }
+    }
+  });
+  return routeList;
+};
+
+// const menuItem = router.options.routes.filter(
+//   (item) => item.children !== undefined || item.meta?.isShow
+// );
+const menuItem = filterRoutes(router.options.routes, role);
 
 const activeMenu = ref<string>("/home");
 

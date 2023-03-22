@@ -13,7 +13,7 @@
           <el-card
             shadow="hover"
             style="width: 100%; height: 340px; position: relative"
-            @click="showContract"
+            @click.self="showContract"
           >
             <strong style="color: skyblue">生源地 </strong>
             <span> 61062101H20220000316</span>
@@ -51,8 +51,10 @@
               </el-col>
             </el-row>
             <div style="position: absolute; bottom: 12px">
-              <el-link>提前还款申请</el-link>
-              <el-link style="margin: 0 25px">电子合同</el-link>
+              <el-link @click="advanceClick">提前还款申请</el-link>
+              <el-link style="margin: 0 25px" @click="showContract"
+                >电子合同</el-link
+              >
               <el-link>受理证明</el-link>
             </div>
           </el-card>
@@ -69,6 +71,43 @@
         </el-descriptions-item>
       </el-descriptions>
     </el-dialog>
+    <el-dialog
+      title="提前还款申请"
+      v-model="advanceVisible"
+      style="width: 800px"
+    >
+      <el-card v-for="i in 4" style="margin: 12px 0">
+        <div class="card-header">
+          <span>2022-2023</span>
+          <div><span>合计：</span><span style="color: red">0</span></div>
+        </div>
+        <el-divider style="margin: 12px 0" />
+        <div class="card-conter">
+          <div>
+            <span>合同余额</span>
+            <div style="margin-top: 10px; font-weight: 8000; font-size: 20px">
+              <span>1200</span> <span>元</span>
+            </div>
+          </div>
+          <div>
+            <span>近期应还金额</span>
+            <div style="margin-top: 10px; font-weight: 8000; font-size: 20px">
+              <span>1200</span> <span>元</span>
+            </div>
+          </div>
+          <div>
+            <span>部分还款金额</span>
+            <div style="margin-top: 10px; font-weight: 8000; font-size: 20px">
+              <el-input placeholder="请输入提前还款金额"></el-input>
+            </div>
+          </div>
+          <div>
+            <el-button type="primary">全部结清</el-button>
+            <el-button type="primary">部分还款</el-button>
+          </div>
+        </div>
+      </el-card>
+    </el-dialog>
   </div>
 </template>
 
@@ -76,6 +115,7 @@
 import { computed, reactive, ref } from "vue";
 
 const dialogTableVisible = ref(false);
+const advanceVisible = ref(false);
 
 const contractData = reactive({
   hetongbianhao: "61062101H20220000316",
@@ -150,6 +190,12 @@ const contractDataValue = computed(() => [
 const showContract = () => {
   dialogTableVisible.value = true;
 };
+
+const advanceClick = () => {
+  console.log("1");
+
+  advanceVisible.value = true;
+};
 </script>
 
 <style scoped lang="scss">
@@ -158,5 +204,23 @@ const showContract = () => {
   min-height: 88vh;
   margin-top: 8px;
   overflow: auto;
+}
+.el-link {
+  padding: 10px 10px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 1000;
+}
+
+.card-conter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
