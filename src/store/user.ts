@@ -1,19 +1,17 @@
-import { LoginData, userLogin, userLogout } from "@/api/user";
+import { getUserInfo, LoginData, userLogin, userLogout } from "@/api/user";
 import router from "@/router";
 import { clearToken, setToken } from "@/utils/auth";
 import { defineStore } from "pinia";
 import { UserState } from "./types";
 
 export const useUserStore = defineStore("counter", {
-  // state: () => {
-  //   {
-  //     count: 0;
-  //   }
-  // },
-  // 也可以定义为
   state: (): UserState => ({
-    name: "admin",
-    role: "admin",
+    name: undefined,
+    email: undefined,
+    phone: undefined,
+    qq: undefined,
+    role: "",
+    id: "",
   }),
 
   getters: {
@@ -37,6 +35,11 @@ export const useUserStore = defineStore("counter", {
       this.$reset();
     },
 
+    async info() {
+      const res = await getUserInfo();
+      this.setInfo(res.data);
+    },
+
     async login(loginForm: LoginData) {
       try {
         const res = await userLogin(loginForm);
@@ -45,11 +48,6 @@ export const useUserStore = defineStore("counter", {
         clearToken();
         throw err;
       }
-    },
-
-    async info() {
-      // const res = await getUserInfo();
-      // this.setInfo(res);
     },
 
     logoutCallBack() {

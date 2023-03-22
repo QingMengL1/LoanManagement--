@@ -1,3 +1,4 @@
+import { UserState } from "@/store/types";
 import axios from "axios";
 
 export interface LoginData {
@@ -12,4 +13,8 @@ export function userLogin(data: LoginData) {
 
 export function userLogout() {
   return axios.get("/api/logout/");
+}
+
+export function getUserInfo() {
+  return axios.get<UserState>("/api/user/info/");
 }

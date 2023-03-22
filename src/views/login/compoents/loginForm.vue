@@ -16,10 +16,24 @@
           v-model="userInfo.password"
           placeholder="请输入密码"
           style="margin-top: 20px"
-          type="password"
+          :type="showPassword ? 'text' : 'password'"
         >
           <template #prefix>
             <i-ep-Lock color="rgb(64, 158, 255)"></i-ep-Lock>
+          </template>
+          <template #suffix>
+            <i-ep-View
+              v-if="!showPassword"
+              color="rgb(64, 158, 255)"
+              @click="showPassword = true"
+            >
+            </i-ep-View>
+            <i-ep-Hide
+              v-else
+              color="rgb(64, 158, 255)"
+              @click="showPassword = false"
+            >
+            </i-ep-Hide>
           </template>
         </el-input>
       </el-form-item>
@@ -40,7 +54,7 @@
 import router from "@/router";
 import { useUserStore } from "@/store/user";
 import { useStorage } from "@vueuse/core";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 const userStore = useUserStore();
 const loginConfig = useStorage("login-config", {
@@ -54,18 +68,21 @@ const userInfo = reactive({
 });
 
 const onSubmit = async () => {
-  router.push({ name: "HomeIndex" });
-  // try {
-  //   await userStore.login(userInfo);
-  //   router.push({ name: "HomeIndex" });
-  //   const { rememberPassword } = loginConfig.value;
-  //   const { username, password } = userInfo;
-  //   loginConfig.value.username = rememberPassword ? username : "";
-  //   loginConfig.value.password = rememberPassword ? password : "";
-  // } catch (error) {
-  //   router.push({ name: "Login" });
-  // }
+  // router.push({ name: "HomeIndex" });
+  try {
+    await userStore.login(userInfo);
+    await userStore.info();
+    router.push({ name: "HomeIndex" });
+    const { rememberPassword } = loginConfig.value;
+    const { username, password } = userInfo;
+    loginConfig.value.username = rememberPassword ? username : "";
+    loginConfig.value.password = rememberPassword ? password : "";
+  } catch (error) {
+    router.push({ name: "Login" });
+  }
 };
+
+const showPassword = ref(false);
 </script>
 
 <style scoped lang="less">

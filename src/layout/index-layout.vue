@@ -16,10 +16,19 @@
                     :size="45"
                     src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202104%2F22%2F20210422220415_2e4bd.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1679317245&t=afd654f85eabab5d4b50cb0011748cb9"
                   />
-                  <span style="margin-left: 10px; font-size: 18px">Admin</span>
+                  <span style="margin-left: 10px; font-size: 18px">
+                    你好，{{ name }}
+                  </span>
                 </template>
               </el-button>
               <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <span class="quitClass" @click="handleSetting">
+                      <i-ep-EditPen />修改信息</span
+                    >
+                  </el-dropdown-item>
+                </el-dropdown-menu>
                 <el-dropdown-menu>
                   <el-dropdown-item>
                     <span class="quitClass" @click="handleLogout">
@@ -89,9 +98,11 @@ import { ref } from "vue";
 import { RouteRecordRaw } from "vue-router";
 
 const { logout } = useUserStore();
-
+const { role } = useUserStore();
+const { name } = useUserStore();
 const isCollapse = ref(false);
-const role = "*";
+
+// const role = "*";
 
 const filterRoutes = (router: any, role: string) => {
   const routeList = router.filter((route: any) => {
@@ -120,6 +131,10 @@ const menuSelect = (index: string) => {
 
 const handleLogout = () => {
   logout();
+};
+
+const handleSetting = () => {
+  router.push({ name: "Setting" });
 };
 </script>
 

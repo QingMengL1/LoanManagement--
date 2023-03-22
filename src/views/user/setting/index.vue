@@ -54,16 +54,19 @@
 
 <script setup lang="ts">
 import { FormInstance, FormRules } from "element-plus";
+import { useUserStore } from "@/store/user";
 import { reactive, ref } from "vue";
 
 const userForm = ref<FormInstance>();
+const { userInfo } = useUserStore();
+
 const userFormData = reactive({
-  id: "1902020318",
+  id: userInfo.id,
   password1: "",
   password2: "",
-  phone: "",
-  email: "",
-  qq: "",
+  phone: userInfo.phone,
+  email: userInfo.email,
+  qq: userInfo.qq,
 });
 const rulesUserForm = reactive<FormRules>({
   phone: [{ required: true, message: "手机号不能为空", trigger: "blur" }],

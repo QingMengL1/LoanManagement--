@@ -1,3 +1,6 @@
+import { useUserStore } from "@/store/user";
+import { isLogin } from "@/utils/auth";
+import { ElMessage } from "element-plus";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
@@ -116,8 +119,8 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/user/commonUser/index.vue"),
       },
       {
-        path: "/user/account",
-        name: "Account",
+        path: "/user/setting",
+        name: "Setting",
         meta: {
           title: "账号设置",
           isShow: true,
@@ -125,7 +128,7 @@ const routes: Array<RouteRecordRaw> = [
           Icon: "Setting",
           roles: ["*"],
         },
-        component: () => import("@/views/user/account/index.vue"),
+        component: () => import("@/views/user/setting/index.vue"),
       },
     ],
   },
@@ -146,6 +149,33 @@ const router = createRouter({
   // 4. 内部提供了 history 模式的实现。为了简单起见，我们在这里使用 hash 模式。
   history: createWebHistory(),
   routes, // `routes: routes` 的缩写
+});
+
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+  if (isLogin()) {
+    if (userStore.role) {
+      next();
+    } else {
+      try {
+        await userStore.info();
+        next();
+      } catch (error) {
+        await userStore.logout();
+        next({
+          name: "Login",
+        });
+      }
+    }
+  } else {
+    if (to.name === "Login") {
+      next();
+      return;
+    }
+    next({
+      name: "Login",
+    });
+  }
 });
 
 export default router;

@@ -8,7 +8,7 @@ export interface TotalData {
 }
 
 export function getTotalListData() {
-  return axios.get<TotalData>("/api/home/getTotalData");
+  return axios.get<TotalData>("/api/home/getTotalData/");
 }
 
 export interface MessageListData {
@@ -23,5 +23,5 @@ export interface MessageListResponse {
 }
 
 export function getMessageListData() {
-  return axios.get<MessageListResponse>("/api/home/getMessageData");
+  return axios.get<MessageListResponse>("/api/home/getMessageData/");
 }

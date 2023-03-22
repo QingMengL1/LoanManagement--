@@ -29,19 +29,6 @@
             <el-form-item label="申请学年">
               {{ formOneData.academicYear }}
             </el-form-item>
-            <el-form-item label="所在县资助中心">
-              <el-row :gutter="12">
-                <el-col :span="8">
-                  <el-select v-model="formOneData.addressProvinces" disabled />
-                </el-col>
-                <el-col :span="8">
-                  <el-select v-model="formOneData.addressCities" disabled />
-                </el-col>
-                <el-col :span="8">
-                  <el-select v-model="formOneData.bureauOfEducation" disabled />
-                </el-col>
-              </el-row>
-            </el-form-item>
             <el-form-item label="贷款金额" prop="amount">
               <el-input
                 v-model="formOneData.amount"
@@ -588,9 +575,6 @@ const checked1 = ref(false);
 const formOneData = reactive({
   name: "",
   academicYear: "", // 学年
-  addressProvinces: "", // 资质中心地址
-  addressCities: "",
-  bureauOfEducation: "",
   amount: null,
   year: "",
   cause: "",

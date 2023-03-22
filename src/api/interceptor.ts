@@ -28,7 +28,7 @@ axios.interceptors.response.use(
     const res = response.data;
     if (res.code !== 2000) {
       ElMessage.error(res.msg);
-      if (res.mse === "请登陆后在进行操作") {
+      if (res.code === 666) {
         router.push({ name: "Login" });
       }
       return Promise.reject(new Error(res.msg || "Error"));
