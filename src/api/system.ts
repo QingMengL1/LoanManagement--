@@ -1,23 +1,28 @@
 import axios from "axios";
 
+export interface OptionType {
+  code: number;
+  name: string;
+}
+
 export function queryShengOption() {
-  return axios.get("/api/area/sheng/");
+  return axios.get<OptionType[]>("/api/area/sheng/");
 }
 
-export function queryShiOption(params: number) {
-  return axios.get("/api/area/shi/", { params });
+export interface optionType {
+  pcodeId: number;
+}
+export function queryShiOption(params: optionType) {
+  return axios.get<OptionType[]>("/api/area/shi/", { params });
 }
 
-export function queryXianOption(params: number) {
-  return axios.get("/api/area/xian/", { params });
+export function queryXianOption(params: optionType) {
+  return axios.get<OptionType[]>("/api/area/xian/", { params });
 }
 export function queryMinzuOption() {
-  return axios.get("/api/system/minzu/");
-}
-export function queryZhiyeOption() {
-  return axios.get("/api/system/zhiye/");
+  return axios.get<OptionType[]>("/api/system/minzu/");
 }
 
 export function submitLoan(data: object) {
-  return axios.post("/api/loan/submit", data);
+  return axios.post("/api/loan/submit/", data);
 }

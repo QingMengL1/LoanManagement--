@@ -151,31 +151,31 @@ const router = createRouter({
   routes, // `routes: routes` 的缩写
 });
 
-// router.beforeEach(async (to, from, next) => {
-//   const userStore = useUserStore();
-//   if (isLogin()) {
-//     if (userStore.role) {
-//       next();
-//     } else {
-//       try {
-//         await userStore.info();
-//         next();
-//       } catch (error) {
-//         await userStore.logout();
-//         next({
-//           name: "Login",
-//         });
-//       }
-//     }
-//   } else {
-//     if (to.name === "Login") {
-//       next();
-//       return;
-//     }
-//     next({
-//       name: "Login",
-//     });
-//   }
-// });
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+  if (isLogin()) {
+    if (userStore.role) {
+      next();
+    } else {
+      try {
+        await userStore.info();
+        next();
+      } catch (error) {
+        await userStore.logout();
+        next({
+          name: "Login",
+        });
+      }
+    }
+  } else {
+    if (to.name === "Login") {
+      next();
+      return;
+    }
+    next({
+      name: "Login",
+    });
+  }
+});
 
 export default router;

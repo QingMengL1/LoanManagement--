@@ -151,7 +151,7 @@
                 style="height: 36px"
               >
                 <el-col :span="21">
-                  <el-link :href="item.link" target="_blank" :underline="false">
+                  <el-link :href="item.link" target="_blank">
                     {{ item.title }}
                   </el-link>
                 </el-col>

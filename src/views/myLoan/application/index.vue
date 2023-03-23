@@ -24,7 +24,7 @@
             label-width="120px"
           >
             <el-form-item label="姓名">
-              {{ formOneData.name }}
+              {{ formOneData.username }}
             </el-form-item>
             <el-form-item label="申请学年">
               {{ formOneData.academicYear }}
@@ -87,7 +87,7 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="姓名" prop="name">
-                  <el-input v-model="formTwoData.nameTwo" />
+                  <el-input v-model="formTwoData.commonName" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -166,64 +166,12 @@
                     placeholder="请选择"
                     style="width: 100%"
                   >
-                    <el-option value="汉族"> 汉族</el-option>
-                    <el-option value="蒙古族"> 蒙古族 </el-option>
-                    <el-option value="回族"> 回族 </el-option>
-                    <el-option value="藏族"> 藏族 </el-option>
-                    <el-option value="维吾尔族"> 维吾尔族 </el-option>
-                    <el-option value="苗族"> 苗族 </el-option>
-                    <el-option value="彝族"> 彝族 </el-option>
-                    <el-option value="壮族"> 壮族 </el-option>
-                    <el-option value="布依族"> 布依族 </el-option>
-                    <el-option value="朝鲜族"> 朝鲜族 </el-option>
-                    <el-option value="满族"> 满族 </el-option>
-                    <el-option value="侗族"> 侗族 </el-option>
-                    <el-option value="瑶族"> 瑶族 </el-option>
-                    <el-option value="白族"> 白族 </el-option>
-                    <el-option value="土家族"> 土家族 </el-option>
-                    <el-option value="哈尼族"> 哈尼族 </el-option>
-                    <el-option value="哈萨克族"> 哈萨克族 </el-option>
-                    <el-option value="傣族"> 傣族 </el-option>
-                    <el-option value="黎族"> 黎族 </el-option>
-                    <el-option value="傈僳族"> 傈僳族 </el-option>
-                    <el-option value="佤族"> 佤族 </el-option>
-                    <el-option value="畲族"> 畲族 </el-option>
-                    <el-option value="高山族"> 高山族 </el-option>
-                    <el-option value="拉祜族"> 拉祜族 </el-option>
-                    <el-option value="水族"> 水族 </el-option>
-                    <el-option value="东乡族"> 东乡族 </el-option>
-                    <el-option value="纳西族"> 纳西族 </el-option>
-                    <el-option value="景颇族"> 景颇族 </el-option>
-                    <el-option value="柯尔克孜族"> 柯尔克孜族 </el-option>
-                    <el-option value="土族"> 土族 </el-option>
-                    <el-option value="达斡尔族"> 达斡尔族 </el-option>
-                    <el-option value="仫佬族"> 仫佬族 </el-option>
-                    <el-option value="羌族"> 羌族 </el-option>
-                    <el-option value="布朗族"> 布朗族 </el-option>
-                    <el-option value="撒拉族"> 撒拉族 </el-option>
-                    <el-option value="毛南族"> 毛南族 </el-option>
-                    <el-option value="仡佬族"> 仡佬族 </el-option>
-                    <el-option value="锡伯族"> 锡伯族 </el-option>
-                    <el-option value="阿昌族"> 阿昌族 </el-option>
-                    <el-option value="普米族"> 普米族 </el-option>
-                    <el-option value="塔吉克族"> 塔吉克族 </el-option>
-                    <el-option value="怒族"> 怒族 </el-option>
-                    <el-option value="乌孜别克族"> 乌孜别克族 </el-option>
-                    <el-option value="俄罗斯族"> 俄罗斯族 </el-option>
-                    <el-option value="鄂温克族"> 鄂温克族 </el-option>
-                    <el-option value="德昂族"> 德昂族 </el-option>
-                    <el-option value="保安族"> 保安族 </el-option>
-                    <el-option value="裕固族"> 裕固族 </el-option>
-                    <el-option value="京族"> 京族 </el-option>
-                    <el-option value="独龙族"> 独龙族 </el-option>
-                    <el-option value="鄂伦春族"> 鄂伦春族 </el-option>
-                    <el-option value="赫哲族"> 赫哲族 </el-option>
-                    <el-option value="门巴族"> 门巴族 </el-option>
-                    <el-option value="珞巴族"> 珞巴族 </el-option>
-                    <el-option value="基诺族"> 基诺族 </el-option>
-                    <el-option value="其他"> 其他 </el-option>
-                    <el-option value="外国血统中国籍人士">
-                      外国血统中国籍人士
+                    <el-option
+                      v-for="item in minZuoptions"
+                      :key="item.code"
+                      :label="item.name"
+                      :value="item.code"
+                    >
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -359,35 +307,58 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="户籍地址">
+            <el-form-item label="户籍地址" prop="sheng">
               <el-row :gutter="12">
                 <el-col :span="8">
-                  <el-form-item prop="sheng">
+                  <el-form-item>
                     <el-select
-                      v-model="formTwoData.huji.sheng"
+                      v-model:model-value="formTwoData.hujiSheng"
                       placeholder="请选择"
                       style="width: 100%"
+                      @change="huJiShengOptionChange"
                     >
+                      <el-option
+                        v-for="item in huJiShengOptions"
+                        :key="item.code"
+                        :label="item.name"
+                        :value="item.code"
+                      >
+                      </el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item prop="shi">
+                  <el-form-item>
                     <el-select
-                      v-model="formTwoData.huji.shi"
+                      v-model="formTwoData.hujishi"
                       placeholder="请选择"
                       style="width: 100%"
+                      @change="hujiShiOptionChane"
                     >
+                      <el-option
+                        v-for="item in huJiShiOptions"
+                        :key="item.code"
+                        :label="item.name"
+                        :value="item.code"
+                      >
+                      </el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item prop="xian">
+                  <el-form-item>
                     <el-select
-                      v-model="formTwoData.huji.xian"
+                      v-model="formTwoData.hujiXian"
                       placeholder="请选择"
                       style="width: 100%"
                     >
+                      <el-option
+                        v-for="item in huJiXianOptions"
+                        :key="item.code"
+                        :label="item.name"
+                        :value="item.code"
+                      >
+                      </el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -395,60 +366,73 @@
             </el-form-item>
             <el-form-item>
               <el-input
-                v-model="formTwoData.huji.detailed"
+                v-model="formTwoData.hujiDetailed"
                 type="textarea"
               ></el-input>
             </el-form-item>
-            <el-form-item label="家庭地址">
+            <el-form-item label="家庭地址" prop="sheng">
               <el-row :gutter="12">
                 <el-col :span="8">
-                  <el-form-item prop="sheng">
+                  <el-form-item>
                     <el-select
-                      v-model="formTwoData.jiatingdizhi.sheng"
+                      v-model="formTwoData.jiatingSheng"
                       placeholder="请选择"
                       style="width: 100%"
+                      @change="jiaTingShengOptionChange"
                     >
+                      <el-option
+                        v-for="item in jiaTingShengOptions"
+                        :key="item.code"
+                        :label="item.name"
+                        :value="item.code"
+                      >
+                      </el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item prop="shi">
+                  <el-form-item>
                     <el-select
-                      v-model="formTwoData.jiatingdizhi.shi"
+                      v-model="formTwoData.jiatingShi"
                       placeholder="请选择"
                       style="width: 100%"
+                      @change="jiaTingShiOptionChane"
                     >
+                      <el-option
+                        v-for="item in jiaTingShiOptions"
+                        :key="item.code"
+                        :label="item.name"
+                        :value="item.code"
+                      >
+                      </el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item prop="xian">
+                  <el-form-item>
                     <el-select
-                      v-model="formTwoData.jiatingdizhi.xian"
+                      v-model="formTwoData.jiatingXian"
                       placeholder="请选择"
                       style="width: 100%"
                     >
+                      <el-option
+                        v-for="item in jiaTingXianOptions"
+                        :key="item.code"
+                        :label="item.name"
+                        :value="item.code"
+                      >
+                      </el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-checkbox
-                v-model:model-value="checked1"
-                label="与户籍地址一致"
-                style="margin-left: 5px"
-              />
             </el-form-item>
             <el-form-item>
-              <el-input
-                v-model="formTwoData.jiatingdizhi.detailed"
-                type="textarea"
-              >
+              <el-input v-model="formTwoData.jiatingDetailed" type="textarea">
               </el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="upForm(formOne)">
-                上一步
-              </el-button>
+              <el-button type="primary" @click="upForm()"> 上一步 </el-button>
               <el-button type="primary" @click="nextForm(formTwo)">
                 下一步
               </el-button>
@@ -460,7 +444,7 @@
             :column="2"
           >
             <el-descriptions-item label="姓名">
-              {{ formOneData.name }}
+              {{ formOneData.username }}
             </el-descriptions-item>
             <el-descriptions-item label="申请学年">
               {{ formOneData.academicYear }}
@@ -484,7 +468,7 @@
             :column="2"
           >
             <el-descriptions-item label="姓名">
-              {{ formTwoData.nameTwo }}
+              {{ formTwoData.commonName }}
             </el-descriptions-item>
             <el-descriptions-item label="身份证号">
               {{ formTwoData.idCard }}
@@ -532,11 +516,11 @@
               {{ formTwoData.jiankangzhuangkuang }}
             </el-descriptions-item>
             <el-descriptions-item label="户籍地址" :span="2">
-              {{ formTwoData.huji.sheng }}
+              {{ formTwoData.hujiSheng }}
             </el-descriptions-item>
 
             <el-descriptions-item label="家庭地址" :span="2">
-              {{ formTwoData.jiatingdizhi.sheng }}
+              {{ formTwoData.jiatingSheng }}
             </el-descriptions-item>
           </el-descriptions>
           <div v-if="stepsNumber === 3">
@@ -568,7 +552,7 @@ import {
   queryShengOption,
   queryShiOption,
   queryXianOption,
-  queryZhiyeOption,
+  OptionType,
   submitLoan,
 } from "@/api/system";
 import { FormInstance, FormRules } from "element-plus";
@@ -578,10 +562,8 @@ const stepsNumber = ref(1);
 const formOne = ref<FormInstance>();
 const formTwo = ref<FormInstance>();
 
-const checked1 = ref(false);
-
 const formOneData = reactive({
-  name: "",
+  username: "",
   academicYear: "", // 学年
   amount: null,
   year: "",
@@ -590,14 +572,14 @@ const formOneData = reactive({
 });
 
 const formTwoData = reactive({
-  nameTwo: "",
+  commonName: "",
   relation: "",
   idCard: "",
   phone: "",
   guoji: "",
   idCardType: "",
   hukouxingzhi: "",
-  minzu: "",
+  minzu: null,
   xingbie: "",
   hunyinzhuangkuang: "",
   zhiye: "",
@@ -606,21 +588,17 @@ const formTwoData = reactive({
   idCardQishi: "",
   idCardJieshu: "",
   jiankangzhuangkuang: "",
-  huji: {
-    sheng: "",
-    shi: "",
-    xian: "",
-    detailed: "",
-  },
-  jiatingdizhi: {
-    sheng: "",
-    shi: "",
-    xian: "",
-    detailed: "",
-  },
+  hujiSheng: null,
+  hujishi: null,
+  hujiXian: null,
+  hujiDetailed: "",
+  jiatingSheng: null,
+  jiatingShi: null,
+  jiatingXian: null,
+  jiatingDetailed: "",
 });
 
-const nextForm = async (formEl: FormInstance) => {
+const nextForm = async (formEl: any) => {
   stepsNumber.value = stepsNumber.value + 1;
   if (!formEl) return;
   // await formEl.validate((valid, fields) => {
@@ -635,15 +613,6 @@ const upForm = () => {
     stepsNumber.value = stepsNumber.value - 1;
   }
 };
-
-watch(checked1, (newValue: any) => {
-  if (newValue) {
-    formTwoData.jiatingdizhi.sheng = formTwoData.huji.sheng;
-    formTwoData.jiatingdizhi.shi = formTwoData.huji.shi;
-    formTwoData.jiatingdizhi.xian = formTwoData.huji.xian;
-    formTwoData.jiatingdizhi.detailed = formTwoData.huji.detailed;
-  }
-});
 
 const rulesOne = reactive<FormRules>({
   amount: [
@@ -705,39 +674,54 @@ const sendApplication = async () => {
   stepsNumber.value += 1;
   console.log(Object.assign(formOneData, formTwoData));
   const { data } = await submitLoan(Object.assign(formOneData, formTwoData));
+  console.log(data);
 };
 
-const huJiShengOptions = ref([]);
-const huJiShiOptions = ref([]);
-const huJiXianOptions = ref([]);
+const huJiShengOptions = ref<OptionType[]>([]);
+const huJiShiOptions = ref<OptionType[]>([]);
+const huJiXianOptions = ref<OptionType[]>([]);
 
-const jiaTingShengOptions = ref([]);
-const jiaTingShiOptions = ref([]);
-const jiaTingXianOptions = ref([]);
+const jiaTingShengOptions = ref<OptionType[]>([]);
+const jiaTingShiOptions = ref<OptionType[]>([]);
+const jiaTingXianOptions = ref<OptionType[]>([]);
 
 const getShengOption = async () => {
   const { data } = await queryShengOption();
+  huJiShengOptions.value = data;
+  jiaTingShengOptions.value = data;
 };
 getShengOption();
-const shengOptionChange = async (shengId: number) => {
-  const { data } = await queryShiOption(shengId);
+// 市级菜单
+const huJiShengOptionChange = async (shengId: number) => {
+  const { data } = await queryShiOption({ pcodeId: shengId });
+  huJiShiOptions.value = data;
+  formTwoData.hujishi = null;
+  formTwoData.hujiXian = null;
+};
+const jiaTingShengOptionChange = async (shengId: number) => {
+  const { data } = await queryShiOption({ pcodeId: shengId });
+  jiaTingShiOptions.value = data;
+  formTwoData.jiatingShi = null;
+  formTwoData.jiatingXian = null;
+};
+// 县级菜单
+const hujiShiOptionChane = async (shiId: number) => {
+  const { data } = await queryXianOption({ pcodeId: shiId });
+  huJiXianOptions.value = data;
+  formTwoData.hujiXian = null;
+};
+const jiaTingShiOptionChane = async (shiId: number) => {
+  const { data } = await queryXianOption({ pcodeId: shiId });
+  jiaTingXianOptions.value = data;
+  formTwoData.jiatingXian = null;
 };
 
-const shiOptionChane = async (shiId: number) => {
-  const { data } = await queryXianOption(shiId);
-};
-
-const minZuoptions = ref([]);
+const minZuoptions = ref<OptionType[]>([]);
 const getMinzuOption = async () => {
   const { data } = await queryMinzuOption();
+  minZuoptions.value = data;
 };
 getMinzuOption();
-
-const zhiYeOptions = ref([]);
-const getZhiyeOption = async () => {
-  const { data } = await queryZhiyeOption();
-};
-getZhiyeOption();
 </script>
 
 <style scoped lang="scss">
