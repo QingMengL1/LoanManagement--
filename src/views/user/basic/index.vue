@@ -467,6 +467,7 @@
 </template>
 
 <script setup lang="ts">
+import { getUserBasic, editUserBasic } from "@/api/user";
 import { FormInstance, FormRules } from "element-plus";
 import { reactive, ref } from "vue";
 
@@ -571,6 +572,19 @@ const rulesSchoolForm = reactive<FormRules>({
   years: [{ required: true, message: "请选择学制", trigger: "change" }],
   graduate: [{ required: true, message: "请选择毕业时间", trigger: "change" }],
 });
+
+const getbasicData = async () => {
+  const { data } = await getUserBasic();
+};
+getbasicData();
+
+const editBasicData = async () => {
+  const { data } = await editUserBasic({
+    basicForm: basicForm,
+    contactForm: contactForm,
+    schoolForm: schoolForm,
+  });
+};
 </script>
 
 <style scoped lang="scss">

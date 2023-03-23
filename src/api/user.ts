@@ -1,5 +1,6 @@
 import { UserState } from "@/store/types";
 import axios from "axios";
+import { da } from "element-plus/es/locale";
 
 export interface LoginData {
   username: string;
@@ -17,4 +18,18 @@ export function userLogout() {
 
 export function getUserInfo() {
   return axios.get<UserState>("/api/user/info/");
+}
+
+export function getUserBasic() {
+  return axios.get("/api/user/basic/");
+}
+
+export interface editbasicType {
+  basicForm: object;
+  contactForm: object;
+  schoolForm: object;
+}
+
+export function editUserBasic(data: editbasicType) {
+  return axios.post("/api/user/editbasic/", data);
 }

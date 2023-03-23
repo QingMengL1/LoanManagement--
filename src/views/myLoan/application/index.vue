@@ -87,7 +87,7 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="姓名" prop="name">
-                  <el-input v-model="formTwoData.name" />
+                  <el-input v-model="formTwoData.nameTwo" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -484,7 +484,7 @@
             :column="2"
           >
             <el-descriptions-item label="姓名">
-              {{ formTwoData.name }}
+              {{ formTwoData.nameTwo }}
             </el-descriptions-item>
             <el-descriptions-item label="身份证号">
               {{ formTwoData.idCard }}
@@ -563,6 +563,14 @@
 </template>
 
 <script setup lang="ts">
+import {
+  queryMinzuOption,
+  queryShengOption,
+  queryShiOption,
+  queryXianOption,
+  queryZhiyeOption,
+  submitLoan,
+} from "@/api/system";
 import { FormInstance, FormRules } from "element-plus";
 import { reactive, ref, watch } from "vue";
 
@@ -582,7 +590,7 @@ const formOneData = reactive({
 });
 
 const formTwoData = reactive({
-  name: "",
+  nameTwo: "",
   relation: "",
   idCard: "",
   phone: "",
@@ -693,9 +701,43 @@ const rulesTwo = reactive<FormRules>({
   xian: [{ required: true, message: "请选择县", trigger: "change" }],
 });
 
-const sendApplication = () => {
+const sendApplication = async () => {
   stepsNumber.value += 1;
+  console.log(Object.assign(formOneData, formTwoData));
+  const { data } = await submitLoan(Object.assign(formOneData, formTwoData));
 };
+
+const huJiShengOptions = ref([]);
+const huJiShiOptions = ref([]);
+const huJiXianOptions = ref([]);
+
+const jiaTingShengOptions = ref([]);
+const jiaTingShiOptions = ref([]);
+const jiaTingXianOptions = ref([]);
+
+const getShengOption = async () => {
+  const { data } = await queryShengOption();
+};
+getShengOption();
+const shengOptionChange = async (shengId: number) => {
+  const { data } = await queryShiOption(shengId);
+};
+
+const shiOptionChane = async (shiId: number) => {
+  const { data } = await queryXianOption(shiId);
+};
+
+const minZuoptions = ref([]);
+const getMinzuOption = async () => {
+  const { data } = await queryMinzuOption();
+};
+getMinzuOption();
+
+const zhiYeOptions = ref([]);
+const getZhiyeOption = async () => {
+  const { data } = await queryZhiyeOption();
+};
+getZhiyeOption();
 </script>
 
 <style scoped lang="scss">
