@@ -4,5 +4,6 @@ export interface UserState {
   phone?: string;
   qq?: string;
   role: string;
-  id: "";
+  id: string;
+  nowMenu: string;
 }

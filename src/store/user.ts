@@ -12,6 +12,7 @@ export const useUserStore = defineStore("counter", {
     qq: undefined,
     role: "",
     id: "",
+    nowMenu: "",
   }),
 
   getters: {

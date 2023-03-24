@@ -557,14 +557,16 @@ import {
 } from "@/api/system";
 import { FormInstance, FormRules } from "element-plus";
 import { reactive, ref, watch } from "vue";
+import { useUserStore } from "@/store/user";
 
 const stepsNumber = ref(1);
 const formOne = ref<FormInstance>();
 const formTwo = ref<FormInstance>();
+const { name } = useUserStore();
 
 const formOneData = reactive({
-  username: "",
-  academicYear: "", // 学年
+  username: name,
+  academicYear: "2023-2024学年", // 学年
   amount: null,
   year: "",
   cause: "",

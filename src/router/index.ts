@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: "/login",
     meta: {
       isShow: false,
-      roles: ["*"],
+      roles: ["*", "admin"],
     },
   },
   {
@@ -17,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "Login",
     meta: {
       isShow: false,
-      roles: ["*"],
+      roles: ["*", "admin"],
     },
     component: () => import("@/views/login/index.vue"),
   },
@@ -28,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
       title: "首页",
       isShow: false,
       Icon: "House",
-      roles: ["*"],
+      roles: ["*", "admin"],
     },
     component: () => import("@/layout/index-layout.vue"),
     children: [
@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
           isShow: true,
           requiresAuth: true,
           Icon: "House",
-          roles: ["student", "teacher", "bank", "*"],
+          roles: ["student", "teacher", "teacher", "*", "admin"],
         },
         component: () => import("@/views/home/index.vue"),
       },
@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
       title: "我的贷款",
       isShow: true,
       Icon: "MessageBox",
-      roles: ["student", "*"],
+      roles: ["student", "*", "admin"],
     },
     component: () => import("@/layout/index-layout.vue"),
     children: [
@@ -65,9 +65,21 @@ const routes: Array<RouteRecordRaw> = [
           isShow: true,
           requiresAuth: true,
           Icon: "Finished",
-          roles: ["student", "*"],
+          roles: ["student", "admin"],
         },
         component: () => import("@/views/myLoan/application/index.vue"),
+      },
+      {
+        path: "/myLoan/status",
+        name: "Status",
+        meta: {
+          title: "贷款状态",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "Connection",
+          roles: ["student", "admin"],
+        },
+        component: () => import("@/views/myLoan/status/index.vue"),
       },
       {
         path: "/myLoan/repay",
@@ -77,7 +89,7 @@ const routes: Array<RouteRecordRaw> = [
           isShow: true,
           requiresAuth: true,
           Icon: "Discount",
-          roles: ["student", "bank", "*"],
+          roles: ["student", "admin"],
         },
         component: () => import("@/views/myLoan/repay/index.vue"),
       },
@@ -90,7 +102,7 @@ const routes: Array<RouteRecordRaw> = [
       title: "我的信息",
       isShow: true,
       Icon: "User",
-      roles: ["*"],
+      roles: ["*", "admin"],
     },
     component: () => import("@/layout/index-layout.vue"),
     children: [
@@ -102,7 +114,7 @@ const routes: Array<RouteRecordRaw> = [
           isShow: true,
           requiresAuth: true,
           Icon: "User",
-          roles: ["student", "*"],
+          roles: ["student", "admin"],
         },
         component: () => import("@/views/user/basic/index.vue"),
       },
@@ -114,7 +126,7 @@ const routes: Array<RouteRecordRaw> = [
           isShow: true,
           requiresAuth: true,
           Icon: "Tickets",
-          roles: ["student", "*"],
+          roles: ["student", "admin"],
         },
         component: () => import("@/views/user/commonUser/index.vue"),
       },
@@ -126,7 +138,7 @@ const routes: Array<RouteRecordRaw> = [
           isShow: true,
           requiresAuth: true,
           Icon: "Setting",
-          roles: ["*"],
+          roles: ["*", "admin"],
         },
         component: () => import("@/views/user/setting/index.vue"),
       },
@@ -139,9 +151,84 @@ const routes: Array<RouteRecordRaw> = [
       title: "贷款审核",
       isShow: true,
       Icon: "EditPen",
-      roles: ["teacher", "bank", "*"],
+      roles: ["teacher", "admin"],
     },
     component: () => import("@/layout/index-layout.vue"),
+    children: [
+      {
+        path: "/audit/loanpass",
+        name: "LoanPass",
+        meta: {
+          title: "贷款审批",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "Pointer",
+          roles: ["admin", "teacher"],
+        },
+        component: () => import("@/views/audit/loanpass/index.vue"),
+      },
+      {
+        path: "/audit/send",
+        name: "LoanSend",
+        meta: {
+          title: "贷款发放",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "FolderChecked",
+          roles: ["admin", "teacher"],
+        },
+        component: () => import("@/views/audit/send/index.vue"),
+      },
+      {
+        path: "/audit/delay",
+        name: "Delay",
+        meta: {
+          title: "贷款延期",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "PieChart",
+          roles: ["admin", "teacher"],
+        },
+        component: () => import("@/views/audit/delay/index.vue"),
+      },
+    ],
+  },
+  {
+    path: "/student",
+    name: "Student",
+    meta: {
+      title: "学生管理",
+      isShow: true,
+      Icon: "School",
+      roles: ["teacher", "admin"],
+    },
+    component: () => import("@/layout/index-layout.vue"),
+    children: [
+      {
+        path: "/student/studentlist",
+        name: "StudentList",
+        meta: {
+          title: "学生信息",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "User",
+          roles: ["admin", "teacher"],
+        },
+        component: () => import("@/views/student/studentlist/index.vue"),
+      },
+      {
+        path: "/student/loan",
+        name: "StudentLoad",
+        meta: {
+          title: "贷款信息",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "Coin",
+          roles: ["admin", "teacher"],
+        },
+        component: () => import("@/views/student/loan/index.vue"),
+      },
+    ],
   },
 ];
 
@@ -153,6 +240,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
+  window.sessionStorage.setItem("activeMenu", to.path);
   if (isLogin()) {
     if (userStore.role) {
       next();

@@ -44,7 +44,7 @@
           </el-form-item>
           <el-form-item>
             <el-button>重置</el-button>
-            <el-button type="primary">提交修改</el-button>
+            <el-button type="primary" @click="submitEdit">提交修改</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -56,23 +56,28 @@
 import { FormInstance, FormRules } from "element-plus";
 import { useUserStore } from "@/store/user";
 import { reactive, ref } from "vue";
+import { userSettingType, userSetting } from "@/api/user";
 
 const userForm = ref<FormInstance>();
 const { userInfo } = useUserStore();
 
-const userFormData = reactive({
+const userFormData = reactive<userSettingType>({
   id: userInfo.id,
   password1: "",
   password2: "",
-  phone: userInfo.phone,
-  email: userInfo.email,
-  qq: userInfo.qq,
+  phone: userInfo.phone || "",
+  email: userInfo.email || "",
+  qq: userInfo.qq || "",
 });
 const rulesUserForm = reactive<FormRules>({
   phone: [{ required: true, message: "手机号不能为空", trigger: "blur" }],
   email: [{ required: true, message: "邮箱不能为空", trigger: "blur" }],
   qq: [{ required: true, message: "QQ不能为空", trigger: "blur" }],
 });
+
+const submitEdit = async () => {
+  const { data } = await userSetting(userFormData);
+};
 </script>
 
 <style scoped lang="scss">

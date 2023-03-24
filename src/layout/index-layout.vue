@@ -49,10 +49,9 @@
             class="el-menu-vertical-demo"
             :collapse="isCollapse"
             v-for="item in menuItem"
-            :unique-opened="true"
             router
             :default-active="activeMenu"
-            @select="menuSelect"
+            @select="selectMenu"
           >
             <el-menu-item
               v-if="item.children && !item.meta?.isShow"
@@ -94,12 +93,12 @@
 <script setup lang="ts">
 import router from "@/router";
 import { useUserStore } from "@/store/user";
-import { ref } from "vue";
-import { RouteRecordRaw } from "vue-router";
+import { ref, watch } from "vue";
 
 const { logout } = useUserStore();
 const { role } = useUserStore();
 const { name } = useUserStore();
+const { nowMenu } = useUserStore();
 const isCollapse = ref(false);
 
 // const role = "*";
@@ -122,11 +121,17 @@ const filterRoutes = (router: any, role: string) => {
 //   (item) => item.children !== undefined || item.meta?.isShow
 // );
 const menuItem = filterRoutes(router.options.routes, role);
+console.log();
 
-const activeMenu = ref<string>("/home");
+const activeMenu = ref<string>(
+  window.sessionStorage.getItem("activeMenu") || "/home/homeIndex"
+);
 
-const menuSelect = (index: string) => {
-  activeMenu.value = index;
+const selectMenu = (val: string) => {
+  console.log(val);
+
+  activeMenu.value = val;
+  window.sessionStorage.setItem("activeMenu", val);
 };
 
 const handleLogout = () => {

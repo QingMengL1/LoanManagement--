@@ -28,7 +28,7 @@
         </el-carousel-item>
       </el-carousel>
       <el-row :gutter="12" style="margin-top: 10px">
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card style="height: 150px">
             <el-row>
               <el-col :span="8" style="height: 150px">
@@ -54,7 +54,7 @@
             </el-row>
           </el-card>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card style="height: 150px">
             <el-row>
               <el-col :span="8" style="height: 150px">
@@ -80,38 +80,8 @@
             </el-row>
           </el-card>
         </el-col>
-        <el-col :span="6">
-          <el-card style="height: 150px">
-            <el-row>
-              <el-col :span="8" style="height: 150px">
-                <i-ep-Clock
-                  style="
-                    display: block;
-                    width: 70%;
-                    height: 70%;
-                    margin: auto auto;
-                  "
-                >
-                </i-ep-Clock>
-              </el-col>
-              <el-col :span="16" tyle="height: 150px">
-                <div style="height: 150px; text-align: center">
-                  <p style="font-size: 20px">下次还款时间</p>
-                  <p
-                    style="
-                      margin-top: -15px;
-                      color: rgb(48, 49, 51);
-                      font-size: 20px;
-                    "
-                  >
-                    {{ totalData.nextTime }}
-                  </p>
-                </div>
-              </el-col>
-            </el-row>
-          </el-card>
-        </el-col>
-        <el-col :span="6">
+
+        <el-col :span="8">
           <el-card style="height: 150px">
             <el-row>
               <el-col :span="8" style="height: 150px">

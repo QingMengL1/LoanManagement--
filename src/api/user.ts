@@ -33,3 +33,16 @@ export interface editbasicType {
 export function editUserBasic(data: editbasicType) {
   return axios.post("/api/user/editbasic/", data);
 }
+
+export interface userSettingType {
+  id: string;
+  password1: string;
+  password2: string;
+  phone: string;
+  email: string;
+  qq: string;
+}
+
+export function userSetting(data: userSettingType) {
+  return axios.post("/api/user/setting/", data);
+}
