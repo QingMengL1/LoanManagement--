@@ -62,13 +62,16 @@
                 placeholder="请选择"
                 style="width: 300px"
               >
-                <el-option label="因病致困" value="1" />
-                <el-option label="因灾致困" value="2" />
-                <el-option label="劳动力少，无稳定收入" value="3" />
-                <el-option label="其他" value="4" />
+                <el-option label="因病致困" value="因病致困" />
+                <el-option label="因灾致困" value="因灾致困" />
+                <el-option
+                  label="劳动力少，无稳定收入"
+                  value="劳动力少，无稳定收入"
+                />
+                <el-option label="其他" value="其他" />
               </el-select>
             </el-form-item>
-            <el-form-item v-if="formOneData.cause === '4'" required>
+            <el-form-item v-if="formOneData.cause === '其他'" required>
               <el-input v-model="formOneData.causeValue" type="textarea" />
             </el-form-item>
             <el-form-item>
@@ -86,7 +89,7 @@
           >
             <el-row>
               <el-col :span="12">
-                <el-form-item label="姓名" prop="name">
+                <el-form-item label="姓名" prop="commonName">
                   <el-input v-model="formTwoData.commonName" />
                 </el-form-item>
               </el-col>
@@ -286,15 +289,23 @@
                   />
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="10">
                 <el-form-item label="身份证结束日期" prop="idCardJieshu">
                   <el-date-picker
                     v-model="formTwoData.idCardJieshu"
+                    :disabled="foreverIdcard"
                     type="date"
                     placeholder="请选择日期"
-                    style="width: 100%"
                   />
                 </el-form-item>
+              </el-col>
+              <el-col :span="1">
+                <el-checkbox
+                  v-model="foreverIdcard"
+                  label="永久"
+                  size="large"
+                  @change="foreverIdcardChange"
+                />
               </el-col>
             </el-row>
             <el-row>
@@ -307,10 +318,10 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="户籍地址" prop="sheng">
+            <el-form-item label="户籍地址" :required="true">
               <el-row :gutter="12">
                 <el-col :span="8">
-                  <el-form-item>
+                  <el-form-item prop="hujiSheng">
                     <el-select
                       v-model:model-value="formTwoData.hujiSheng"
                       placeholder="请选择"
@@ -328,9 +339,9 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item>
+                  <el-form-item prop="hujiShi">
                     <el-select
-                      v-model="formTwoData.hujishi"
+                      v-model="formTwoData.hujiShi"
                       placeholder="请选择"
                       style="width: 100%"
                       @change="hujiShiOptionChane"
@@ -346,7 +357,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item>
+                  <el-form-item prop="hujiXian">
                     <el-select
                       v-model="formTwoData.hujiXian"
                       placeholder="请选择"
@@ -364,16 +375,14 @@
                 </el-col>
               </el-row>
             </el-form-item>
-            <el-form-item>
-              <el-input
-                v-model="formTwoData.hujiDetailed"
-                type="textarea"
-              ></el-input>
+            <el-form-item prop="hujiDetailed">
+              <el-input v-model="formTwoData.hujiDetailed" type="textarea">
+              </el-input>
             </el-form-item>
-            <el-form-item label="家庭地址" prop="sheng">
+            <el-form-item label="家庭地址" :required="true">
               <el-row :gutter="12">
                 <el-col :span="8">
-                  <el-form-item>
+                  <el-form-item prop="jiatingSheng">
                     <el-select
                       v-model="formTwoData.jiatingSheng"
                       placeholder="请选择"
@@ -391,7 +400,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item>
+                  <el-form-item prop="jiatingShi">
                     <el-select
                       v-model="formTwoData.jiatingShi"
                       placeholder="请选择"
@@ -409,7 +418,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item>
+                  <el-form-item prop="jiatingXian">
                     <el-select
                       v-model="formTwoData.jiatingXian"
                       placeholder="请选择"
@@ -427,7 +436,7 @@
                 </el-col>
               </el-row>
             </el-form-item>
-            <el-form-item>
+            <el-form-item prop="jiatingDetailed">
               <el-input v-model="formTwoData.jiatingDetailed" type="textarea">
               </el-input>
             </el-form-item>
@@ -456,10 +465,12 @@
               {{ formOneData.year }}年
             </el-descriptions-item>
             <el-descriptions-item label="申请原因">
-              <div v-if="formOneData.cause === '4'">
+              <span v-if="formOneData.cause === '其他'">
                 {{ formOneData.causeValue }}
-              </div>
-              {{ formOneData.cause }}
+              </span>
+              <span v-else>
+                {{ formOneData.cause }}
+              </span>
             </el-descriptions-item>
           </el-descriptions>
           <el-descriptions
@@ -489,7 +500,7 @@
               {{ formTwoData.hukouxingzhi }}
             </el-descriptions-item>
             <el-descriptions-item label="民族">
-              {{ formTwoData.minzu }}
+              {{ minzuValue }}
             </el-descriptions-item>
             <el-descriptions-item label="性别">
               {{ formTwoData.xingbie }}
@@ -507,20 +518,19 @@
               {{ formTwoData.youbian }}
             </el-descriptions-item>
             <el-descriptions-item label="身份证有效期起始日">
-              {{ formTwoData.idCardQishi }}
+              {{ qishiValue }}
             </el-descriptions-item>
             <el-descriptions-item label="身份证有效期结束日">
-              {{ formTwoData.idCardJieshu }}
+              {{ jieshuValue }}
             </el-descriptions-item>
-            <el-descriptions-item label="健康状况">
+            <el-descriptions-item label="健康状况" :span="2">
               {{ formTwoData.jiankangzhuangkuang }}
             </el-descriptions-item>
             <el-descriptions-item label="户籍地址" :span="2">
-              {{ formTwoData.hujiSheng }}
+              {{ hujiValue }}
             </el-descriptions-item>
-
             <el-descriptions-item label="家庭地址" :span="2">
-              {{ formTwoData.jiatingSheng }}
+              {{ jiatingValue }}
             </el-descriptions-item>
           </el-descriptions>
           <div v-if="stepsNumber === 3">
@@ -534,10 +544,21 @@
             style="text-align: center; margin-top: 20px"
           >
             <el-result
+              v-if="submitMessage === '提交成功，请等待审核'"
               icon="success"
               title="提交成功"
-              sub-title="请等待老师处理"
+              :sub-title="submitMessage"
             >
+            </el-result>
+            <el-result
+              v-else
+              icon="error"
+              title="提交失败"
+              :sub-title="submitMessage"
+            >
+              <template #extra>
+                <el-button type="primary" @click="upForm"> 上一步 </el-button>
+              </template>
             </el-result>
           </div>
         </div>
@@ -553,11 +574,14 @@ import {
   queryShiOption,
   queryXianOption,
   OptionType,
-  submitLoan,
 } from "@/api/system";
+
+import { submitLoan } from "@/api/myLoan";
 import { FormInstance, FormRules } from "element-plus";
-import { reactive, ref, watch } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useUserStore } from "@/store/user";
+import { idCardTest, nameTest, phoneTest, youbianTest } from "@/utils/tegTest";
+import { timeFormat } from "@/utils/timeformat";
 
 const stepsNumber = ref(1);
 const formOne = ref<FormInstance>();
@@ -591,7 +615,7 @@ const formTwoData = reactive({
   idCardJieshu: "",
   jiankangzhuangkuang: "",
   hujiSheng: null,
-  hujishi: null,
+  hujiShi: null,
   hujiXian: null,
   hujiDetailed: "",
   jiatingSheng: null,
@@ -600,14 +624,24 @@ const formTwoData = reactive({
   jiatingDetailed: "",
 });
 
+const foreverIdcard = ref(false);
+
+const foreverIdcardChange = (value: boolean) => {
+  if (value) {
+    formTwoData.idCardJieshu = "永久";
+  } else {
+    formTwoData.idCardJieshu = "";
+  }
+};
+
 const nextForm = async (formEl: any) => {
-  stepsNumber.value = stepsNumber.value + 1;
+  // stepsNumber.value = stepsNumber.value + 1;
   if (!formEl) return;
-  // await formEl.validate((valid, fields) => {
-  //   if (valid && stepsNumber.value !== 4) {
-  //     stepsNumber.value = stepsNumber.value + 1;
-  //   }
-  // });
+  await formEl.validate((valid: any, fields: any) => {
+    if (valid && stepsNumber.value !== 4) {
+      stepsNumber.value = stepsNumber.value + 1;
+    }
+  });
 };
 
 const upForm = () => {
@@ -637,10 +671,53 @@ const rulesOne = reactive<FormRules>({
   cause: [{ required: true, message: "请选择申请原因", trigger: "change" }],
 });
 const rulesTwo = reactive<FormRules>({
-  name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+  commonName: [
+    { required: true, message: "请输入姓名", trigger: "blur" },
+    {
+      type: "string",
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!nameTest.test(value)) {
+            reject("请输入正确的姓名");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   relation: [{ required: true, message: "请选择关系", trigger: "change" }],
-  idCard: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
-  phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
+  idCard: [
+    { required: true, message: "请输入身份证号", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!idCardTest.test(value)) {
+            reject("请输入正确的身份证号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  phone: [
+    { required: true, message: "请输入手机号", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!phoneTest.test(value)) {
+            reject("请输入正确的手机号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   guoji: [{ required: true, message: "请选择国籍", trigger: "change" }],
   idCardType: [
     { required: true, message: "请选择身份证类型", trigger: "change" },
@@ -655,9 +732,35 @@ const rulesTwo = reactive<FormRules>({
   ],
   zhiye: [{ required: true, message: "请选择职业", trigger: "change" }],
   jiatingdianhua: [
-    { required: true, message: "请输入家庭电话手机或座机", trigger: "blur" },
+    { required: true, message: "请输入家庭电话", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!phoneTest.test(value)) {
+            reject("请输入正确的手机号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
   ],
-  youbian: [{ required: true, message: "请输入邮编", trigger: "blur" }],
+  youbian: [
+    { required: true, message: "请输入邮编", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!youbianTest.test(value)) {
+            reject("请输入正确的六位数邮编");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   idCardQishi: [
     { required: true, message: "请选择身份证有效起始日期", trigger: "change" },
   ],
@@ -667,16 +770,131 @@ const rulesTwo = reactive<FormRules>({
   jiankangzhuangkuang: [
     { required: true, message: "请选择健康状况", trigger: "change" },
   ],
-  sheng: [{ required: true, message: "请选择省", trigger: "change" }],
-  shi: [{ required: true, message: "请选择市", trigger: "change" }],
-  xian: [{ required: true, message: "请选择县", trigger: "change" }],
+  hujiSheng: [
+    { required: true, message: "请选择地址", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!formTwoData.hujiSheng) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  hujiShi: [
+    { required: true, message: "请选择市", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!formTwoData.hujiShi) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  hujiXian: [
+    { required: true, message: "请选择县", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!formTwoData.hujiXian) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  jiatingSheng: [
+    { required: true, message: "请选择地址", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!formTwoData.jiatingSheng) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  jiatingShi: [
+    { required: true, message: "请选择市", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!formTwoData.jiatingShi) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  jiatingXian: [
+    { required: true, message: "请选择县", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!formTwoData.jiatingXian) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  hujiDetailed: [
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!formTwoData.hujiDetailed) {
+            reject("请输入详细地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  jiatingDetailed: [
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!formTwoData.jiatingDetailed) {
+            reject("请输入详细地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
 });
 
+const submitMessage = ref("");
 const sendApplication = async () => {
   stepsNumber.value += 1;
-  console.log(Object.assign(formOneData, formTwoData));
   const { data } = await submitLoan(Object.assign(formOneData, formTwoData));
-  console.log(data);
+  submitMessage.value = data;
 };
 
 const huJiShengOptions = ref<OptionType[]>([]);
@@ -697,7 +915,7 @@ getShengOption();
 const huJiShengOptionChange = async (shengId: number) => {
   const { data } = await queryShiOption({ pcodeId: shengId });
   huJiShiOptions.value = data;
-  formTwoData.hujishi = null;
+  formTwoData.hujiShi = null;
   formTwoData.hujiXian = null;
 };
 const jiaTingShengOptionChange = async (shengId: number) => {
@@ -724,6 +942,77 @@ const getMinzuOption = async () => {
   minZuoptions.value = data;
 };
 getMinzuOption();
+
+const minzuValue = computed(() => {
+  let minzuValue = "";
+  minZuoptions.value.forEach((element) => {
+    if (element.code === formTwoData.minzu) {
+      minzuValue = element.name;
+    }
+  });
+  return minzuValue;
+});
+
+const qishiValue = computed(() => {
+  return timeFormat(formTwoData.idCardQishi);
+});
+
+const jieshuValue = computed(() => {
+  if (formTwoData.idCardJieshu === "永久") {
+    return "永久";
+  } else {
+    return timeFormat(formTwoData.idCardJieshu);
+  }
+});
+
+const hujiValue = computed(() => {
+  let zhuzhi = "";
+
+  huJiShengOptions.value.forEach((element) => {
+    if (element.code === formTwoData.hujiSheng) {
+      zhuzhi += element.name;
+    }
+  });
+
+  huJiShiOptions.value.forEach((element) => {
+    if (element.code === formTwoData.hujiShi) {
+      zhuzhi += element.name;
+    }
+  });
+
+  huJiXianOptions.value.forEach((element) => {
+    if (element.code === formTwoData.hujiXian) {
+      zhuzhi += element.name;
+    }
+  });
+
+  zhuzhi += formTwoData.hujiDetailed;
+  return zhuzhi;
+});
+
+const jiatingValue = computed(() => {
+  let zhuzhi = "";
+
+  jiaTingShengOptions.value.forEach((element) => {
+    if (element.code === formTwoData.jiatingSheng) {
+      zhuzhi += element.name;
+    }
+  });
+
+  jiaTingShiOptions.value.forEach((element) => {
+    if (element.code === formTwoData.jiatingShi) {
+      zhuzhi += element.name;
+    }
+  });
+
+  jiaTingXianOptions.value.forEach((element) => {
+    if (element.code === formTwoData.jiatingXian) {
+      zhuzhi += element.name;
+    }
+  });
+  zhuzhi += formTwoData.hujiDetailed;
+  return zhuzhi;
+});
 </script>
 
 <style scoped lang="scss">

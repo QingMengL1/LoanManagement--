@@ -9,11 +9,11 @@
     </el-breadcrumb>
     <el-card class="box-card">
       <el-row :gutter="12">
-        <el-col :span="3">
+        <el-col :span="3" v-for="item in commonList">
           <el-card
-            style="height: 200px"
+            style="height: 200px; margin-top: 16px"
             shadow="hover"
-            @click="editUserMessage()"
+            @click="editUserMessage(item)"
           >
             <div style="width: 100%; text-align: center; height: 100px">
               <i-ep-UserFilled
@@ -22,49 +22,75 @@
               </i-ep-UserFilled>
             </div>
             <div style="height: 100px">
-              <span style="height: 50px; display: inline-block">姓名：</span>
-              <span style="height: 50px; display: inline-block">关系：</span>
+              <span style="display: block"
+                >姓名：<span>{{ item.commonName }}</span></span
+              >
+              <span style="display: block; margin-top: 16px"
+                >关系：<span>{{ item.relation }}</span></span
+              >
             </div>
+          </el-card>
+        </el-col>
+        <el-col :span="3">
+          <el-card
+            style="height: 200px; margin-top: 16px"
+            shadow="hover"
+            @click="addCommonUser"
+          >
+            <i-ep-Plus
+              style="
+                display: block;
+                width: 50%;
+                height: 100px;
+                margin: auto;
+                margin-top: 25px;
+              "
+            >
+            </i-ep-Plus>
           </el-card>
         </el-col>
       </el-row>
     </el-card>
-    <el-dialog v-model="userMessageVisible">
+    <el-dialog
+      v-model="userMessageVisible"
+      @close="commonForm = getCommonForm()"
+    >
       <el-form
-        ref="userForm"
-        :rules="rulesUserForm"
-        :model="userFormData"
+        ref="commonFormRef"
+        :rules="rulesCommonForm"
+        :model="commonForm"
         label-width="130px"
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="userFormData.name" />
+            <el-form-item label="姓名" prop="commonName">
+              <el-input v-model="commonForm.commonName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="身份证号码" prop="idCard">
-              <el-input v-model="userFormData.idCard" />
+            <el-form-item label="关系" prop="relation">
+              <el-select
+                v-model="commonForm.relation"
+                placeholder="请选择"
+                style="width: 100%"
+              >
+                <el-option label="父亲" value="父亲" />
+                <el-option label="母亲" value="母亲" />
+                <el-option label="近亲属" value="近亲属" />
+                <el-option label="其他" value="其他" />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="身份证起始日期" prop="idCardQishi">
-              <el-date-picker
-                v-model="userFormData.idCardQishi"
-                type="date"
-                placeholder="请选择日期"
-              />
+            <el-form-item label="身份证号码" prop="idCard">
+              <el-input v-model="commonForm.idCard" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="身份证结束日期" prop="idCardJieshu">
-              <el-date-picker
-                v-model="userFormData.idCardJieshu"
-                type="date"
-                placeholder="请选择日期"
-              />
+            <el-form-item label="手机" prop="phone">
+              <el-input v-model="commonForm.phone" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -72,7 +98,7 @@
           <el-col :span="12">
             <el-form-item label="国籍" prop="guoji">
               <el-select
-                v-model="userFormData.guoji"
+                v-model="commonForm.guoji"
                 placeholder="请选择"
                 style="width: 100%"
               >
@@ -83,7 +109,7 @@
           <el-col :span="12">
             <el-form-item label="身份证类型" prop="idCardType">
               <el-select
-                v-model="userFormData.idCardType"
+                v-model="commonForm.idCardType"
                 placeholder="请选择"
                 style="width: 100%"
               >
@@ -101,7 +127,7 @@
           <el-col :span="12">
             <el-form-item label="户口性质" prop="hukouxingzhi">
               <el-select
-                v-model="userFormData.hukouxingzhi"
+                v-model="commonForm.hukouxingzhi"
                 placeholder="请选择"
                 style="width: 100%"
               >
@@ -113,68 +139,16 @@
           <el-col :span="12">
             <el-form-item label="民族" prop="minzu">
               <el-select
-                v-model="userFormData.minzu"
+                v-model="commonForm.minzu"
                 placeholder="请选择"
                 style="width: 100%"
               >
-                <el-option value="汉族"> 汉族</el-option>
-                <el-option value="蒙古族"> 蒙古族 </el-option>
-                <el-option value="回族"> 回族 </el-option>
-                <el-option value="藏族"> 藏族 </el-option>
-                <el-option value="维吾尔族"> 维吾尔族 </el-option>
-                <el-option value="苗族"> 苗族 </el-option>
-                <el-option value="彝族"> 彝族 </el-option>
-                <el-option value="壮族"> 壮族 </el-option>
-                <el-option value="布依族"> 布依族 </el-option>
-                <el-option value="朝鲜族"> 朝鲜族 </el-option>
-                <el-option value="满族"> 满族 </el-option>
-                <el-option value="侗族"> 侗族 </el-option>
-                <el-option value="瑶族"> 瑶族 </el-option>
-                <el-option value="白族"> 白族 </el-option>
-                <el-option value="土家族"> 土家族 </el-option>
-                <el-option value="哈尼族"> 哈尼族 </el-option>
-                <el-option value="哈萨克族"> 哈萨克族 </el-option>
-                <el-option value="傣族"> 傣族 </el-option>
-                <el-option value="黎族"> 黎族 </el-option>
-                <el-option value="傈僳族"> 傈僳族 </el-option>
-                <el-option value="佤族"> 佤族 </el-option>
-                <el-option value="畲族"> 畲族 </el-option>
-                <el-option value="高山族"> 高山族 </el-option>
-                <el-option value="拉祜族"> 拉祜族 </el-option>
-                <el-option value="水族"> 水族 </el-option>
-                <el-option value="东乡族"> 东乡族 </el-option>
-                <el-option value="纳西族"> 纳西族 </el-option>
-                <el-option value="景颇族"> 景颇族 </el-option>
-                <el-option value="柯尔克孜族"> 柯尔克孜族 </el-option>
-                <el-option value="土族"> 土族 </el-option>
-                <el-option value="达斡尔族"> 达斡尔族 </el-option>
-                <el-option value="仫佬族"> 仫佬族 </el-option>
-                <el-option value="羌族"> 羌族 </el-option>
-                <el-option value="布朗族"> 布朗族 </el-option>
-                <el-option value="撒拉族"> 撒拉族 </el-option>
-                <el-option value="毛南族"> 毛南族 </el-option>
-                <el-option value="仡佬族"> 仡佬族 </el-option>
-                <el-option value="锡伯族"> 锡伯族 </el-option>
-                <el-option value="阿昌族"> 阿昌族 </el-option>
-                <el-option value="普米族"> 普米族 </el-option>
-                <el-option value="塔吉克族"> 塔吉克族 </el-option>
-                <el-option value="怒族"> 怒族 </el-option>
-                <el-option value="乌孜别克族"> 乌孜别克族 </el-option>
-                <el-option value="俄罗斯族"> 俄罗斯族 </el-option>
-                <el-option value="鄂温克族"> 鄂温克族 </el-option>
-                <el-option value="德昂族"> 德昂族 </el-option>
-                <el-option value="保安族"> 保安族 </el-option>
-                <el-option value="裕固族"> 裕固族 </el-option>
-                <el-option value="京族"> 京族 </el-option>
-                <el-option value="独龙族"> 独龙族 </el-option>
-                <el-option value="鄂伦春族"> 鄂伦春族 </el-option>
-                <el-option value="赫哲族"> 赫哲族 </el-option>
-                <el-option value="门巴族"> 门巴族 </el-option>
-                <el-option value="珞巴族"> 珞巴族 </el-option>
-                <el-option value="基诺族"> 基诺族 </el-option>
-                <el-option value="其他"> 其他 </el-option>
-                <el-option value="外国血统中国籍人士">
-                  外国血统中国籍人士
+                <el-option
+                  v-for="item in minZuoptions"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
+                >
                 </el-option>
               </el-select>
             </el-form-item>
@@ -183,7 +157,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="性别" prop="xingbie">
-              <el-radio-group v-model="userFormData.xingbie">
+              <el-radio-group v-model="commonForm.xingbie">
                 <el-radio label="男" value="男" />
                 <el-radio label="女" value="女" />
               </el-radio-group>
@@ -192,7 +166,7 @@
           <el-col :span="12">
             <el-form-item label="婚姻状况" prop="hunyinzhuangkuang">
               <el-select
-                v-model="userFormData.hunyinzhuangkuang"
+                v-model="commonForm.hunyinzhuangkuang"
                 placeholder="请选择"
                 style="width: 100%"
               >
@@ -208,7 +182,7 @@
           <el-col :span="12">
             <el-form-item label="职业" prop="zhiye">
               <el-select
-                v-model="userFormData.zhiye"
+                v-model="commonForm.zhiye"
                 placeholder="请选择"
                 style="width: 100%"
               >
@@ -256,104 +230,296 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="户籍地址" required>
-          <el-row :gutter="12">
-            <el-col :span="8">
-              <el-form-item prop="sheng">
-                <el-select
-                  v-model="userFormData.huji.sheng"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item prop="shi">
-                <el-select
-                  v-model="userFormData.huji.shi"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item prop="xian">
-                <el-select
-                  v-model="userFormData.huji.xian"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="userFormData.huji.detailed" type="textarea">
-          </el-input>
-        </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="邮政编码" prop="youbian">
-              <el-input v-model="userFormData.youbian"> </el-input>
+            <el-form-item label="家庭电话" prop="jiatingdianhua">
+              <el-input v-model="commonForm.jiatingdianhua" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="手机号" prop="phone">
-              <el-input v-model="userFormData.phone"> </el-input>
+            <el-form-item label="邮编" prop="youbian">
+              <el-input v-model="commonForm.youbian" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="身体健康状况" prop="jiankangzhuangkuang">
-              <el-radio-group v-model="userFormData.jiankangzhuangkuang">
+            <el-form-item label="身份证起始日期" prop="idCardQishi">
+              <el-date-picker
+                v-model="commonForm.idCardQishi"
+                type="date"
+                placeholder="请选择日期"
+                style="width: 100%"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="身份证结束日期" prop="idCardJieshu">
+              <el-date-picker
+                v-model="commonForm.idCardJieshu"
+                :disabled="foreverIdcard"
+                type="date"
+                placeholder="请选择日期"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="1">
+            <el-checkbox
+              v-model="foreverIdcard"
+              label="永久"
+              size="large"
+              @change="foreverIdcardChange"
+            />
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="健康状况" prop="jiankangzhuangkuang">
+              <el-radio-group v-model="commonForm.jiankangzhuangkuang">
                 <el-radio label="健康" value="健康" />
                 <el-radio label="患病" value="患病" />
               </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
+        <el-form-item label="户籍地址" :required="true">
+          <el-row :gutter="12">
+            <el-col :span="8">
+              <el-form-item prop="hujiSheng">
+                <el-select
+                  v-model="commonForm.hujiSheng"
+                  placeholder="请选择"
+                  style="width: 100%"
+                  @change="huJiShengOptionChange"
+                >
+                  <el-option
+                    v-for="item in huJiShengOptions"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item prop="hujiShi">
+                <el-select
+                  v-model="commonForm.hujiShi"
+                  placeholder="请选择"
+                  style="width: 100%"
+                  @change="hujiShiOptionChange"
+                >
+                  <el-option
+                    v-for="item in huJiShiOptions"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item prop="hujiXian">
+                <el-select
+                  v-model="commonForm.hujiXian"
+                  placeholder="请选择"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in huJiXianOptions"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form-item>
+        <el-form-item prop="hujiDetailed">
+          <el-input v-model="commonForm.hujiDetailed" type="textarea">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="家庭地址" :required="true">
+          <el-row :gutter="12">
+            <el-col :span="8">
+              <el-form-item prop="jiatingSheng">
+                <el-select
+                  v-model="commonForm.jiatingSheng"
+                  placeholder="请选择"
+                  style="width: 100%"
+                  @change="jiaTingShengOptionChange"
+                >
+                  <el-option
+                    v-for="item in jiaTingShengOptions"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item prop="jiatingShi">
+                <el-select
+                  v-model="commonForm.jiatingShi"
+                  placeholder="请选择"
+                  style="width: 100%"
+                  @change="jiaTingShiOptionChange"
+                >
+                  <el-option
+                    v-for="item in jiaTingShiOptions"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item prop="jiatingXian">
+                <el-select
+                  v-model="commonForm.jiatingXian"
+                  placeholder="请选择"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in jiaTingXianOptions"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form-item>
+        <el-form-item prop="jiatingDetailed">
+          <el-input v-model="commonForm.jiatingDetailed" type="textarea">
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitCommonUser(commonFormRef)">
+            提交修改
+          </el-button>
+        </el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { FormInstance, FormRules } from "element-plus";
+import {
+  OptionType,
+  queryMinzuOption,
+  queryShengOption,
+  queryShiOption,
+  queryXianOption,
+} from "@/api/system";
+import { nameTest, idCardTest, phoneTest, youbianTest } from "@/utils/tegTest";
+import { ElMessage, FormInstance, FormRules } from "element-plus";
 import { reactive, ref } from "vue";
+import { subCommonUser, getCommonData, conmmonDataType } from "@/api/user";
 
-const userForm = ref<FormInstance>();
 const userMessageVisible = ref(false);
-const userFormData = reactive({
-  name: "",
-  idCard: "",
-  guoji: "",
-  idCardType: "",
-  hukouxingzhi: "",
-  minzu: "",
-  xingbie: "",
-  hunyinzhuangkuang: "",
-  zhiye: "",
-  idCardQishi: "",
-  idCardJieshu: "",
-  huji: {
-    sheng: "",
-    shi: "",
-    xian: "",
-    detailed: "",
-  },
-  youbian: "",
-  phone: "",
-  jiankangzhuangkuang: "",
-});
+const foreverIdcard = ref(false);
+const foreverIdcardChange = (value: boolean) => {
+  if (value) {
+    commonForm.value.idCardJieshu = "永久";
+  } else {
+    commonForm.value.idCardJieshu = "";
+  }
+};
 
-const rulesUserForm = reactive<FormRules>({
-  name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-  idCard: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
-  phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
+const getCommonForm = () => {
+  return {
+    commonName: "",
+    relation: "",
+    idCard: "",
+    phone: "",
+    guoji: "",
+    idCardType: "",
+    hukouxingzhi: "",
+    minzu: null,
+    xingbie: "",
+    hunyinzhuangkuang: "",
+    zhiye: "",
+    jiatingdianhua: "",
+    youbian: "",
+    idCardQishi: "",
+    idCardJieshu: "",
+    jiankangzhuangkuang: "",
+    hujiSheng: null,
+    hujiShi: null,
+    hujiXian: null,
+    hujiDetailed: "",
+    jiatingSheng: null,
+    jiatingShi: null,
+    jiatingXian: null,
+    jiatingDetailed: "",
+  };
+};
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.resetFields();
+};
+const commonFormRef = ref();
+const commonForm = ref(getCommonForm());
+
+const rulesCommonForm = reactive<FormRules>({
+  commonName: [
+    { required: true, message: "请输入姓名", trigger: "blur" },
+    {
+      type: "string",
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!nameTest.test(value)) {
+            reject("请输入正确的姓名");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  relation: [{ required: true, message: "请选择关系", trigger: "change" }],
+  idCard: [
+    { required: true, message: "请输入身份证号", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!idCardTest.test(value)) {
+            reject("请输入正确的身份证号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  phone: [
+    { required: true, message: "请输入手机号", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!phoneTest.test(value)) {
+            reject("请输入正确的手机号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   guoji: [{ required: true, message: "请选择国籍", trigger: "change" }],
   idCardType: [
     { required: true, message: "请选择身份证类型", trigger: "change" },
@@ -367,24 +533,266 @@ const rulesUserForm = reactive<FormRules>({
     { required: true, message: "请选择婚姻状况", trigger: "change" },
   ],
   zhiye: [{ required: true, message: "请选择职业", trigger: "change" }],
-
+  jiatingdianhua: [
+    { required: true, message: "请输入家庭电话", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!phoneTest.test(value)) {
+            reject("请输入正确的手机号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  youbian: [
+    { required: true, message: "请输入邮编", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!youbianTest.test(value)) {
+            reject("请输入正确的六位数邮编");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   idCardQishi: [
     { required: true, message: "请选择身份证有效起始日期", trigger: "change" },
   ],
   idCardJieshu: [
     { required: true, message: "请选择身份证有效结束日期", trigger: "change" },
   ],
-  sheng: [{ required: true, message: "请选择省", trigger: "change" }],
-  shi: [{ required: true, message: "请选择市", trigger: "change" }],
-  xian: [{ required: true, message: "请选择县", trigger: "change" }],
-  youbian: [{ required: true, message: "请输入邮政编码", trigger: "blur" }],
   jiankangzhuangkuang: [
+    { required: true, message: "请选择健康状况", trigger: "change" },
+  ],
+  hujiSheng: [
+    { required: true, message: "请选择地址", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!commonForm.value.hujiSheng) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  hujiShi: [
+    { required: true, message: "请选择市", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!commonForm.value.hujiShi) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  hujiXian: [
     { required: true, message: "请选择县", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!commonForm.value.hujiXian) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  jiatingSheng: [
+    { required: true, message: "请选择地址", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!commonForm.value.jiatingSheng) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  jiatingShi: [
+    { required: true, message: "请选择市", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!commonForm.value.jiatingShi) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  jiatingXian: [
+    { required: true, message: "请选择县", trigger: "change" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!commonForm.value.jiatingXian) {
+            reject("请选择地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  hujiDetailed: [
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!commonForm.value.hujiDetailed) {
+            reject("请输入详细地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  jiatingDetailed: [
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!commonForm.value.jiatingDetailed) {
+            reject("请输入详细地址");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
   ],
 });
+const huJiShengOptions = ref<OptionType[]>([]);
+const huJiShiOptions = ref<OptionType[]>([]);
+const huJiXianOptions = ref<OptionType[]>([]);
 
-const editUserMessage = () => {
+const jiaTingShengOptions = ref<OptionType[]>([]);
+const jiaTingShiOptions = ref<OptionType[]>([]);
+const jiaTingXianOptions = ref<OptionType[]>([]);
+
+const commonList = ref<conmmonDataType[]>([]);
+// 获取所有用户信息
+const queryCommonData = async () => {
+  const { data } = await getCommonData();
+  commonList.value = data;
+};
+queryCommonData();
+
+const getShengOption = async () => {
+  const { data } = await queryShengOption();
+  huJiShengOptions.value = data;
+  jiaTingShengOptions.value = data;
+};
+getShengOption();
+// 市级菜单
+const huJiShengOptionChange = async (shengId: number) => {
+  const { data } = await queryShiOption({ pcodeId: shengId });
+  huJiShiOptions.value = data;
+  commonForm.value.hujiShi = null;
+  commonForm.value.hujiXian = null;
+};
+const jiaTingShengOptionChange = async (shengId: number) => {
+  const { data } = await queryShiOption({ pcodeId: shengId });
+  jiaTingShiOptions.value = data;
+  commonForm.value.jiatingShi = null;
+  commonForm.value.jiatingXian = null;
+};
+// 县级菜单
+const hujiShiOptionChange = async (shiId: number) => {
+  const { data } = await queryXianOption({ pcodeId: shiId });
+  huJiXianOptions.value = data;
+  commonForm.value.hujiXian = null;
+};
+const jiaTingShiOptionChange = async (shiId: number) => {
+  const { data } = await queryXianOption({ pcodeId: shiId });
+  jiaTingXianOptions.value = data;
+  commonForm.value.jiatingXian = null;
+};
+
+const minZuoptions = ref<OptionType[]>([]);
+const getMinzuOption = async () => {
+  const { data } = await queryMinzuOption();
+  minZuoptions.value = data;
+};
+getMinzuOption();
+
+const editUserMessage = async (record: any) => {
   //
+  console.log(record);
+  await huJiShengOptionChange(record.hujiSheng);
+  await hujiShiOptionChange(record.hujiShi);
+  await jiaTingShengOptionChange(record.jiatingSheng);
+  await jiaTingShiOptionChange(record.jiatingShi);
+  commonForm.value = record;
+
+  if (record.idCardJieshu === "永久") {
+    foreverIdcard.value = true;
+  } else {
+    foreverIdcard.value = false;
+  }
+  userMessageVisible.value = true;
+};
+
+const submitCommonUser = async (formEl: any) => {
+  let flog = true;
+  await formEl.validate((valid: any, fields: any) => {
+    if (!valid) {
+      flog = false;
+      return false;
+    }
+  });
+  if (flog) {
+    try {
+      const { data } = await subCommonUser(commonForm.value);
+      if (data === "提交成功") {
+        ElMessage.success(data);
+        commonForm.value = getCommonForm();
+        userMessageVisible.value = false;
+        queryCommonData();
+      } else {
+        ElMessage.error(data);
+      }
+    } catch (e: any) {
+      ElMessage.error(e);
+    }
+  }
+};
+const addCommonUser = () => {
+  commonForm.value = getCommonForm();
+  foreverIdcard.value = false;
+  huJiShiOptions.value = [];
+  huJiXianOptions.value = [];
+  jiaTingShiOptions.value = [];
+  jiaTingXianOptions.value = [];
   userMessageVisible.value = true;
 };
 </script>

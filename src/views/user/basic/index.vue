@@ -13,7 +13,7 @@
           <p style="margin-bottom: 16px">基本信息</p>
           <el-form
             ref="basicForm"
-            :rules="rulesBasicForm"
+            :rules="rulesForm"
             :model="basicFormData"
             label-width="130px"
           >
@@ -98,64 +98,12 @@
                     placeholder="请选择"
                     style="width: 100%"
                   >
-                    <el-option value="汉族"> 汉族</el-option>
-                    <el-option value="蒙古族"> 蒙古族 </el-option>
-                    <el-option value="回族"> 回族 </el-option>
-                    <el-option value="藏族"> 藏族 </el-option>
-                    <el-option value="维吾尔族"> 维吾尔族 </el-option>
-                    <el-option value="苗族"> 苗族 </el-option>
-                    <el-option value="彝族"> 彝族 </el-option>
-                    <el-option value="壮族"> 壮族 </el-option>
-                    <el-option value="布依族"> 布依族 </el-option>
-                    <el-option value="朝鲜族"> 朝鲜族 </el-option>
-                    <el-option value="满族"> 满族 </el-option>
-                    <el-option value="侗族"> 侗族 </el-option>
-                    <el-option value="瑶族"> 瑶族 </el-option>
-                    <el-option value="白族"> 白族 </el-option>
-                    <el-option value="土家族"> 土家族 </el-option>
-                    <el-option value="哈尼族"> 哈尼族 </el-option>
-                    <el-option value="哈萨克族"> 哈萨克族 </el-option>
-                    <el-option value="傣族"> 傣族 </el-option>
-                    <el-option value="黎族"> 黎族 </el-option>
-                    <el-option value="傈僳族"> 傈僳族 </el-option>
-                    <el-option value="佤族"> 佤族 </el-option>
-                    <el-option value="畲族"> 畲族 </el-option>
-                    <el-option value="高山族"> 高山族 </el-option>
-                    <el-option value="拉祜族"> 拉祜族 </el-option>
-                    <el-option value="水族"> 水族 </el-option>
-                    <el-option value="东乡族"> 东乡族 </el-option>
-                    <el-option value="纳西族"> 纳西族 </el-option>
-                    <el-option value="景颇族"> 景颇族 </el-option>
-                    <el-option value="柯尔克孜族"> 柯尔克孜族 </el-option>
-                    <el-option value="土族"> 土族 </el-option>
-                    <el-option value="达斡尔族"> 达斡尔族 </el-option>
-                    <el-option value="仫佬族"> 仫佬族 </el-option>
-                    <el-option value="羌族"> 羌族 </el-option>
-                    <el-option value="布朗族"> 布朗族 </el-option>
-                    <el-option value="撒拉族"> 撒拉族 </el-option>
-                    <el-option value="毛南族"> 毛南族 </el-option>
-                    <el-option value="仡佬族"> 仡佬族 </el-option>
-                    <el-option value="锡伯族"> 锡伯族 </el-option>
-                    <el-option value="阿昌族"> 阿昌族 </el-option>
-                    <el-option value="普米族"> 普米族 </el-option>
-                    <el-option value="塔吉克族"> 塔吉克族 </el-option>
-                    <el-option value="怒族"> 怒族 </el-option>
-                    <el-option value="乌孜别克族"> 乌孜别克族 </el-option>
-                    <el-option value="俄罗斯族"> 俄罗斯族 </el-option>
-                    <el-option value="鄂温克族"> 鄂温克族 </el-option>
-                    <el-option value="德昂族"> 德昂族 </el-option>
-                    <el-option value="保安族"> 保安族 </el-option>
-                    <el-option value="裕固族"> 裕固族 </el-option>
-                    <el-option value="京族"> 京族 </el-option>
-                    <el-option value="独龙族"> 独龙族 </el-option>
-                    <el-option value="鄂伦春族"> 鄂伦春族 </el-option>
-                    <el-option value="赫哲族"> 赫哲族 </el-option>
-                    <el-option value="门巴族"> 门巴族 </el-option>
-                    <el-option value="珞巴族"> 珞巴族 </el-option>
-                    <el-option value="基诺族"> 基诺族 </el-option>
-                    <el-option value="其他"> 其他 </el-option>
-                    <el-option value="外国血统中国籍人士">
-                      外国血统中国籍人士
+                    <el-option
+                      v-for="item in minZuoptions"
+                      :key="item.code"
+                      :label="item.name"
+                      :value="item.code"
+                    >
                     </el-option>
                   </el-select>
                 </el-form-item>
@@ -246,135 +194,71 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              <el-col :span="12">
+                <el-form-item label="年龄" prop="age">
+                  <el-input-number
+                    v-model="basicFormData.age"
+                    style="width: 100%"
+                  >
+                  </el-input-number>
+                </el-form-item>
+              </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
                 <el-form-item label="毕业中学" prop="biyezhongxue">
-                  <el-select style="width: 100%"> </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="毕业中学名称" porp="biyezhongxuemingcheng">
-                  <el-select style="width: 100%"> </el-select>
+                  <el-input
+                    v-model="basicFormData.biyezhongxue"
+                    style="width: 100%"
+                  >
+                  </el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="资助中心" required>
-              <el-row :gutter="12">
-                <el-col :span="8">
-                  <el-form-item prop="sheng">
-                    <el-select
-                      v-model="basicFormData.zizhuzhongxin.sheng"
-                      placeholder="请选择"
-                      style="width: 100%"
-                    >
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item prop="shi">
-                    <el-select
-                      v-model="basicFormData.zizhuzhongxin.shi"
-                      placeholder="请选择"
-                      style="width: 100%"
-                    >
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item prop="jiaoyuju">
-                    <el-select
-                      v-model="basicFormData.zizhuzhongxin.jiaoyuju"
-                      placeholder="请选择"
-                      style="width: 100%"
-                    >
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form-item>
-            <el-form-item label="入学前户籍地址" required>
-              <el-row :gutter="12">
-                <el-col :span="8">
-                  <el-form-item prop="sheng">
-                    <el-select
-                      v-model="basicFormData.huji.sheng"
-                      placeholder="请选择"
-                      style="width: 100%"
-                    >
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item prop="shi">
-                    <el-select
-                      v-model="basicFormData.huji.shi"
-                      placeholder="请选择"
-                      style="width: 100%"
-                    >
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item prop="xian">
-                    <el-select
-                      v-model="basicFormData.huji.xian"
-                      placeholder="请选择"
-                      style="width: 100%"
-                    >
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form-item>
-            <el-form-item>
-              <el-input v-model="basicFormData.huji.detailed" type="textarea">
-              </el-input>
-            </el-form-item>
           </el-form>
         </div>
         <div class="contact_form" style="margin-top: 26px">
           <p style="margin-bottom: 16px">通讯信息</p>
           <el-form
             ref="contactForm"
-            :rules="rulesContactForm"
-            :model="contactFormData"
+            :rules="rulesForm"
+            :model="basicFormData"
             label-width="130px"
           >
             <el-row>
               <el-col :span="12">
                 <el-form-item label="手机" prop="phone">
-                  <el-input v-model="contactFormData.phone"></el-input>
+                  <el-input v-model="basicFormData.phone"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="邮政编码">
-                  <el-input v-model="contactFormData.youbian"></el-input>
+                <el-form-item label="邮政编码" prop="youbian">
+                  <el-input v-model="basicFormData.youbian"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="电子邮件" prop="email">
-                  <el-input v-model="contactFormData.email"></el-input>
+                  <el-input v-model="basicFormData.email"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="QQ" prop="qq">
-                  <el-input v-model="contactFormData.qq"></el-input>
+                <el-form-item label="QQ" prop="qqNumber">
+                  <el-input v-model="basicFormData.qqNumber"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="微信">
-                  <el-input v-model="contactFormData.wechat"></el-input>
+                <el-form-item label="微信" prop="wechat">
+                  <el-input v-model="basicFormData.wechat"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="通信地址">
+            <el-form-item label="通信地址" prop="tongxindizhi">
               <el-input
-                v-model="contactFormData.contactAddress"
+                v-model="basicFormData.tongxindizhi"
                 placeholder="请输入详细地址、填写到村镇、门牌号"
               >
               </el-input>
@@ -385,39 +269,42 @@
           <p style="margin-bottom: 16px">就学信息</p>
           <el-form
             ref="schoolForm"
-            :rules="rulesSchoolForm"
-            :model="schoolFormData"
+            :rules="rulesForm"
+            :model="basicFormData"
             label-width="130px"
           >
             <el-row>
               <el-col :span="12">
                 <el-form-item label="高校名称" prop="name">
-                  <el-input v-model="schoolFormData.name"></el-input>
+                  <el-input v-model="basicFormData.name"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="院系名称" prop="college">
-                  <el-input v-model="schoolFormData.college"></el-input>
+                <el-form-item label="院系名称" prop="xueyuan">
+                  <el-input v-model="basicFormData.xueyuan"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="专业名称" prop="major">
-                  <el-input v-model="schoolFormData.major"></el-input>
+                <el-form-item label="专业名称" prop="zhuanye">
+                  <el-input v-model="basicFormData.zhuanye"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
                 <el-form-item label="学历" prop="xueli">
-                  <el-select v-model="schoolFormData.xueli" style="width: 100%">
+                  <el-select v-model="basicFormData.xueli" style="width: 100%">
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="入学年份" prop="year">
-                  <el-select v-model="schoolFormData.year" style="width: 100%">
+                <el-form-item label="入学年份" prop="ruxueyear">
+                  <el-select
+                    v-model="basicFormData.ruxueyear"
+                    style="width: 100%"
+                  >
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -426,30 +313,33 @@
               <el-col :span="12">
                 <el-form-item label="学号" prop="studentId">
                   <el-input
-                    v-model="schoolFormData.studentId"
+                    v-model="basicFormData.studentId"
                     style="width: 100%"
                   >
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="专业类别" prop="type">
-                  <el-select v-model="schoolFormData.type" style="width: 100%">
+                <el-form-item label="专业类别" prop="zhuanyeType">
+                  <el-select
+                    v-model="basicFormData.zhuanyeType"
+                    style="width: 100%"
+                  >
                   </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="学制" prop="years">
-                  <el-select v-model="schoolFormData.years" style="width: 100%">
+                <el-form-item label="学制" prop="xuezhi">
+                  <el-select v-model="basicFormData.xuezhi" style="width: 100%">
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="毕业时间" prop="graduate">
+                <el-form-item label="毕业时间" prop="biyeshijian">
                   <el-date-picker
-                    v-model="schoolFormData.graduate"
+                    v-model="basicFormData.biyeshijian"
                     style="width: 100%"
                   >
                   </el-date-picker>
@@ -459,7 +349,13 @@
           </el-form>
         </div>
         <div style="margin-top: 16px; text-align: right">
-          <el-button type="primary" style="width: 100px">提交修改</el-button>
+          <el-button type="primary" @click="resetForm">重置</el-button>
+          <el-button
+            type="primary"
+            style="width: 100px"
+            @click="submitBasicForm"
+            >提交修改</el-button
+          >
         </div>
       </div>
     </el-card>
@@ -467,45 +363,60 @@
 </template>
 
 <script setup lang="ts">
+import { OptionType, queryMinzuOption } from "@/api/system";
 import { getUserBasic, editUserBasic } from "@/api/user";
-import { FormInstance, FormRules } from "element-plus";
+import { FormRules } from "element-plus";
 import { reactive, ref } from "vue";
 
-const basicForm = ref<FormInstance>();
-const contactForm = ref<FormInstance>();
-const schoolForm = ref<FormInstance>();
+const basicForm = ref<any>();
+const contactForm = ref<any>();
+const schoolForm = ref<any>();
 
-const basicFormData = reactive({
+const basicFormData = ref({
+  studentId: "",
   name: "",
   idCard: "",
+  idCardQishi: "",
+  idCardJieshu: "",
   guoji: "",
   idCardType: "",
   hukouxingzhi: "",
-  minzu: "",
+  minzu: null,
   xingbie: "",
   hunyinzhuangkuang: "",
+  // TODO:年龄
+  age: null,
   zhiye: "",
-  idCardQishi: "",
-  idCardJieshu: "",
   biyezhongxue: "",
-  biyezhongxuemingcheng: "",
-  zizhuzhongxin: {
-    sheng: "",
-    shi: "",
-    jiaoyuju: "",
-  },
-  huji: {
-    sheng: "",
-    shi: "",
-    xian: "",
-    detailed: "",
-  },
+  // 通讯信息
+  phone: "",
+  youbian: "",
+  email: "",
+  qqNumber: "",
+  wechat: "",
+  tongxindizhi: "",
+  // 学校信息
+  schoolname: "",
+  xueyuan: "",
+  zhuanye: "",
+  xueli: "",
+  ruxueyear: "",
+  zhuanyeType: "",
+  xuezhi: "",
+  biyeshijian: "",
+  classnumber: "",
 });
 
-const rulesBasicForm = reactive<FormRules>({
+const rulesForm = reactive<FormRules>({
   name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
   idCard: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
-  phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
+  idCardQishi: [
+    { required: true, message: "请选择身份证有效起始日期", trigger: "change" },
+  ],
+  idCardJieshu: [
+    { required: true, message: "请选择身份证有效结束日期", trigger: "change" },
+  ],
+
   guoji: [{ required: true, message: "请选择国籍", trigger: "change" }],
   idCardType: [
     { required: true, message: "请选择身份证类型", trigger: "change" },
@@ -519,71 +430,86 @@ const rulesBasicForm = reactive<FormRules>({
     { required: true, message: "请选择婚姻状况", trigger: "change" },
   ],
   zhiye: [{ required: true, message: "请选择职业", trigger: "change" }],
-  biyezhongxue: [{ required: true, message: "请输入手机号", trigger: "blur" }],
-  biyezhongxuemingcheng: [
-    { required: true, message: "请输入手机号", trigger: "blur" },
+  age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
+  biyezhongxue: [
+    { required: true, message: "请输入毕业中学", trigger: "blur" },
   ],
-  idCardQishi: [
-    { required: true, message: "请选择身份证有效起始日期", trigger: "change" },
-  ],
-  idCardJieshu: [
-    { required: true, message: "请选择身份证有效结束日期", trigger: "change" },
-  ],
-  sheng: [{ required: true, message: "请选择省", trigger: "change" }],
-  shi: [{ required: true, message: "请选择市", trigger: "change" }],
-  xian: [{ required: true, message: "请选择县", trigger: "change" }],
-});
 
-const contactFormData = reactive({
-  phone: "",
-  youbian: "",
-  email: "",
-  qq: "",
-  wechat: "",
-  contactAddress: "",
-});
-
-const rulesContactForm = reactive<FormRules>({
   phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
+  youbian: [{ required: true, message: "请输入邮编", trigger: "blur" }],
   email: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
-  qq: [{ required: true, message: "请输入qq", trigger: "blur" }],
-});
+  qqNumber: [{ required: true, message: "请输入QQ", trigger: "blur" }],
+  wechat: [{ required: true, message: "请输入微信", trigger: "blur" }],
+  tongxindizhi: [
+    { required: true, message: "请输入通信地址", trigger: "blur" },
+  ],
 
-const schoolFormData = reactive({
-  name: "",
-  college: "",
-  major: "",
-  xueli: "",
-  year: "",
-  studentId: "",
-  type: "",
-  years: "",
-  graduate: "",
-});
-
-const rulesSchoolForm = reactive<FormRules>({
-  name: [{ required: true, message: "请输入学校名称", trigger: "blur" }],
-  college: [{ required: true, message: "请输入学院名称", trigger: "blur" }],
-  major: [{ required: true, message: "请输入专业名称", trigger: "blur" }],
+  schoolname: [{ required: true, message: "请输入高校名称", trigger: "blur" }],
+  xueyuan: [{ required: true, message: "请输入学院名称", trigger: "blur" }],
+  zhuanye: [{ required: true, message: "请输入专业名称", trigger: "blur" }],
   xueli: [{ required: true, message: "请选择学历", trigger: "change" }],
-  year: [{ required: true, message: "请选择入学年份", trigger: "change" }],
+  ruxueyear: [{ required: true, message: "请选择入学年份", trigger: "change" }],
   studentId: [{ required: true, message: "请输入学号", trigger: "blur" }],
-  type: [{ required: true, message: "请选择专业类型", trigger: "change" }],
-  years: [{ required: true, message: "请选择学制", trigger: "change" }],
-  graduate: [{ required: true, message: "请选择毕业时间", trigger: "change" }],
+  zhuanyeType: [
+    { required: true, message: "请选择专业类型", trigger: "change" },
+  ],
+  xuezhi: [{ required: true, message: "请选择学制", trigger: "change" }],
+  biyeshijian: [
+    { required: true, message: "请选择毕业时间", trigger: "change" },
+  ],
+  classnumber: [{ required: true, message: "请输入班级", trigger: "blur" }],
 });
 
 const getbasicData = async () => {
   const { data } = await getUserBasic();
+  basicFormData.value = data;
 };
 getbasicData();
 
 const editBasicData = async () => {
   const { data } = await editUserBasic({
-    basicForm: basicForm,
-    contactForm: contactForm,
-    schoolForm: schoolForm,
+    basicForm: basicForm.value,
+    contactForm: contactForm.value,
+    schoolForm: schoolForm.value,
   });
+};
+
+const minZuoptions = ref<OptionType[]>([]);
+const getMinzuOption = async () => {
+  const { data } = await queryMinzuOption();
+  minZuoptions.value = data;
+};
+getMinzuOption();
+
+const resetForm = () => {
+  basicForm.value.resetFields();
+  contactForm.value.resetFields();
+  schoolForm.value.resetFields();
+};
+
+const submitBasicForm = async () => {
+  let flog = true;
+  await basicForm.value.validate((valid: any, fields: any) => {
+    if (!valid) {
+      flog = false;
+      return false;
+    }
+  });
+  await contactForm.value.validate((valid: any, fields: any) => {
+    if (!valid) {
+      flog = false;
+      return false;
+    }
+  });
+  await schoolForm.value.validate((valid: any, fields: any) => {
+    if (!valid) {
+      flog = false;
+      return false;
+    }
+  });
+  if (flog) {
+    console.log("1");
+  }
 };
 </script>
 

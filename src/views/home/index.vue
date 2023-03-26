@@ -37,7 +37,7 @@
                     display: block;
                     width: 70%;
                     height: 70%;
-                    margin: auto auto;
+                    margin: 0 auto;
                   "
                 >
                 </i-ep-Coin>
@@ -158,6 +158,7 @@
             <el-button
               type="danger"
               style="width: 100%; height: 60px; margin: 0"
+              @click="clickTo('Status')"
             >
               进度查询
             </el-button>
@@ -369,7 +370,6 @@ import {
   MessageListData,
 } from "@/api/home";
 import router from "@/router";
-import { first } from "lodash";
 import { reactive, ref } from "vue";
 
 const totalData = reactive({

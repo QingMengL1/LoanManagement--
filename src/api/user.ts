@@ -46,3 +46,38 @@ export interface userSettingType {
 export function userSetting(data: userSettingType) {
   return axios.post("/api/user/setting/", data);
 }
+
+export function subCommonUser(data: object) {
+  return axios.post("/api/user/subcommon/", data);
+}
+
+export interface conmmonDataType {
+  commonName: string;
+  relation: string;
+  idCard: string;
+  phone: string;
+  guoji: string;
+  idCardType: string;
+  hukouxingzhi: string;
+  minzu: number;
+  xingbie: string;
+  hunyinzhuangkuang: string;
+  zhiye: string;
+  jiatingdianhua: string;
+  youbian: string;
+  idCardQishi: string;
+  idCardJieshu: string;
+  jiankangzhuangkuang: string;
+  hujiSheng: number;
+  hujiShi: number;
+  hujiXian: number;
+  hujiDetailed: string;
+  jiatingSheng: number;
+  jiatingShi: number;
+  jiatingXian: number;
+  jiatingDetailed: string;
+}
+
+export function getCommonData() {
+  return axios.get("/api/user/commondata/");
+}

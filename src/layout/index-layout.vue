@@ -128,8 +128,6 @@ const activeMenu = ref<string>(
 );
 
 const selectMenu = (val: string) => {
-  console.log(val);
-
   activeMenu.value = val;
   window.sessionStorage.setItem("activeMenu", val);
 };

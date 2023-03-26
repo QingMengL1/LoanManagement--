@@ -22,7 +22,3 @@ export function queryXianOption(params: optionType) {
 export function queryMinzuOption() {
   return axios.get<OptionType[]>("/api/system/minzu/");
 }
-
-export function submitLoan(data: object) {
-  return axios.post("/api/loan/submit/", data);
-}
