@@ -19,16 +19,18 @@
           <el-form-item label="账号">
             {{ userFormData.id }}
           </el-form-item>
-          <el-form-item label="密码">
+          <el-form-item label="密码" prop="password1">
             <el-input
               v-model="userFormData.password1"
+              type="password"
               placeholder="如果需要修改密码请输入"
             >
             </el-input>
           </el-form-item>
-          <el-form-item label="确认密码">
+          <el-form-item label="确认密码" prop="password2">
             <el-input
               v-model="userFormData.password2"
+              type="password"
               placeholder="请再次输入要修改的密码"
             >
             </el-input>
@@ -43,8 +45,14 @@
             <el-input v-model="userFormData.qq"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button>重置</el-button>
+            <el-button @click="resetForm">重置</el-button>
             <el-button type="primary" @click="submitEdit">提交修改</el-button>
+          </el-form-item>
+          <el-form-item>
+            <span style="color: #c8c9cc">
+              <i-ep-InfoFilled></i-ep-InfoFilled>
+              此部分只影响登录信息中的内容，并不会对基本信息进行修改
+            </span>
           </el-form-item>
         </el-form>
       </div>
@@ -53,30 +61,108 @@
 </template>
 
 <script setup lang="ts">
-import { FormInstance, FormRules } from "element-plus";
+import { ElMessage, FormInstance, FormRules } from "element-plus";
 import { useUserStore } from "@/store/user";
 import { reactive, ref } from "vue";
 import { userSettingType, userSetting } from "@/api/user";
+import { emailTest, passwordTest, phoneTest } from "@/utils/tegTest";
 
 const userForm = ref<FormInstance>();
-const { userInfo } = useUserStore();
+const userStore = useUserStore();
 
-const userFormData = reactive<userSettingType>({
-  id: userInfo.id,
+const userFormData = ref<userSettingType>({
+  id: userStore.id,
   password1: "",
   password2: "",
-  phone: userInfo.phone || "",
-  email: userInfo.email || "",
-  qq: userInfo.qq || "",
+  phone: userStore.phone || "",
+  email: userStore.email || "",
+  qq: userStore.qq || "",
 });
 const rulesUserForm = reactive<FormRules>({
-  phone: [{ required: true, message: "手机号不能为空", trigger: "blur" }],
-  email: [{ required: true, message: "邮箱不能为空", trigger: "blur" }],
+  phone: [
+    { required: true, message: "手机号不能为空", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!phoneTest.test(value)) {
+            reject("请输入正确的手机号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  email: [
+    { required: true, message: "邮箱不能为空", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!emailTest.test(value)) {
+            reject("请输入正确的邮箱");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   qq: [{ required: true, message: "QQ不能为空", trigger: "blur" }],
+  password1: [
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!passwordTest.test(value) && value.length > 0) {
+            reject("密码请包括大写字母，小写字母，数字，特殊符号中任意3项");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  password2: [
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (userFormData.value.password1 !== value) {
+            reject("确认密码和上一次密码不相同");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
 });
 
 const submitEdit = async () => {
-  const { data } = await userSetting(userFormData);
+  let flog = true;
+  await userForm.value.validate((valid: any, fields: any) => {
+    if (!valid) {
+      flog = false;
+      return false;
+    }
+  });
+  if (flog) {
+    const { data } = await userSetting(userFormData.value);
+    ElMessage.success(data);
+    await userStore.info();
+    resetForm();
+  }
+};
+
+const resetForm = () => {
+  userFormData.value.id = userStore.id;
+  userFormData.value.password1 = "";
+  userFormData.value.password2 = "";
+  userFormData.value.phone = userStore.phone || "";
+  userFormData.value.email = userStore.email || "";
+  userFormData.value.qq = userStore.qq || "";
 };
 </script>
 

@@ -131,7 +131,11 @@ const selectMenu = (val: string) => {
   activeMenu.value = val;
   window.sessionStorage.setItem("activeMenu", val);
 };
-
+router.beforeEach(async (to, from, next) => {
+  activeMenu.value = to.path;
+  window.sessionStorage.setItem("activeMenu", to.path);
+  next();
+});
 const handleLogout = () => {
   logout();
 };

@@ -1,14 +1,13 @@
 import axios from "axios";
 
 export interface TotalData {
-  totalAmount: number;
-  residualAmount: number;
-  nextTime: string;
-  message: number;
+  total: number;
+  shengyv: number;
+  messages: number;
 }
 
 export function getTotalListData() {
-  return axios.get<TotalData>("/api/home/getTotalData/");
+  return axios.get<TotalData>("/api/home/gettotaldata/");
 }
 
 export interface MessageListData {
@@ -23,5 +22,5 @@ export interface MessageListResponse {
 }
 
 export function getMessageListData() {
-  return axios.get<MessageListResponse>("/api/home/getMessageData/");
+  return axios.get<MessageListData[]>("/api/home/getmessagedata/");
 }

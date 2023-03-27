@@ -39,7 +39,7 @@
                     font-size: 24px;
                   "
                 >
-                  <span>{{ item.hetongyve }}</span> <span>元</span>
+                  <span>{{ item.daikuanjine }}</span> <span>元</span>
                 </div>
               </el-col>
               <el-col :span="12">
@@ -137,7 +137,6 @@ const contractData = ref<LoanStatusType[]>([]);
 
 const queryLoanStatus = async () => {
   const { data } = await getLoanStatus();
-  console.log(data);
   contractData.value = data;
 };
 queryLoanStatus();
@@ -166,7 +165,7 @@ const showContract = (record: LoanStatusType) => {
       value: record.fafangriqi || "暂无",
     },
     {
-      name: "合同余额",
+      name: "剩余还款",
       value: record.hetongyve + "元",
     },
     {
@@ -178,8 +177,6 @@ const showContract = (record: LoanStatusType) => {
 };
 
 const advanceClick = () => {
-  console.log("1");
-
   advanceVisible.value = true;
 };
 </script>

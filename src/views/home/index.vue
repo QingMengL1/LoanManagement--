@@ -44,7 +44,7 @@
               </el-col>
               <el-col :span="16" tyle="height: 150px">
                 <div style="height: 150px; text-align: center">
-                  <el-statistic :value="totalData.totalAmount">
+                  <el-statistic :value="totalData.total">
                     <template #title>
                       <span style="font-size: 20px">贷款总金额</span>
                     </template>
@@ -70,7 +70,7 @@
               </el-col>
               <el-col :span="16" tyle="height: 150px">
                 <div style="height: 150px; text-align: center">
-                  <el-statistic :value="totalData.residualAmount">
+                  <el-statistic :value="totalData.shengyv">
                     <template #title>
                       <span style="font-size: 20px">剩余还款金额</span>
                     </template>
@@ -97,7 +97,7 @@
               </el-col>
               <el-col :span="16" tyle="height: 150px">
                 <div style="height: 150px; text-align: center">
-                  <el-statistic :value="totalData.message">
+                  <el-statistic :value="totalData.messages">
                     <template #title>
                       <span style="font-size: 20px">剩余处理消息</span>
                     </template>
@@ -144,21 +144,21 @@
             <el-button
               type="primary"
               style="width: 100%; height: 60px; margin: 0"
-              @click="clickTo('Application')"
+              @click="clickTo('/myLoan/application')"
             >
               申请贷款
             </el-button>
             <el-button
               type="success"
               style="width: 100%; height: 60px; margin: 0"
-              @click="clickTo('Repay')"
+              @click="clickTo('/myLoan/repay')"
             >
               提前还款
             </el-button>
             <el-button
               type="danger"
               style="width: 100%; height: 60px; margin: 0"
-              @click="clickTo('Status')"
+              @click="clickTo('/myLoan/status')"
             >
               进度查询
             </el-button>
@@ -373,18 +373,16 @@ import router from "@/router";
 import { reactive, ref } from "vue";
 
 const totalData = reactive({
-  totalAmount: 0,
-  residualAmount: 0,
-  nextTime: "",
-  message: 0,
+  total: 0,
+  shengyv: 0,
+  messages: 0,
 });
 
 const getTotalData = async () => {
   const { data } = await getTotalListData();
-  totalData.totalAmount = data.totalAmount;
-  totalData.residualAmount = data.residualAmount;
-  totalData.nextTime = data.nextTime;
-  totalData.message = data.message;
+  totalData.total = data.total;
+  totalData.shengyv = data.shengyv;
+  totalData.messages = data.messages;
 };
 getTotalData();
 
@@ -404,7 +402,7 @@ const getMessage = async () => {
 getMessage();
 
 const clickTo = (value: string) => {
-  router.push({ name: value });
+  router.push({ path: value });
 };
 
 const questionDialogVisible = ref(false);

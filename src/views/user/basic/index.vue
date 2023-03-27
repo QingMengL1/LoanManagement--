@@ -198,6 +198,7 @@
                 <el-form-item label="年龄" prop="age">
                   <el-input-number
                     v-model="basicFormData.age"
+                    :controls="false"
                     style="width: 100%"
                   >
                   </el-input-number>
@@ -296,6 +297,10 @@
               <el-col :span="12">
                 <el-form-item label="学历" prop="xueli">
                   <el-select v-model="basicFormData.xueli" style="width: 100%">
+                    <el-option value="研究生">研究生</el-option>
+                    <el-option value="本科">本科</el-option>
+                    <el-option value="专科">专科</el-option>
+                    <el-option value="研究生">中职</el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -305,6 +310,12 @@
                     v-model="basicFormData.ruxueyear"
                     style="width: 100%"
                   >
+                    <el-option value="2018">2018</el-option>
+                    <el-option value="2019">2019</el-option>
+                    <el-option value="2020">2020</el-option>
+                    <el-option value="2021">2021</el-option>
+                    <el-option value="2022">2022</el-option>
+                    <el-option value="2023">2023</el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -325,6 +336,19 @@
                     v-model="basicFormData.zhuanyeType"
                     style="width: 100%"
                   >
+                    <el-option value="哲学">哲学</el-option>
+                    <el-option value="经济学">经济学</el-option>
+                    <el-option value="法学">法学</el-option>
+                    <el-option value="教育学">教育学</el-option>
+                    <el-option value="文学">文学</el-option>
+                    <el-option value="历史学">历史学</el-option>
+                    <el-option value="理学">理学</el-option>
+                    <el-option value="工学">工学</el-option>
+                    <el-option value="农学">农学</el-option>
+                    <el-option value="医学">医学</el-option>
+                    <el-option value="管理学">管理学</el-option>
+                    <el-option value="军事学">军事学</el-option>
+                    <el-option value="艺术学">艺术学</el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -332,8 +356,8 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="学制" prop="xuezhi">
-                  <el-select v-model="basicFormData.xuezhi" style="width: 100%">
-                  </el-select>
+                  <el-input v-model="basicFormData.xuezhi" style="width: 100%">
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -365,7 +389,8 @@
 <script setup lang="ts">
 import { OptionType, queryMinzuOption } from "@/api/system";
 import { getUserBasic, editUserBasic } from "@/api/user";
-import { FormRules } from "element-plus";
+import { emailTest, idCardTest, phoneTest } from "@/utils/tegTest";
+import { ElMessage, FormRules } from "element-plus";
 import { reactive, ref } from "vue";
 
 const basicForm = ref<any>();
@@ -409,7 +434,21 @@ const basicFormData = ref({
 
 const rulesForm = reactive<FormRules>({
   name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-  idCard: [{ required: true, message: "请输入身份证号", trigger: "blur" }],
+  idCard: [
+    { required: true, message: "请输入身份证号", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!idCardTest.test(value)) {
+            reject("请输入正确的身份证号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   idCardQishi: [
     { required: true, message: "请选择身份证有效起始日期", trigger: "change" },
   ],
@@ -430,14 +469,56 @@ const rulesForm = reactive<FormRules>({
     { required: true, message: "请选择婚姻状况", trigger: "change" },
   ],
   zhiye: [{ required: true, message: "请选择职业", trigger: "change" }],
-  age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
+  age: [
+    { required: true, message: "请输入年龄", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (value < 1 || value > 100) {
+            reject("请输入正确的年龄");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   biyezhongxue: [
     { required: true, message: "请输入毕业中学", trigger: "blur" },
   ],
 
-  phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
-  youbian: [{ required: true, message: "请输入邮编", trigger: "blur" }],
-  email: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
+  phone: [
+    { required: true, message: "请输入手机号", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!phoneTest.test(value)) {
+            reject("请输入正确的手机号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  youbian: [{ required: false, message: "请输入邮编", trigger: "blur" }],
+  email: [
+    { required: true, message: "请输入邮箱", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!emailTest.test(value)) {
+            reject("请输入正确的邮箱");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   qqNumber: [{ required: true, message: "请输入QQ", trigger: "blur" }],
   wechat: [{ required: true, message: "请输入微信", trigger: "blur" }],
   tongxindizhi: [
@@ -468,10 +549,10 @@ getbasicData();
 
 const editBasicData = async () => {
   const { data } = await editUserBasic({
-    basicForm: basicForm.value,
-    contactForm: contactForm.value,
-    schoolForm: schoolForm.value,
+    formData: basicFormData.value,
   });
+  ElMessage.success(data);
+  getbasicData();
 };
 
 const minZuoptions = ref<OptionType[]>([]);
@@ -482,9 +563,7 @@ const getMinzuOption = async () => {
 getMinzuOption();
 
 const resetForm = () => {
-  basicForm.value.resetFields();
-  contactForm.value.resetFields();
-  schoolForm.value.resetFields();
+  getbasicData();
 };
 
 const submitBasicForm = async () => {
@@ -508,7 +587,7 @@ const submitBasicForm = async () => {
     }
   });
   if (flog) {
-    console.log("1");
+    await editBasicData();
   }
 };
 </script>

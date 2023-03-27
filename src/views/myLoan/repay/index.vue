@@ -9,17 +9,22 @@
     </el-breadcrumb>
     <el-card class="box-card">
       <el-row :gutter="12">
-        <el-col :span="6" style="margin-bottom: 12px">
+        <el-col
+          :span="6"
+          v-for="item in contractData"
+          style="margin-bottom: 12px"
+        >
           <el-card
             shadow="hover"
-            style="width: 100%; height: 340px; position: relative"
-            @click.self="showContract"
+            style="width: 100%; height: 260px; position: relative"
+            @click="showContract(item)"
           >
             <strong style="color: skyblue">生源地 </strong>
-            <span> 61062101H20220000316</span>
+            <span> {{ item.hetongbianhao }}</span>
 
             <div style="margin-top: 24px; font-size: 20px">
-              <span>2022-2023</span><span>学年合同</span>
+              <span>{{ item.academicYear }}</span>
+              <span>合同</span>
             </div>
 
             <el-row style="margin-top: 24px">
@@ -33,11 +38,11 @@
                     font-size: 24px;
                   "
                 >
-                  <span>1200</span> <span>元</span>
+                  <span>{{ item.daikuanjine }}</span> <span>元</span>
                 </div>
               </el-col>
               <el-col :span="12">
-                <span>合同余额</span>
+                <span>剩余还款</span>
                 <div
                   style="
                     color: rgb(252, 78, 73);
@@ -46,16 +51,14 @@
                     font-size: 24px;
                   "
                 >
-                  <span>1200</span> <span>元</span>
+                  <span>{{ item.hetongyve }}</span> <span>元</span>
                 </div>
               </el-col>
             </el-row>
             <div style="position: absolute; bottom: 12px">
-              <el-link @click="advanceClick">提前还款申请</el-link>
-              <el-link style="margin: 0 25px" @click="showContract"
-                >电子合同</el-link
-              >
-              <el-link>受理证明</el-link>
+              <el-button type="primary" @click.stop="advanceClick(item)">
+                提前还款申请
+              </el-button>
             </div>
           </el-card>
         </el-col>
@@ -76,34 +79,51 @@
       v-model="advanceVisible"
       style="width: 800px"
     >
-      <el-card v-for="i in 4" style="margin: 12px 0">
+      <el-card v-for="item in advanceData" style="margin: 12px 0">
         <div class="card-header">
-          <span>2022-2023</span>
-          <div><span>合计：</span><span style="color: red">0</span></div>
+          <span>{{ item.academicYear }}</span>
         </div>
         <el-divider style="margin: 12px 0" />
         <div class="card-conter">
           <div>
-            <span>合同余额</span>
+            <span>剩余还款</span>
             <div style="margin-top: 10px; font-weight: 8000; font-size: 20px">
-              <span>1200</span> <span>元</span>
+              <span>{{ item.yve }}</span> <span>元</span>
             </div>
           </div>
           <div>
             <span>近期应还金额</span>
             <div style="margin-top: 10px; font-weight: 8000; font-size: 20px">
-              <span>1200</span> <span>元</span>
+              <span>{{ item.jinqi }}</span> <span>元</span>
             </div>
           </div>
           <div>
             <span>部分还款金额</span>
             <div style="margin-top: 10px; font-weight: 8000; font-size: 20px">
-              <el-input placeholder="请输入提前还款金额"></el-input>
+              <el-input
+                placeholder="请输入提前还款金额"
+                v-model="item.huankuan"
+                :precision="2"
+                :controls="false"
+              >
+              </el-input>
             </div>
           </div>
           <div>
-            <el-button type="primary">全部结清</el-button>
-            <el-button type="primary">部分还款</el-button>
+            <el-button
+              :disabled="item.yve == 0"
+              type="primary"
+              @click="allHuankuan(item)"
+            >
+              全部结清
+            </el-button>
+            <el-button
+              :disabled="item.yve == 0"
+              type="primary"
+              @click="huankuan(item)"
+            >
+              部分还款
+            </el-button>
           </div>
         </div>
       </el-card>
@@ -112,89 +132,86 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import {
+  getLoanStatus,
+  LoanStatusType,
+  advanceDataType,
+  repayment,
+} from "@/api/myLoan";
+import { ElMessage } from "element-plus";
+import { ref } from "vue";
 
 const dialogTableVisible = ref(false);
 const advanceVisible = ref(false);
 
-const contractData = reactive({
-  hetongbianhao: "61062101H20220000316",
-  daikuanjine: "1200",
-  fafangriqi: "3",
-  hetongyve: "",
-  daoqiriqi: "",
-  helonglilv: "",
-  tiexijiezhiri: "",
-  jigoumingcheng: "",
-  jigouzhanghao: "",
-  jigoumima: "",
-  jigoubianhao: "",
-  jigouzhanghaomima: "",
-  banlijigou: "",
-});
-
-const contractDataValue = computed(() => [
-  {
-    name: "合同编号",
-    value: contractData.hetongbianhao,
-  },
-  {
-    name: "贷款金额",
-    value: contractData.daikuanjine + "元",
-  },
-  {
-    name: "发放日期",
-    value: contractData.fafangriqi,
-  },
-  {
-    name: "合同余额",
-    value: contractData.hetongyve + "元",
-  },
-  {
-    name: "到期日期",
-    value: contractData.daoqiriqi,
-  },
-  {
-    name: "合同利率",
-    value: contractData.helonglilv + "%",
-  },
-  {
-    name: "贴息截至日期",
-    value: contractData.tiexijiezhiri,
-  },
-  {
-    name: "代理结算机构名称",
-    value: contractData.jigoumingcheng,
-  },
-  {
-    name: "代理结算机构终端登录账号",
-    value: contractData.jigouzhanghao,
-  },
-  {
-    name: "代理结算机构初始支付密码",
-    value: contractData.jigoumima,
-  },
-  {
-    name: "代理结算机构指定账户编号",
-    value: contractData.jigoubianhao,
-  },
-  {
-    name: "代理结算机构初始账号密码",
-    value: contractData.jigouzhanghaomima,
-  },
-  {
-    name: "贷款办理机构",
-    value: contractData.banlijigou,
-  },
-]);
-const showContract = () => {
+const contractData = ref<LoanStatusType[]>([]);
+const queryLoanStatus = async () => {
+  const { data } = await getLoanStatus();
+  contractData.value = data;
+};
+queryLoanStatus();
+const contractDataValue = ref();
+const showContract = (record: any) => {
+  contractDataValue.value = [
+    {
+      name: "合同编号",
+      value: record.hetongbianhao,
+    },
+    {
+      name: "贷款金额",
+      value: record.daikuanjine + "元",
+    },
+    {
+      name: "发放日期",
+      value: record.fafangriqi,
+    },
+    {
+      name: "剩余还款",
+      value: record.hetongyve + "元",
+    },
+    {
+      name: "到期日期",
+      value: record.daoqiriqi,
+    },
+  ];
   dialogTableVisible.value = true;
 };
 
-const advanceClick = () => {
-  console.log("1");
-
+const advanceData = ref<advanceDataType[]>([]);
+const advanceClick = (record: any) => {
+  advanceData.value = [
+    {
+      hetongbianhao: record.hetongbianhao,
+      academicYear: record.academicYear,
+      yve: record.hetongyve,
+      jinqi: record.hetongyve,
+      huankuan: 0,
+    },
+  ];
   advanceVisible.value = true;
+};
+
+const allHuankuan = async (record: advanceDataType) => {
+  const { data } = await repayment({
+    hetongbianhao: record.hetongbianhao,
+    huankuan: Number(record.yve),
+  });
+  ElMessage.success(data);
+  advanceVisible.value = false;
+  queryLoanStatus();
+};
+const huankuan = async (record: advanceDataType) => {
+  if (record.huankuan <= Number(record.yve)) {
+    const { data } = await repayment({
+      hetongbianhao: record.hetongbianhao,
+      huankuan: Number(record.huankuan),
+    });
+    ElMessage.success(data);
+    advanceVisible.value = false;
+    queryLoanStatus();
+  } else {
+    ElMessage.error("还款金额大于剩余金额，请重新输入");
+  }
 };
 </script>
 

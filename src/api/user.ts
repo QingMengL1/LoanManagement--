@@ -25,9 +25,7 @@ export function getUserBasic() {
 }
 
 export interface editbasicType {
-  basicForm: object;
-  contactForm: object;
-  schoolForm: object;
+  formData: object;
 }
 
 export function editUserBasic(data: editbasicType) {
