@@ -29,6 +29,14 @@
             <el-form-item label="申请学年">
               {{ formOneData.academicYear }}
             </el-form-item>
+            <el-form-item label="联系电话" prop="userphone">
+              <el-input
+                v-model="formOneData.userphone"
+                placeholder="请输入联系电话"
+                style="width: 300px"
+              >
+              </el-input>
+            </el-form-item>
             <el-form-item label="贷款金额" prop="amount">
               <el-input
                 v-model="formOneData.amount"
@@ -595,6 +603,7 @@ const formOneData = reactive({
   year: "",
   cause: "",
   causeValue: "",
+  userphone: "",
 });
 
 const formTwoData = reactive({
@@ -669,6 +678,21 @@ const rulesOne = reactive<FormRules>({
   ],
   year: [{ required: true, message: "请选择贷款年限", trigger: "change" }],
   cause: [{ required: true, message: "请选择申请原因", trigger: "change" }],
+  userphone: [
+    { required: true, message: "请输入手机号", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!phoneTest.test(value)) {
+            reject("请输入正确的手机号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
 });
 const rulesTwo = reactive<FormRules>({
   commonName: [

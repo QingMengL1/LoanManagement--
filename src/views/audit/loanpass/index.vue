@@ -33,14 +33,15 @@
       </el-form>
       <el-divider></el-divider>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="name" label="申请学年" />
-        <el-table-column fixed prop="date" label="姓名" />
-        <el-table-column prop="name" label="身份证" />
-        <el-table-column prop="state" label="借款金额" />
-        <el-table-column prop="state" label="借款年限" />
-        <el-table-column prop="city" label="联系电话" />
+        <el-table-column prop="number" label="申请学年" />
+        <el-table-column prop="academicYear" label="申请学年" />
+        <el-table-column prop="datusernamee" label="姓名" />
+        <el-table-column prop="idCard" label="身份证" />
+        <el-table-column prop="amount" label="借款金额" />
+        <el-table-column prop="year" label="借款年限" />
+        <el-table-column prop="userphone" label="联系电话" />
         <el-table-column prop="address" label="申请时间" />
-        <el-table-column prop="zip" label="申请状态" />
+        <el-table-column prop="cause" label="申请原因" />
         <el-table-column fixed="right" label="操作">
           <template #default>
             <el-button link type="primary" size="small">编辑</el-button>
@@ -54,6 +55,8 @@
 </template>
 
 <script setup lang="ts">
+import { getLoanData } from "@/api/audit";
+
 const tableData = [
   {
     date: "2016-05-03",
@@ -92,6 +95,12 @@ const tableData = [
     tag: "Office",
   },
 ];
+
+const queryLoanData = async () => {
+  const { data } = await getLoanData();
+  console.log(JSON.parse(data));
+};
+queryLoanData();
 </script>
 
 <style scoped lang="scss">
