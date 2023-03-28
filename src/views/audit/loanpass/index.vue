@@ -32,75 +32,304 @@
         </el-row>
       </el-form>
       <el-divider></el-divider>
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="number" label="申请学年" />
-        <el-table-column prop="academicYear" label="申请学年" />
-        <el-table-column prop="datusernamee" label="姓名" />
-        <el-table-column prop="idCard" label="身份证" />
-        <el-table-column prop="amount" label="借款金额" />
-        <el-table-column prop="year" label="借款年限" />
-        <el-table-column prop="userphone" label="联系电话" />
-        <el-table-column prop="address" label="申请时间" />
-        <el-table-column prop="cause" label="申请原因" />
-        <el-table-column fixed="right" label="操作">
-          <template #default>
-            <el-button link type="primary" size="small">编辑</el-button>
-            <el-button link type="primary" size="small">同意</el-button>
-            <el-button link type="primary" size="small">驳回</el-button>
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        :cell-style="{ textAlign: 'center' }"
+        :header-cell-style="{ 'text-align': 'center' }"
+        :stripe="true"
+        :border="true"
+        row-key="number"
+        @select-all="selectAll"
+        @selection-change="selectChange"
+      >
+        <el-table-column type="selection" min-width="50" />
+        <el-table-column prop="number" label="贷款编号" min-width="220" />
+        <el-table-column prop="academicYear" label="申请学年" min-width="220" />
+        <el-table-column prop="username" label="姓名" min-width="160" />
+        <el-table-column prop="userIdCard" label="身份证号" min-width="220" />
+        <el-table-column prop="amount" label="借款金额" min-width="140" />
+        <el-table-column prop="year" label="借款年限" min-width="120" />
+        <el-table-column prop="userphone" label="联系电话" min-width="180" />
+        <el-table-column prop="tijiaoTime" label="申请时间" min-width="240">
+          <template #default="row">
+            {{ hourFormat(row.row.tijiaoTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="cause" label="申请原因" min-width="160" />
+        <el-table-column fixed="right" label="操作" min-width="180">
+          <template #default="row">
+            <el-button
+              link
+              type="primary"
+              size="small"
+              @click="showMessage(row.row)"
+            >
+              查看详情</el-button
+            >
+            <el-button
+              link
+              type="primary"
+              size="small"
+              :disabled="buttonLoading"
+              @click="agreeApply(row.row)"
+              >同意</el-button
+            >
+            <el-button
+              link
+              type="primary"
+              size="small"
+              :disabled="buttonLoading"
+              @click="refuseApply(row.row)"
+              >驳回</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
+      <div style="margin-top: 16px; text-align: center">
+        <el-pagination
+          v-model:current-page="pageData.currentPage"
+          v-model:page-size="pageData.pageSize"
+          :page-sizes="[10, 20, 50, 100]"
+          :small="true"
+          layout="total, sizes, prev, pager, next"
+          :total="pageData.total"
+          style="float: right"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
     </el-card>
   </div>
+  <el-dialog v-model="dialogVisible" @close="recordData = []">
+    <el-descriptions title="贷款信息" :column="2">
+      <el-descriptions-item label="姓名">
+        {{ recordData.username }}
+      </el-descriptions-item>
+      <el-descriptions-item label="申请学年">
+        {{ recordData.academicYear }}
+      </el-descriptions-item>
+      <el-descriptions-item label="贷款金额">
+        {{ recordData.amount }} 元
+      </el-descriptions-item>
+      <el-descriptions-item label="贷款年限">
+        {{ recordData.year }} 年
+      </el-descriptions-item>
+      <el-descriptions-item label="申请原因">
+        <span v-if="recordData.cause === '其他'">
+          {{ recordData.causeValue }}
+        </span>
+        <span v-else>
+          {{ recordData.cause }}
+        </span>
+      </el-descriptions-item>
+    </el-descriptions>
+    <el-descriptions title="共同借款人信息" :column="2">
+      <el-descriptions-item label="姓名">
+        {{ recordData.commonName }}
+      </el-descriptions-item>
+      <el-descriptions-item label="身份证号">
+        {{ recordData.idCard }}
+      </el-descriptions-item>
+      <el-descriptions-item label="关系">
+        {{ recordData.relation }}
+      </el-descriptions-item>
+      <el-descriptions-item label="联系电话">
+        {{ recordData.phone }}
+      </el-descriptions-item>
+      <el-descriptions-item label="国籍">
+        {{ recordData.guoji }}
+      </el-descriptions-item>
+      <el-descriptions-item label="身份证类型">
+        {{ recordData.idCardType }}
+      </el-descriptions-item>
+      <el-descriptions-item label="户口性质">
+        {{ recordData.hukouxingzhi }}
+      </el-descriptions-item>
+      <el-descriptions-item label="民族">
+        {{ recordData.minzu }}
+      </el-descriptions-item>
+      <el-descriptions-item label="性别">
+        {{ recordData.xingbie }}
+      </el-descriptions-item>
+      <el-descriptions-item label="婚姻状况">
+        {{ recordData.hunyinzhuangkuang }}
+      </el-descriptions-item>
+      <el-descriptions-item label="职业" :span="2">
+        {{ recordData.zhiye }}
+      </el-descriptions-item>
+      <el-descriptions-item label="家庭电话">
+        {{ recordData.jiatingdianhua }}
+      </el-descriptions-item>
+      <el-descriptions-item label="邮编">
+        {{ recordData.youbian }}
+      </el-descriptions-item>
+      <el-descriptions-item label="身份证有效期起始日">
+        {{ timeFormat(recordData.idCardQishi) }}
+      </el-descriptions-item>
+      <el-descriptions-item label="身份证有效期结束日">
+        {{ recordData.idCardJieshu }}
+      </el-descriptions-item>
+      <el-descriptions-item label="健康状况" :span="2">
+        {{ recordData.jiankangzhuangkuang }}
+      </el-descriptions-item>
+      <el-descriptions-item label="户籍地址" :span="2">
+        {{ recordData.hujiSheng }}
+        {{ recordData.hujiShi }} {{ recordData.hujiXian }}
+        {{ recordData.hujiDetailed }}
+      </el-descriptions-item>
+      <el-descriptions-item label="家庭地址" :span="2">
+        {{ recordData.jiatingSheng }}
+        {{ recordData.jiatingShi }} {{ recordData.jiatingXian }}
+        {{ recordData.jiatingDetailed }}
+      </el-descriptions-item>
+    </el-descriptions>
+    <el-descriptions title="申请信息" :column="1">
+      <el-descriptions-item label="贷款编号">
+        {{ recordData.number }}
+      </el-descriptions-item>
+      <el-descriptions-item label="提交时间">
+        {{ hourFormat(recordData.tijiaoTime) }}
+      </el-descriptions-item>
+      <el-descriptions-item label="贷款状态">
+        {{ recordData.status }}
+      </el-descriptions-item>
+    </el-descriptions>
+  </el-dialog>
+  <el-dialog
+    v-model="refuseValueVisible"
+    title="填写驳回原因"
+    @closed="
+      {
+        refuseNumber = '';
+        refuseValue = '';
+        buttonLoading = false;
+      }
+    "
+  >
+    <el-input type="textarea" v-model="refuseValue"></el-input>
+    <div style="height: 50px">
+      <el-button
+        type="primary"
+        style="margin-top: 16px; float: right"
+        :disabled="buttonLoading"
+        @click="okRefuseApply"
+      >
+        确定
+      </el-button>
+    </div>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { getLoanData } from "@/api/audit";
+import {
+  getLoanData,
+  LoanDataParamsType,
+  sendAgreeApply,
+  sendRefuseApply,
+} from "@/api/audit";
+import { OptionType, queryMinzuOption } from "@/api/system";
+import { reactive, ref } from "vue";
+import { timeFormat, hourFormat } from "@/utils/timeformat";
+import { ElMessage } from "element-plus";
 
-const tableData = [
-  {
-    date: "2016-05-03",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    tag: "Home",
-  },
-  {
-    date: "2016-05-02",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    tag: "Office",
-  },
-  {
-    date: "2016-05-04",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    tag: "Home",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    state: "California",
-    city: "Los Angeles",
-    address: "No. 189, Grove St, Los Angeles",
-    zip: "CA 90036",
-    tag: "Office",
-  },
-];
+const dialogVisible = ref(false);
+const recordData = ref<any>();
+const tableData = ref([]);
 
-const queryLoanData = async () => {
-  const { data } = await getLoanData();
-  console.log(JSON.parse(data));
+const pageData = reactive({
+  pageSize: 10,
+  total: 0,
+  currentPage: 1,
+});
+
+const queryLoanData = async (params: LoanDataParamsType) => {
+  const { data } = await getLoanData(params);
+  tableData.value = data.data;
+  pageData.total = data.total;
 };
-queryLoanData();
+queryLoanData({
+  status: "申请中",
+  pageSize: pageData.pageSize,
+  currentPage: pageData.currentPage,
+});
+
+const minZuoptions = ref<OptionType[]>([]);
+const getMinzuOption = async () => {
+  const { data } = await queryMinzuOption();
+  minZuoptions.value = data;
+};
+getMinzuOption();
+
+const showMessage = (row: any) => {
+  recordData.value = row;
+  dialogVisible.value = true;
+};
+
+const selectAll = (row: any) => {
+  console.log(row);
+};
+const selectChange = (row: any) => {
+  console.log(row);
+};
+
+// 改变分页大小
+const handleSizeChange = (value: number) => {
+  pageData.pageSize = value;
+  queryLoanData({
+    status: "申请中",
+    pageSize: value,
+    currentPage: pageData.currentPage,
+  });
+};
+// 切换页数
+const handleCurrentChange = (value: number) => {
+  pageData.currentPage = value;
+  queryLoanData({
+    status: "申请中",
+    pageSize: pageData.pageSize,
+    currentPage: value,
+  });
+};
+const buttonLoading = ref(false);
+const refuseValue = ref("");
+const refuseValueVisible = ref(false);
+let refuseNumber = "";
+// 同意申请
+const agreeApply = async (row: any) => {
+  buttonLoading.value = true;
+  const { data } = await sendAgreeApply({
+    number: row.number,
+  });
+  ElMessage.success(data);
+  buttonLoading.value = false;
+  queryLoanData({
+    status: "申请中",
+    pageSize: pageData.pageSize,
+    currentPage: pageData.currentPage,
+  });
+};
+// 拒绝申请
+const okRefuseApply = async (row: any) => {
+  const { data } = await sendRefuseApply({
+    number: refuseNumber,
+    refuseValue: refuseValue.value,
+  });
+  ElMessage.success(data);
+  refuseValueVisible.value = false;
+  buttonLoading.value = false;
+  refuseValue.value = "";
+  queryLoanData({
+    status: "申请中",
+    pageSize: pageData.pageSize,
+    currentPage: pageData.currentPage,
+  });
+};
+
+const refuseApply = async (row: any) => {
+  refuseNumber = row.number;
+  refuseValueVisible.value = true;
+};
 </script>
 
 <style scoped lang="scss">

@@ -4,7 +4,7 @@
       <el-breadcrumb-item :to="{ path: '/home' }">
         <i-ep-menu />
       </el-breadcrumb-item>
-      <el-breadcrumb-item> 学生管理 </el-breadcrumb-item>
+      <el-breadcrumb-item> 数据管理 </el-breadcrumb-item>
       <el-breadcrumb-item> 贷款信息 </el-breadcrumb-item>
     </el-breadcrumb>
     <el-card class="box-card"> </el-card>

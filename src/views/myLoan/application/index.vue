@@ -37,6 +37,14 @@
               >
               </el-input>
             </el-form-item>
+            <el-form-item label="身份证号" prop="userIdCard">
+              <el-input
+                v-model="formOneData.userIdCard"
+                placeholder="请输入身份证号"
+                style="width: 300px"
+              >
+              </el-input>
+            </el-form-item>
             <el-form-item label="贷款金额" prop="amount">
               <el-input
                 v-model="formOneData.amount"
@@ -118,7 +126,7 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="身份证号码" prop="idCard">
+                <el-form-item label="身份证号" prop="idCard">
                   <el-input v-model="formTwoData.idCard" />
                 </el-form-item>
               </el-col>
@@ -604,6 +612,7 @@ const formOneData = reactive({
   cause: "",
   causeValue: "",
   userphone: "",
+  userIdCard: "",
 });
 
 const formTwoData = reactive({
@@ -685,6 +694,21 @@ const rulesOne = reactive<FormRules>({
         return new Promise((resolve, reject) => {
           if (!phoneTest.test(value)) {
             reject("请输入正确的手机号");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  userIdCard: [
+    { required: true, message: "请输入身份证号", trigger: "blur" },
+    {
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!idCardTest.test(value)) {
+            reject("请输入正确的身份证号");
           } else {
             resolve();
           }

@@ -84,7 +84,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="身份证号码" prop="idCard">
+            <el-form-item label="身份证号" prop="idCard">
               <el-input v-model="commonForm.idCard" />
             </el-form-item>
           </el-col>

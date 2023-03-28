@@ -197,7 +197,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/student",
     name: "Student",
     meta: {
-      title: "学生管理",
+      title: "数据管理",
       isShow: true,
       Icon: "School",
       roles: ["teacher", "admin"],

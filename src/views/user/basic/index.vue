@@ -24,7 +24,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="身份证号码">
+                <el-form-item label="身份证号">
                   <el-input v-model="basicFormData.idCard" disabled />
                 </el-form-item>
               </el-col>
