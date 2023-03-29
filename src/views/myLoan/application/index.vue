@@ -103,6 +103,20 @@
             :model="formTwoData"
             label-width="130px"
           >
+            <el-form-item>
+              <el-select
+                v-model="commonSelechName"
+                placeholder="请选择共同借款人"
+                @change="commonSelechChange"
+              >
+                <el-option
+                  v-for="item in commonList"
+                  :label="item.commonName"
+                  :value="item"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
             <el-row>
               <el-col :span="12">
                 <el-form-item label="姓名" prop="commonName">
@@ -360,7 +374,7 @@
                       v-model="formTwoData.hujiShi"
                       placeholder="请选择"
                       style="width: 100%"
-                      @change="hujiShiOptionChane"
+                      @change="hujiShiOptionChange"
                     >
                       <el-option
                         v-for="item in huJiShiOptions"
@@ -421,7 +435,7 @@
                       v-model="formTwoData.jiatingShi"
                       placeholder="请选择"
                       style="width: 100%"
-                      @change="jiaTingShiOptionChane"
+                      @change="jiaTingShiOptionChange"
                     >
                       <el-option
                         v-for="item in jiaTingShiOptions"
@@ -598,11 +612,20 @@ import { computed, reactive, ref } from "vue";
 import { useUserStore } from "@/store/user";
 import { idCardTest, nameTest, phoneTest, youbianTest } from "@/utils/tegTest";
 import { timeFormat } from "@/utils/timeformat";
+import { conmmonDataType, getCommonData } from "@/api/user";
 
 const stepsNumber = ref(1);
 const formOne = ref<FormInstance>();
 const formTwo = ref<FormInstance>();
 const { name } = useUserStore();
+
+const commonList = ref<conmmonDataType[]>([]);
+// 获取所有用户信息
+const queryCommonData = async () => {
+  const { data } = await getCommonData();
+  commonList.value = data;
+};
+queryCommonData();
 
 const formOneData = reactive({
   username: name,
@@ -973,12 +996,12 @@ const jiaTingShengOptionChange = async (shengId: number) => {
   formTwoData.jiatingXian = null;
 };
 // 县级菜单
-const hujiShiOptionChane = async (shiId: number) => {
+const hujiShiOptionChange = async (shiId: number) => {
   const { data } = await queryXianOption({ pcodeId: shiId });
   huJiXianOptions.value = data;
   formTwoData.hujiXian = null;
 };
-const jiaTingShiOptionChane = async (shiId: number) => {
+const jiaTingShiOptionChange = async (shiId: number) => {
   const { data } = await queryXianOption({ pcodeId: shiId });
   jiaTingXianOptions.value = data;
   formTwoData.jiatingXian = null;
@@ -1061,6 +1084,22 @@ const jiatingValue = computed(() => {
   zhuzhi += formTwoData.hujiDetailed;
   return zhuzhi;
 });
+
+const commonSelechName = ref("");
+const commonSelechChange = async (row: any) => {
+  await huJiShengOptionChange(row.hujiSheng);
+  await jiaTingShengOptionChange(row.jiatingSheng);
+  await hujiShiOptionChange(row.hujiShi);
+  await jiaTingShiOptionChange(row.jiatingShi);
+  commonSelechName.value = row.commonName;
+  for (const key in formTwoData) {
+    formTwoData[key] = row[key];
+  }
+  if (row.idCardJieshu === "永久") {
+    formTwoData.idCardJieshu = "永久";
+    foreverIdcard.value = true;
+  }
+};
 </script>
 
 <style scoped lang="scss">

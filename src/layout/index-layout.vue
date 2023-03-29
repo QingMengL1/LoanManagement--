@@ -151,6 +151,8 @@ const handleSetting = () => {
   padding: 0;
   width: 100%;
   height: 100vh;
+  min-width: 1600px;
+  min-height: 600px;
 }
 .common-layout-header {
   display: flex;

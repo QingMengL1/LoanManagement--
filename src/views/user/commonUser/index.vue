@@ -746,8 +746,7 @@ const getMinzuOption = async () => {
 getMinzuOption();
 
 const editUserMessage = async (record: any) => {
-  //
-  console.log(record);
+  await getShengOption();
   await huJiShengOptionChange(record.hujiSheng);
   await hujiShiOptionChange(record.hujiShi);
   await jiaTingShengOptionChange(record.jiatingSheng);
@@ -776,13 +775,14 @@ const submitCommonUser = async (formEl: any) => {
       if (data === "提交成功") {
         ElMessage.success(data);
         commonForm.value = getCommonForm();
-        userMessageVisible.value = false;
         queryCommonData();
       } else {
-        ElMessage.error(data);
+        ElMessage.success(data);
       }
     } catch (e: any) {
       ElMessage.error(e);
+    } finally {
+      userMessageVisible.value = false;
     }
   }
 };

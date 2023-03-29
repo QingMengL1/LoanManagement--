@@ -127,8 +127,7 @@
 <script setup lang="ts">
 import { getLoanStatus, LoanStatusType } from "@/api/myLoan";
 import router from "@/router";
-import { it } from "node:test";
-import { computed, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 
 const dialogTableVisible = ref(false);
 const advanceVisible = ref(false);

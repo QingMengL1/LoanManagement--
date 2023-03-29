@@ -24,7 +24,8 @@
     "scss": "^0.2.4",
     "vue": "^3.2.47",
     "vue-eslint-parser": "^9.1.0",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@iconify-json/ep": "^1.1.10",

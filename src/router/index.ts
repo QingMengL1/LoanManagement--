@@ -194,7 +194,7 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: "/student",
+    path: "/data",
     name: "Student",
     meta: {
       title: "数据管理",
@@ -205,7 +205,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/layout/index-layout.vue"),
     children: [
       {
-        path: "/student/studentlist",
+        path: "/data/studentlist",
         name: "StudentList",
         meta: {
           title: "学生信息",
@@ -214,10 +214,10 @@ const routes: Array<RouteRecordRaw> = [
           Icon: "User",
           roles: ["admin", "teacher"],
         },
-        component: () => import("@/views/student/studentlist/index.vue"),
+        component: () => import("@/views/student/studentList/index.vue"),
       },
       {
-        path: "/student/loan",
+        path: "/data/loan",
         name: "StudentLoad",
         meta: {
           title: "贷款信息",

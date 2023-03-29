@@ -1,16 +1,22 @@
 import axios from "axios";
 
 export interface LoanDataParamsType {
-  status: string;
+  status?: string;
   pageSize: number;
   currentPage: number;
+  search?: {
+    username?: string;
+    academicYear?: string;
+    status?: string;
+    cause?: string;
+  };
 }
 export function getLoanData(params: LoanDataParamsType) {
   return axios.get("/api/audit/loandata/", { params });
 }
 
 export interface editType {
-  number: string;
+  number: string | string[];
   refuseValue?: string;
 }
 

@@ -280,16 +280,21 @@
                   <el-input v-model="basicFormData.name"></el-input>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <el-row>
               <el-col :span="12">
                 <el-form-item label="院系名称" prop="xueyuan">
                   <el-input v-model="basicFormData.xueyuan"></el-input>
                 </el-form-item>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="12">
                 <el-form-item label="专业名称" prop="zhuanye">
                   <el-input v-model="basicFormData.zhuanye"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="班级" prop="classnumber">
+                  <el-input v-model="basicFormData.classnumber"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -429,7 +434,7 @@ const basicFormData = ref({
   zhuanyeType: "",
   xuezhi: "",
   biyeshijian: "",
-  classnumber: "",
+  classnumber: null,
 });
 
 const rulesForm = reactive<FormRules>({
