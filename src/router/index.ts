@@ -230,6 +230,43 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: "/system",
+    name: "System",
+    meta: {
+      title: "系统管理",
+      isShow: true,
+      Icon: "Setting",
+      roles: ["admin"],
+    },
+    component: () => import("@/layout/index-layout.vue"),
+    children: [
+      {
+        path: "/system/log",
+        name: "Log",
+        meta: {
+          title: "系统日志",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "MessageBox",
+          roles: ["admin"],
+        },
+        component: () => import("@/views/system/log/index.vue"),
+      },
+      {
+        path: "/system/user",
+        name: "SystemUser",
+        meta: {
+          title: "用户管理",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "User",
+          roles: ["admin"],
+        },
+        component: () => import("@/views/system/user/index.vue"),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

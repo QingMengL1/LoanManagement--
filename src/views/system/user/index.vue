@@ -4,8 +4,8 @@
       <el-breadcrumb-item :to="{ path: '/home' }">
         <i-ep-menu />
       </el-breadcrumb-item>
-      <el-breadcrumb-item> 数据管理 </el-breadcrumb-item>
-      <el-breadcrumb-item> 贷款信息 </el-breadcrumb-item>
+      <el-breadcrumb-item> 系统管理 </el-breadcrumb-item>
+      <el-breadcrumb-item> 用户管理 </el-breadcrumb-item>
     </el-breadcrumb>
     <el-card class="box-card">
       <el-form label-width="100px" style="margin-top: 16px">
@@ -156,115 +156,10 @@
       </div>
     </el-card>
   </div>
-  <el-dialog v-model="dialogVisible" @close="recordData = []">
-    <el-descriptions title="贷款信息" :column="2">
-      <el-descriptions-item label="姓名">
-        {{ recordData.username }}
-      </el-descriptions-item>
-      <el-descriptions-item label="申请学年">
-        {{ recordData.academicYear }}
-      </el-descriptions-item>
-      <el-descriptions-item label="贷款金额">
-        {{ recordData.amount }} 元
-      </el-descriptions-item>
-      <el-descriptions-item label="贷款年限">
-        {{ recordData.year }} 年
-      </el-descriptions-item>
-      <el-descriptions-item label="申请原因">
-        <span v-if="recordData.cause === '其他'">
-          {{ recordData.causeValue }}
-        </span>
-        <span v-else>
-          {{ recordData.cause }}
-        </span>
-      </el-descriptions-item>
-    </el-descriptions>
-    <el-descriptions title="共同借款人信息" :column="2">
-      <el-descriptions-item label="姓名">
-        {{ recordData.commonName }}
-      </el-descriptions-item>
-      <el-descriptions-item label="身份证号">
-        {{ recordData.idCard }}
-      </el-descriptions-item>
-      <el-descriptions-item label="关系">
-        {{ recordData.relation }}
-      </el-descriptions-item>
-      <el-descriptions-item label="联系电话">
-        {{ recordData.phone }}
-      </el-descriptions-item>
-      <el-descriptions-item label="国籍">
-        {{ recordData.guoji }}
-      </el-descriptions-item>
-      <el-descriptions-item label="身份证类型">
-        {{ recordData.idCardType }}
-      </el-descriptions-item>
-      <el-descriptions-item label="户口性质">
-        {{ recordData.hukouxingzhi }}
-      </el-descriptions-item>
-      <el-descriptions-item label="民族">
-        {{ recordData.minzu }}
-      </el-descriptions-item>
-      <el-descriptions-item label="性别">
-        {{ recordData.xingbie }}
-      </el-descriptions-item>
-      <el-descriptions-item label="婚姻状况">
-        {{ recordData.hunyinzhuangkuang }}
-      </el-descriptions-item>
-      <el-descriptions-item label="职业" :span="2">
-        {{ recordData.zhiye }}
-      </el-descriptions-item>
-      <el-descriptions-item label="家庭电话">
-        {{ recordData.jiatingdianhua }}
-      </el-descriptions-item>
-      <el-descriptions-item label="邮编">
-        {{ recordData.youbian }}
-      </el-descriptions-item>
-      <el-descriptions-item label="身份证有效期起始日">
-        {{ timeFormat(recordData.idCardQishi) }}
-      </el-descriptions-item>
-      <el-descriptions-item label="身份证有效期结束日">
-        {{ recordData.idCardJieshu }}
-      </el-descriptions-item>
-      <el-descriptions-item label="健康状况" :span="2">
-        {{ recordData.jiankangzhuangkuang }}
-      </el-descriptions-item>
-      <el-descriptions-item label="户籍地址" :span="2">
-        {{ recordData.hujiSheng }}
-        {{ recordData.hujiShi }} {{ recordData.hujiXian }}
-        {{ recordData.hujiDetailed }}
-      </el-descriptions-item>
-      <el-descriptions-item label="家庭地址" :span="2">
-        {{ recordData.jiatingSheng }}
-        {{ recordData.jiatingShi }} {{ recordData.jiatingXian }}
-        {{ recordData.jiatingDetailed }}
-      </el-descriptions-item>
-    </el-descriptions>
-    <el-descriptions title="申请信息" :column="1">
-      <el-descriptions-item label="贷款编号">
-        {{ recordData.number }}
-      </el-descriptions-item>
-      <el-descriptions-item label="提交时间">
-        {{ hourFormat(recordData.tijiaoTime) }}
-      </el-descriptions-item>
-      <el-descriptions-item label="贷款状态">
-        {{ recordData.status }}
-      </el-descriptions-item>
-      <el-descriptions-item label="备注">
-        {{ recordData.refuse }}
-      </el-descriptions-item>
-    </el-descriptions>
-  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { getLoanData, LoanDataParamsType } from "@/api/audit";
-import { OptionType, queryMinzuOption } from "@/api/system";
-import { reactive, ref } from "vue";
-import { timeFormat, hourFormat } from "@/utils/timeformat";
-
-const dialogVisible = ref(false);
-const recordData = ref<any>();
-const tableData = ref([]);
+import { reactive } from "vue";
 
 const pageData = reactive({
   pageSize: 10,
@@ -278,75 +173,6 @@ const searchValue = reactive({
   status: "",
   cause: "",
 });
-
-const queryLoanData = async (params: LoanDataParamsType) => {
-  const { data } = await getLoanData(params);
-  tableData.value = data.data;
-  pageData.total = data.total;
-};
-queryLoanData({
-  pageSize: pageData.pageSize,
-  currentPage: pageData.currentPage,
-});
-
-const minZuoptions = ref<OptionType[]>([]);
-const getMinzuOption = async () => {
-  const { data } = await queryMinzuOption();
-  minZuoptions.value = data;
-};
-getMinzuOption();
-
-const showMessage = (row: any) => {
-  recordData.value = row;
-  dialogVisible.value = true;
-};
-
-// 改变分页大小
-const handleSizeChange = (value: number) => {
-  pageData.pageSize = value;
-  pageData.currentPage = 1;
-  queryLoanData({
-    pageSize: value,
-    currentPage: pageData.currentPage,
-  });
-};
-// 切换页数
-const handleCurrentChange = (value: number) => {
-  pageData.currentPage = value;
-  queryLoanData({
-    pageSize: pageData.pageSize,
-    currentPage: value,
-  });
-};
-
-const statusFilter = (value: string, row: any, column: any) => {
-  return row.status === value;
-};
-const causeFilter = (value: string, row: any, column: any) => {
-  return row.cause === value;
-};
-const academicYearFilter = (value: string, row: any, column: any) => {
-  return row.academicYear === value;
-};
-
-const serachData = () => {
-  pageData.currentPage = 1;
-  queryLoanData({
-    pageSize: pageData.pageSize,
-    currentPage: pageData.currentPage,
-    search: searchValue,
-  });
-};
-
-const resetSearch = () => {
-  searchValue.academicYear = "";
-  searchValue.cause = "";
-  searchValue.status = "";
-  queryLoanData({
-    pageSize: pageData.pageSize,
-    currentPage: pageData.currentPage,
-  });
-};
 </script>
 
 <style scoped lang="scss">

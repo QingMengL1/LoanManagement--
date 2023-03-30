@@ -203,6 +203,7 @@ getTableData({
 // 改变分页大小
 const handleSizeChange = (value: number) => {
   pageData.pageSize = value;
+  pageData.currentPage = 1;
   getTableData({
     pageSize: value,
     currentPage: pageData.currentPage,

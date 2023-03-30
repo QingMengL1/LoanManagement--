@@ -332,6 +332,7 @@ const selectChange = (row: any) => {
 // 改变分页大小
 const handleSizeChange = (value: number) => {
   pageData.pageSize = value;
+  pageData.currentPage = 1;
   queryLoanData({
     status: "已通过",
     pageSize: value,
@@ -426,6 +427,7 @@ const academicYearFilter = (value: string, row: any, column: any) => {
 };
 
 const serachData = () => {
+  pageData.currentPage = 1;
   queryLoanData({
     pageSize: pageData.pageSize,
     currentPage: pageData.currentPage,

@@ -22,3 +22,13 @@ export function queryXianOption(params: optionType) {
 export function queryMinzuOption() {
   return axios.get<OptionType[]>("/api/system/minzu/");
 }
+
+export interface queryType {
+  pageSize: number;
+  currentPage: number;
+  search?: object;
+}
+
+export function getLogData(params: queryType) {
+  return axios.get("/api/system/log/", { params });
+}
