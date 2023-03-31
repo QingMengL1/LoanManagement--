@@ -1,41 +1,118 @@
-<mxfile host="app.diagrams.net" modified="2023-03-31T06:50:28.706Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" version="21.1.2" etag="fb2cj5Zm3H1k1iBwbFsr" type="github">
+<mxfile host="app.diagrams.net" modified="2023-03-31T07:32:21.003Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="SUXOrRSM3G2lOMpnPe2a" version="21.1.2" type="github">
   <diagram id="prtHgNgQTEPvFCAcTncT" name="Page-1">
-    <mxGraphModel dx="1223" dy="871" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1728" dy="930" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="dNxyNK7c78bLwvsdeMH5-11" value="Orgchart" style="swimlane;html=1;startSize=20;horizontal=1;containerType=tree;glass=0;" parent="1" vertex="1">
-          <mxGeometry x="40" y="80" width="710" height="290" as="geometry" />
+        <mxCell id="A9A_Plxemqqnq8B51JpT-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-1" target="A9A_Plxemqqnq8B51JpT-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="157" y="280" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="411" y="240" />
+              <mxPoint x="77" y="240" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;" name="Tessa Miller" position="CFO" location="Office 1" email="me@example.com" placeholders="1" link="https://www.draw.io" id="dNxyNK7c78bLwvsdeMH5-12">
-          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
-            <mxGeometry x="260" y="50" width="180" height="70" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <mxCell id="dNxyNK7c78bLwvsdeMH5-13" value="" style="endArrow=blockThin;endFill=1;fontSize=11;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;" parent="dNxyNK7c78bLwvsdeMH5-11" source="dNxyNK7c78bLwvsdeMH5-12" target="dNxyNK7c78bLwvsdeMH5-14" edge="1">
+        <mxCell id="A9A_Plxemqqnq8B51JpT-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-1" target="A9A_Plxemqqnq8B51JpT-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="197" y="310" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="411" y="240" />
+              <mxPoint x="197" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-1" target="A9A_Plxemqqnq8B51JpT-15">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;" name="Edward Morrison" position="Brand Manager" location="Office 2" email="me@example.com" placeholders="1" link="https://www.draw.io" id="dNxyNK7c78bLwvsdeMH5-14">
-          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-10-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
-            <mxGeometry x="40" y="180" width="180" height="80" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <mxCell id="dNxyNK7c78bLwvsdeMH5-15" value="" style="endArrow=blockThin;endFill=1;fontSize=11;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;" parent="dNxyNK7c78bLwvsdeMH5-11" source="dNxyNK7c78bLwvsdeMH5-12" target="dNxyNK7c78bLwvsdeMH5-16" edge="1">
+        <mxCell id="A9A_Plxemqqnq8B51JpT-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-1" target="A9A_Plxemqqnq8B51JpT-26">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;" name="Evan Valet" position="HR Director" location="Office 4" email="me@example.com" placeholders="1" link="https://www.draw.io" id="dNxyNK7c78bLwvsdeMH5-16">
-          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
-            <mxGeometry x="260" y="180" width="180" height="80" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <mxCell id="dNxyNK7c78bLwvsdeMH5-17" value="" style="endArrow=blockThin;endFill=1;fontSize=11;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;" parent="dNxyNK7c78bLwvsdeMH5-11" source="dNxyNK7c78bLwvsdeMH5-12" target="dNxyNK7c78bLwvsdeMH5-18" edge="1">
+        <mxCell id="A9A_Plxemqqnq8B51JpT-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-1" target="A9A_Plxemqqnq8B51JpT-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="740" y="280" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="440" y="240" />
+              <mxPoint x="740" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-1" value="学生功能" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="160" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-3" value="&lt;p style=&quot;direction: ltr; line-height: 120%;&quot;&gt;用&lt;/p&gt;&lt;p style=&quot;direction: ltr; line-height: 120%;&quot;&gt;户&lt;/p&gt;&lt;p style=&quot;direction: ltr; line-height: 120%;&quot;&gt;登&lt;/p&gt;&lt;p style=&quot;direction: ltr; line-height: 120%;&quot;&gt;录&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;horizontal=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="120" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-8" target="A9A_Plxemqqnq8B51JpT-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="223" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-8" target="A9A_Plxemqqnq8B51JpT-14">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="363" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-8" target="A9A_Plxemqqnq8B51JpT-12">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;" name="Alison Donovan" position="System Admin" location="Office 3" email="me@example.com" placeholders="1" link="https://www.draw.io" id="dNxyNK7c78bLwvsdeMH5-18">
-          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
-            <mxGeometry x="490" y="180" width="180" height="80" as="geometry" />
-          </mxCell>
-        </UserObject>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-8" value="首页" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="280" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-10" value="用&lt;br&gt;户&lt;br&gt;贷&lt;br&gt;款&lt;br&gt;状&lt;br&gt;况" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-12" value="最&lt;br&gt;近&lt;br&gt;通&lt;br&gt;告&lt;br&gt;展&lt;br&gt;示" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-14" value="快&lt;br&gt;捷&lt;br&gt;操&lt;br&gt;作" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-15" target="A9A_Plxemqqnq8B51JpT-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-15" target="A9A_Plxemqqnq8B51JpT-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-15" target="A9A_Plxemqqnq8B51JpT-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-15" value="首页" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="280" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-17" value="申&lt;br&gt;请&lt;br&gt;贷&lt;br&gt;款" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-18" value="贷&lt;br&gt;款&lt;br&gt;状&lt;br&gt;态" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="420" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-19" value="还&lt;br&gt;款&lt;br&gt;申&lt;br&gt;请" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="481" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-23" value="基&lt;br&gt;本&lt;br&gt;信&lt;br&gt;息&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-24" value="共&lt;br&gt;同&lt;br&gt;借&lt;br&gt;款&lt;br&gt;人&lt;br&gt;信&lt;br&gt;息" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-25" value="账&lt;br&gt;号&lt;br&gt;设&lt;br&gt;置" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-26" target="A9A_Plxemqqnq8B51JpT-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-26" target="A9A_Plxemqqnq8B51JpT-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="A9A_Plxemqqnq8B51JpT-26" target="A9A_Plxemqqnq8B51JpT-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-26" value="我的信息" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="280" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="A9A_Plxemqqnq8B51JpT-33" value="退&lt;br&gt;出&lt;br&gt;登&lt;br&gt;录" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="360" width="40" height="160" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
