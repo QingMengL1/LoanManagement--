@@ -470,6 +470,35 @@
               <el-input v-model="formTwoData.jiatingDetailed" type="textarea">
               </el-input>
             </el-form-item>
+            <el-form-item style="width: 100%">
+              <el-upload
+                ref="uploadRef"
+                v-model:file-list="fileList"
+                class="upload-demo"
+                action="none"
+                multiple
+                :on-remove="handleRemove"
+                :limit="1"
+                :on-exceed="handleExceed"
+                :auto-upload="false"
+                :http-request="httpRequest"
+              >
+                <template #trigger>
+                  <el-button type="primary" style="margin-right: 16px">
+                    选择申请表文件
+                  </el-button>
+                </template>
+
+                <template #tip>
+                  <div class="el-upload__tip">
+                    最多可上传1个文件，如果资料较多可以放入一个Word文档中
+                  </div>
+                </template>
+                <el-button class="ml-3" type="success" @click="uploadFile">
+                  上传文件
+                </el-button>
+              </el-upload>
+            </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="upForm()"> 上一步 </el-button>
               <el-button type="primary" @click="nextForm(formTwo)">
@@ -604,10 +633,17 @@ import {
   queryShiOption,
   queryXianOption,
   OptionType,
+  uploadAxios,
 } from "@/api/system";
 
 import { submitLoan } from "@/api/myLoan";
-import { FormInstance, FormRules } from "element-plus";
+import {
+  ElMessage,
+  FormInstance,
+  FormRules,
+  UploadProps,
+  UploadUserFile,
+} from "element-plus";
 import { computed, reactive, ref } from "vue";
 import { useUserStore } from "@/store/user";
 import { idCardTest, nameTest, phoneTest, youbianTest } from "@/utils/tegTest";
@@ -663,6 +699,7 @@ const formTwoData = reactive({
   jiatingShi: null,
   jiatingXian: null,
   jiatingDetailed: "",
+  fileId: 0,
 });
 
 const foreverIdcard = ref(false);
@@ -678,8 +715,10 @@ const foreverIdcardChange = (value: boolean) => {
 const nextForm = async (formEl: any) => {
   // stepsNumber.value = stepsNumber.value + 1;
   if (!formEl) return;
+  // console.log(fileList.value);
   await formEl.validate((valid: any, fields: any) => {
     if (valid && stepsNumber.value !== 4) {
+      console.log(fileList.value);
       stepsNumber.value = stepsNumber.value + 1;
     }
   });
@@ -984,25 +1023,25 @@ const getShengOption = async () => {
 getShengOption();
 // 市级菜单
 const huJiShengOptionChange = async (shengId: number) => {
-  const { data } = await queryShiOption({ pcodeId: shengId });
+  const { data } = await queryShiOption({ Id: shengId });
   huJiShiOptions.value = data;
   formTwoData.hujiShi = null;
   formTwoData.hujiXian = null;
 };
 const jiaTingShengOptionChange = async (shengId: number) => {
-  const { data } = await queryShiOption({ pcodeId: shengId });
+  const { data } = await queryShiOption({ Id: shengId });
   jiaTingShiOptions.value = data;
   formTwoData.jiatingShi = null;
   formTwoData.jiatingXian = null;
 };
 // 县级菜单
 const hujiShiOptionChange = async (shiId: number) => {
-  const { data } = await queryXianOption({ pcodeId: shiId });
+  const { data } = await queryXianOption({ Id: shiId });
   huJiXianOptions.value = data;
   formTwoData.hujiXian = null;
 };
 const jiaTingShiOptionChange = async (shiId: number) => {
-  const { data } = await queryXianOption({ pcodeId: shiId });
+  const { data } = await queryXianOption({ Id: shiId });
   jiaTingXianOptions.value = data;
   formTwoData.jiatingXian = null;
 };
@@ -1099,6 +1138,39 @@ const commonSelechChange = async (row: any) => {
     formTwoData.idCardJieshu = "永久";
     foreverIdcard.value = true;
   }
+};
+
+const uploadRef = ref();
+const fileList = ref<UploadUserFile[]>([]);
+
+const handleRemove: UploadProps["onRemove"] = (file, uploadFiles) => {
+  // console.log(file, uploadFiles);
+};
+
+const handleExceed: UploadProps["onExceed"] = (file, uploadFiles) => {
+  ElMessage.error("最多上传1个文件");
+};
+
+const httpRequest = async (file: any) => {
+  let formData = new FormData();
+  if (file.file.size < 5242880) {
+    formData.append("file", file.file);
+    formData.append("fileName", file.file.name);
+    const { data } = await uploadAxios(formData);
+    if (data.msg === "上传成功") {
+      ElMessage.success(data.msg);
+      fileList.value = [];
+      formTwoData.fileId = data.data;
+    } else {
+      ElMessage.error("上传失败请稍后重试");
+    }
+  } else {
+    ElMessage.error("上传文件最大为5M");
+  }
+};
+
+const uploadFile = () => {
+  uploadRef.value.submit();
 };
 </script>
 

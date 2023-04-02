@@ -111,14 +111,14 @@
           </div>
           <div>
             <el-button
-              :disabled="item.yve == 0"
+              :disabled="item.yve == 0 || buttonLoading"
               type="primary"
               @click="allHuankuan(item)"
             >
               全部结清
             </el-button>
             <el-button
-              :disabled="item.yve == 0"
+              :disabled="item.yve == 0 || buttonLoading"
               type="primary"
               @click="huankuan(item)"
             >
@@ -191,26 +191,42 @@ const advanceClick = (record: any) => {
   advanceVisible.value = true;
 };
 
+const buttonLoading = ref(false);
+
 const allHuankuan = async (record: advanceDataType) => {
-  const { data } = await repayment({
-    hetongbianhao: record.hetongbianhao,
-    huankuan: Number(record.yve),
-  });
-  ElMessage.success(data);
-  advanceVisible.value = false;
-  queryLoanStatus();
-};
-const huankuan = async (record: advanceDataType) => {
-  if (record.huankuan <= Number(record.yve)) {
+  buttonLoading.value = true;
+  try {
     const { data } = await repayment({
       hetongbianhao: record.hetongbianhao,
-      huankuan: Number(record.huankuan),
+      huankuan: Number(record.yve),
     });
     ElMessage.success(data);
     advanceVisible.value = false;
     queryLoanStatus();
-  } else {
-    ElMessage.error("还款金额大于剩余金额，请重新输入");
+  } catch (error) {
+    console.log(error);
+  } finally {
+    buttonLoading.value = false;
+  }
+};
+const huankuan = async (record: advanceDataType) => {
+  buttonLoading.value = true;
+  try {
+    if (record.huankuan <= Number(record.yve)) {
+      const { data } = await repayment({
+        hetongbianhao: record.hetongbianhao,
+        huankuan: Number(record.huankuan),
+      });
+      ElMessage.success(data);
+      advanceVisible.value = false;
+      queryLoanStatus();
+    } else {
+      ElMessage.error("还款金额大于剩余金额，请重新输入");
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    buttonLoading.value = false;
   }
 };
 </script>

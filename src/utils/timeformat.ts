@@ -35,5 +35,7 @@ export function hourFormat(value: string) {
   s = s < 10 ? "0" + s : s;
 
   // 将结果格式化为 YYYY-MM-DD
-  return year + "-" + month + "-" + day + " " + h + ":" + m + ":" + s;
+  return value
+    ? year + "-" + month + "-" + day + " " + h + ":" + m + ":" + s
+    : "";
 }

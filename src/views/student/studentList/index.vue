@@ -11,7 +11,7 @@
     <el-card class="box-card">
       <el-form label-width="100px" style="margin-top: 16px">
         <el-row>
-          <el-col :span="4">
+          <el-col :span="3">
             <el-form-item label="姓名">
               <el-input style="width: 100%" v-model="searchValue.name">
               </el-input>
@@ -25,23 +25,45 @@
           </el-col>
           <el-col :span="4">
             <el-form-item label="年级">
-              <el-input style="width: 100%" v-model="searchValue.ruxueyear">
-              </el-input>
+              <el-select style="width: 100%" v-model="searchValue.ruxueyear">
+                <el-option value="2018">2018</el-option>
+                <el-option value="2019">2019</el-option>
+                <el-option value="2020">2020</el-option>
+                <el-option value="2021">2021</el-option>
+                <el-option value="2022">2022</el-option>
+                <el-option value="2023">2023</el-option>
+              </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="专业">
-              <el-input style="width: 100%" v-model="searchValue.zhuanye">
-              </el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
+          <el-col :span="3">
             <el-form-item label="班级">
               <el-input style="width: 100%" v-model="searchValue.classnumber">
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="2" :offset="2" style="text-align: right">
+          <el-col :span="4">
+            <el-form-item label="专业">
+              <el-select style="width: 100%" v-model="searchValue.zhuanye">
+                <el-option
+                  v-for="item in zhuanYeOptions"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="学院">
+              <el-select style="width: 100%" v-model="searchValue.xueyuan">
+                <el-option
+                  v-for="item in xueYuanOptions"
+                  :label="item.name"
+                  :value="item.name"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="2" style="text-align: right">
             <el-button type="primary" @click="searchData">查找</el-button>
             <el-button @click="resetSearch">重置</el-button>
           </el-col>
@@ -136,10 +158,10 @@
       </el-descriptions-item>
     </el-descriptions>
     <el-descriptions title="就学信息" :column="2">
-      <el-descriptions-item label="高校名称">
+      <el-descriptions-item label="学校名称">
         {{ recordData.schoolname }}
       </el-descriptions-item>
-      <el-descriptions-item label="院系名称">
+      <el-descriptions-item label="学院">
         {{ recordData.xueyuan }}
       </el-descriptions-item>
       <el-descriptions-item label="专业名称">
@@ -174,6 +196,7 @@
 import { getStudentData, studentTypes } from "@/api/student";
 import { reactive, ref } from "vue";
 import { timeFormat } from "@/utils/timeformat";
+import { getXueYuanData, getZhuanYeData, OptionType } from "@/api/system";
 
 const pageData = reactive({
   pageSize: 10,
@@ -186,6 +209,7 @@ const searchValue = reactive({
   classnumber: null,
   zhuanye: "",
   ruxueyear: "",
+  xueyuan: "",
 });
 const tableData = ref([]);
 const dialogVisible = ref(false);
@@ -231,6 +255,7 @@ const resetSearch = () => {
   searchValue.ruxueyear = "";
   searchValue.studentId = "";
   searchValue.zhuanye = "";
+  searchValue.xueyuan = "";
   getTableData({
     pageSize: pageData.pageSize,
     currentPage: pageData.currentPage,
@@ -242,6 +267,21 @@ const watchStudent = (row: any) => {
   recordData.value = row;
   dialogVisible.value = true;
 };
+
+const xueYuanOptions = ref<OptionType[]>([]);
+const zhuanYeOptions = ref<OptionType[]>([]);
+const xueYuanData = async () => {
+  const { data } = await getXueYuanData();
+  xueYuanOptions.value = data;
+};
+xueYuanData();
+
+const zhuanyeData = async () => {
+  const { data } = await getZhuanYeData();
+  zhuanYeOptions.value = data;
+};
+
+zhuanyeData();
 </script>
 
 <style scoped lang="scss">

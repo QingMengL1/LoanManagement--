@@ -19,12 +19,12 @@
           >
             <el-row>
               <el-col :span="12">
-                <el-form-item label="姓名">
+                <el-form-item label="姓名" prop="name">
                   <el-input v-model="basicFormData.name" disabled />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="身份证号">
+                <el-form-item label="身份证号" prop="idCard">
                   <el-input v-model="basicFormData.idCard" disabled />
                 </el-form-item>
               </el-col>
@@ -276,20 +276,36 @@
           >
             <el-row>
               <el-col :span="12">
-                <el-form-item label="高校名称" prop="name">
-                  <el-input v-model="basicFormData.name"></el-input>
+                <el-form-item label="学校名称" prop="username">
+                  <el-input v-model="basicFormData.schoolname" disabled>
+                  </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="院系名称" prop="xueyuan">
-                  <el-input v-model="basicFormData.xueyuan"></el-input>
+                <el-form-item label="学院" prop="xueyuan">
+                  <el-select
+                    v-model="basicFormData.xueyuan"
+                    @change="zhuanyeData"
+                  >
+                    <el-option
+                      v-for="item in xueYuanOptions"
+                      :label="item.name"
+                      :value="item.name"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
                 <el-form-item label="专业名称" prop="zhuanye">
-                  <el-input v-model="basicFormData.zhuanye"></el-input>
+                  <el-select v-model="basicFormData.zhuanye">
+                    <el-option
+                      v-for="item in zhuanYeOptions"
+                      :label="item.name"
+                      :value="item.name"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -392,15 +408,30 @@
 </template>
 
 <script setup lang="ts">
-import { OptionType, queryMinzuOption } from "@/api/system";
+import {
+  getXueYuanData,
+  getZhuanYeData,
+  OptionType,
+  queryMinzuOption,
+} from "@/api/system";
 import { getUserBasic, editUserBasic } from "@/api/user";
-import { emailTest, idCardTest, phoneTest } from "@/utils/tegTest";
+import { emailTest, idCardTest, nameTest, phoneTest } from "@/utils/tegTest";
 import { ElMessage, FormRules } from "element-plus";
 import { reactive, ref } from "vue";
 
 const basicForm = ref<any>();
 const contactForm = ref<any>();
 const schoolForm = ref<any>();
+
+const getbasicData = async () => {
+  const { data } = await getUserBasic();
+  if (data) {
+    await zhuanyeData(data.xueyuan);
+    basicFormData.value = data;
+  }
+};
+
+getbasicData();
 
 const basicFormData = ref({
   studentId: "",
@@ -438,7 +469,22 @@ const basicFormData = ref({
 });
 
 const rulesForm = reactive<FormRules>({
-  name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+  name: [
+    { required: true, message: "请输入姓名", trigger: "blur" },
+    {
+      type: "string",
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!nameTest.test(value)) {
+            reject("请输入正确的姓名");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
   idCard: [
     { required: true, message: "请输入身份证号", trigger: "blur" },
     {
@@ -530,9 +576,9 @@ const rulesForm = reactive<FormRules>({
     { required: true, message: "请输入通信地址", trigger: "blur" },
   ],
 
-  schoolname: [{ required: true, message: "请输入高校名称", trigger: "blur" }],
-  xueyuan: [{ required: true, message: "请输入学院名称", trigger: "blur" }],
-  zhuanye: [{ required: true, message: "请输入专业名称", trigger: "blur" }],
+  schoolname: [{ required: true, message: "请输入学校名称", trigger: "blur" }],
+  xueyuan: [{ required: true, message: "请输入学院名称", trigger: "change" }],
+  zhuanye: [{ required: true, message: "请输入专业名称", trigger: "change" }],
   xueli: [{ required: true, message: "请选择学历", trigger: "change" }],
   ruxueyear: [{ required: true, message: "请选择入学年份", trigger: "change" }],
   studentId: [{ required: true, message: "请输入学号", trigger: "blur" }],
@@ -545,12 +591,6 @@ const rulesForm = reactive<FormRules>({
   ],
   classnumber: [{ required: true, message: "请输入班级", trigger: "blur" }],
 });
-
-const getbasicData = async () => {
-  const { data } = await getUserBasic();
-  basicFormData.value = data;
-};
-getbasicData();
 
 const editBasicData = async () => {
   const { data } = await editUserBasic({
@@ -594,6 +634,20 @@ const submitBasicForm = async () => {
   if (flog) {
     await editBasicData();
   }
+};
+
+const xueYuanOptions = ref<OptionType[]>([]);
+const zhuanYeOptions = ref<OptionType[]>([]);
+const xueYuanData = async () => {
+  const { data } = await getXueYuanData();
+  xueYuanOptions.value = data;
+};
+xueYuanData();
+
+const zhuanyeData = async (pamams: number) => {
+  const { data } = await getZhuanYeData({ Id: pamams });
+  zhuanYeOptions.value = data;
+  basicFormData.value.zhuanye = "";
 };
 </script>
 

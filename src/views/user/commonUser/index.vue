@@ -715,25 +715,25 @@ const getShengOption = async () => {
 getShengOption();
 // 市级菜单
 const huJiShengOptionChange = async (shengId: number) => {
-  const { data } = await queryShiOption({ pcodeId: shengId });
+  const { data } = await queryShiOption({ Id: shengId });
   huJiShiOptions.value = data;
   commonForm.value.hujiShi = null;
   commonForm.value.hujiXian = null;
 };
 const jiaTingShengOptionChange = async (shengId: number) => {
-  const { data } = await queryShiOption({ pcodeId: shengId });
+  const { data } = await queryShiOption({ Id: shengId });
   jiaTingShiOptions.value = data;
   commonForm.value.jiatingShi = null;
   commonForm.value.jiatingXian = null;
 };
 // 县级菜单
 const hujiShiOptionChange = async (shiId: number) => {
-  const { data } = await queryXianOption({ pcodeId: shiId });
+  const { data } = await queryXianOption({ Id: shiId });
   huJiXianOptions.value = data;
   commonForm.value.hujiXian = null;
 };
 const jiaTingShiOptionChange = async (shiId: number) => {
-  const { data } = await queryXianOption({ pcodeId: shiId });
+  const { data } = await queryXianOption({ Id: shiId });
   jiaTingXianOptions.value = data;
   commonForm.value.jiatingXian = null;
 };

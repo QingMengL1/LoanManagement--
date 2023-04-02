@@ -52,7 +52,30 @@
                     font-size: 24px;
                   "
                 >
-                  <span>{{ item.status }}</span>
+                  <el-tag v-if="item.status === '申请中'" size="large">
+                    {{ item.status }}
+                  </el-tag>
+                  <el-tag
+                    v-if="item.status === '已通过'"
+                    type="success"
+                    size="large"
+                  >
+                    {{ item.status }}
+                  </el-tag>
+                  <el-tag
+                    v-if="item.status === '已放款'"
+                    type="warning"
+                    size="large"
+                  >
+                    {{ item.status }}
+                  </el-tag>
+                  <el-tag
+                    v-if="item.status === '已结束'"
+                    type="danger"
+                    size="large"
+                  >
+                    {{ item.status }}
+                  </el-tag>
                 </div>
               </el-col>
             </el-row>
@@ -94,7 +117,7 @@
         <el-col :span="12">
           <el-timeline>
             <el-timeline-item
-              :timestamp="timeLineData.shenqingtime"
+              :timestamp="hourFormat(timeLineData.shenqingtime)"
               :hollow="true"
               :type="timeLineData.shenqingtime ? 'primary' : ''"
               size="large"
@@ -102,7 +125,7 @@
               申请时间
             </el-timeline-item>
             <el-timeline-item
-              :timestamp="timeLineData.shenpitime"
+              :timestamp="hourFormat(timeLineData.shenpitime)"
               :hollow="true"
               :type="timeLineData.shenpitime ? 'primary' : ''"
               size="large"
@@ -110,7 +133,7 @@
               审批时间
             </el-timeline-item>
             <el-timeline-item
-              :timestamp="timeLineData.fafangriqi"
+              :timestamp="hourFormat(timeLineData.fafangriqi)"
               :hollow="true"
               :type="timeLineData.fafangriqi ? 'primary' : ''"
               size="large"
@@ -128,6 +151,7 @@
 import { getLoanStatus, LoanStatusType } from "@/api/myLoan";
 import router from "@/router";
 import { reactive, ref } from "vue";
+import { hourFormat } from "@/utils/timeformat";
 
 const dialogTableVisible = ref(false);
 const advanceVisible = ref(false);
