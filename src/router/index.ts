@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: "/login",
     meta: {
       isShow: false,
-      roles: ["*", "admin"],
+      roles: ["*"],
     },
   },
   {
@@ -17,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "Login",
     meta: {
       isShow: false,
-      roles: ["*", "admin"],
+      roles: ["*"],
     },
     component: () => import("@/views/login/index.vue"),
   },
@@ -28,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
       title: "首页",
       isShow: false,
       Icon: "House",
-      roles: ["*", "admin"],
+      roles: ["student", "admin"],
     },
     component: () => import("@/layout/index-layout.vue"),
     children: [
@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
           isShow: true,
           requiresAuth: true,
           Icon: "House",
-          roles: ["student", "teacher", "teacher", "*", "admin"],
+          roles: ["student", "admin"],
         },
         component: () => import("@/views/home/index.vue"),
       },
@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
       title: "我的贷款",
       isShow: true,
       Icon: "MessageBox",
-      roles: ["student", "*", "admin"],
+      roles: ["student", "admin"],
     },
     component: () => import("@/layout/index-layout.vue"),
     children: [
@@ -102,7 +102,7 @@ const routes: Array<RouteRecordRaw> = [
       title: "我的信息",
       isShow: true,
       Icon: "User",
-      roles: ["*", "admin"],
+      roles: ["*"],
     },
     component: () => import("@/layout/index-layout.vue"),
     children: [
@@ -138,7 +138,7 @@ const routes: Array<RouteRecordRaw> = [
           isShow: true,
           requiresAuth: true,
           Icon: "Setting",
-          roles: ["*", "admin"],
+          roles: ["*"],
         },
         component: () => import("@/views/user/setting/index.vue"),
       },
