@@ -13,5 +13,9 @@ export interface studentTypes {
 }
 
 export function getStudentData(params: studentTypes) {
-  return axios.get("/api/student/studentlist/", { params });
+  return axios.get("/api/datalist/studentlist/", { params });
+}
+
+export function editPassword(data: string) {
+  return axios.post("/api/datalist/editpassword/", data);
 }

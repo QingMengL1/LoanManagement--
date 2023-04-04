@@ -72,7 +72,9 @@ const onSubmit = async () => {
   try {
     await userStore.login(userInfo);
     await userStore.info();
-    router.push({ name: "HomeIndex" });
+    if (userStore.role === "teacher") router.push({ name: "LoanPass" });
+    if (userStore.role === "student") router.push({ name: "HomeIndex" });
+    if (userStore.role === "admin") router.push({ name: "LoanPass" });
     const { rememberPassword } = loginConfig.value;
     const { username, password } = userInfo;
     loginConfig.value.username = rememberPassword ? username : "";

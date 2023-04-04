@@ -23,7 +23,7 @@
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="3">
             <el-form-item label="年级">
               <el-select style="width: 100%" v-model="searchValue.ruxueyear">
                 <el-option value="2018">2018</el-option>
@@ -63,7 +63,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="2" style="text-align: right">
+          <el-col :span="3" style="text-align: right">
             <el-button type="primary" @click="searchData">查找</el-button>
             <el-button @click="resetSearch">重置</el-button>
           </el-col>
@@ -88,7 +88,7 @@
         <el-table-column prop="wechat" label="微信" min-width="120" />
         <el-table-column prop="minzu" label="民族" min-width="120" />
         <el-table-column prop="xingbie" label="性别" min-width="80" />
-        <el-table-column label="操作" fixed="right" width="120">
+        <el-table-column label="操作" fixed="right" width="180">
           <template #default="row">
             <el-button
               link
@@ -97,7 +97,13 @@
               @click="watchStudent(row.row)"
               >查看详情</el-button
             >
-            <!-- <el-button link type="primary" size="small">操作</el-button> -->
+            <el-button
+              link
+              type="primary"
+              size="small"
+              @click="resetPassword(row.row.studentId)"
+              >重置密码</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -193,10 +199,11 @@
 </template>
 
 <script setup lang="ts">
-import { getStudentData, studentTypes } from "@/api/student";
+import { getStudentData, studentTypes, editPassword } from "@/api/dataList";
 import { reactive, ref } from "vue";
 import { timeFormat } from "@/utils/timeformat";
 import { getXueYuanData, getZhuanYeData, OptionType } from "@/api/system";
+import { ElMessage } from "element-plus";
 
 const pageData = reactive({
   pageSize: 10,
@@ -282,6 +289,12 @@ const zhuanyeData = async () => {
 };
 
 zhuanyeData();
+
+// 重置密码
+const resetPassword = async (studentId: string) => {
+  const { data } = await editPassword(studentId);
+  ElMessage.success(data);
+};
 </script>
 
 <style scoped lang="scss">

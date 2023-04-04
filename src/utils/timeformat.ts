@@ -12,7 +12,7 @@ export function timeFormat(value: string) {
   day = day < 10 ? "0" + day : day;
 
   // 将结果格式化为 YYYY-MM-DD
-  return year + "-" + month + "-" + day;
+  return value ? year + "-" + month + "-" + day : "";
 }
 
 export function hourFormat(value: string) {
