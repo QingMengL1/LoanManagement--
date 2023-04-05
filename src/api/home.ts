@@ -17,10 +17,15 @@ export interface MessageListData {
   time: string;
 }
 
-export interface MessageListResponse {
-  data: MessageListData[];
+export interface fileListType {
+  id: number;
+  name: string;
+}
+export interface MessageListType {
+  messageData: MessageListData[];
+  fileData: fileListType[];
 }
 
 export function getMessageListData() {
-  return axios.get<MessageListData[]>("/api/home/getmessagedata/");
+  return axios.get<MessageListType>("/api/home/getmessagedata/");
 }

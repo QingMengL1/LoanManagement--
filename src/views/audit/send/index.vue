@@ -34,7 +34,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="2" style="text-align: right">
-            <el-button type="primary" @click="serachData">查找</el-button>
+            <el-button type="primary" @click="searchData">查找</el-button>
             <el-button @click="resetSearch">重置</el-button>
           </el-col>
         </el-row>
@@ -61,7 +61,7 @@
         @select-all="selectAll"
         @selection-change="selectChange"
       >
-        <el-table-column type="selection" min-width="50" />
+        <el-table-column type="selection" width="50" />
         <el-table-column prop="number" label="贷款编号" min-width="220" />
         <el-table-column
           prop="academicYear"
@@ -332,7 +332,7 @@ const academicYearFilter = (value: string, row: any, column: any) => {
   return row.academicYear === value;
 };
 
-const serachData = () => {
+const searchData = () => {
   pageData.currentPage = 1;
   queryLoanData({
     pageSize: pageData.pageSize,

@@ -8,10 +8,11 @@
       <el-breadcrumb-item> 还款申请 </el-breadcrumb-item>
     </el-breadcrumb>
     <el-card class="box-card">
+      <el-empty v-if="!contractData.length" :image-size="200" />
       <el-row :gutter="12">
         <el-col
-          :span="6"
           v-for="item in contractData"
+          :span="6"
           style="margin-bottom: 12px"
         >
           <el-card
@@ -42,21 +43,52 @@
                 </div>
               </el-col>
               <el-col :span="12">
-                <span>剩余还款</span>
-                <div
-                  style="
-                    color: rgb(252, 78, 73);
-                    margin-top: 10px;
-                    font-weight: 1000;
-                    font-size: 24px;
-                  "
-                >
-                  <span>{{ item.hetongyve }}</span> <span>元</span>
+                <div v-if="item.status !== '申请中'">
+                  <span>剩余还款</span>
+                  <div
+                    style="
+                      color: rgb(252, 78, 73);
+                      margin-top: 10px;
+                      font-weight: 1000;
+                      font-size: 24px;
+                    "
+                  >
+                    <el-tag
+                      v-if="item.hetongyve === 0"
+                      size="large"
+                      type="success"
+                    >
+                      已还清
+                    </el-tag>
+                    <span v-else>
+                      <span>{{ item.hetongyve }}</span>
+                      <span>元</span>
+                    </span>
+                  </div>
+                </div>
+                <div v-else>
+                  <span>合同状态</span>
+                  <div
+                    style="
+                      color: rgb(64, 128, 255);
+                      margin-top: 10px;
+                      font-weight: 1000;
+                      font-size: 24px;
+                    "
+                  >
+                    <el-tag v-if="item.status === '申请中'" size="large">
+                      {{ item.status }}
+                    </el-tag>
+                  </div>
                 </div>
               </el-col>
             </el-row>
             <div style="position: absolute; bottom: 12px">
-              <el-button type="primary" @click.stop="advanceClick(item)">
+              <el-button
+                :disabled="item.status === '申请中' || item.hetongyve === 0"
+                type="primary"
+                @click.stop="advanceClick(item)"
+              >
                 提前还款申请
               </el-button>
             </div>

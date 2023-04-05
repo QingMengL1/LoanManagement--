@@ -79,3 +79,7 @@ export interface conmmonDataType {
 export function getCommonData() {
   return axios.get("/api/user/commondata/");
 }
+
+export function teacherBasicData(params: object) {
+  return axios.get("/api/user/teacherdata/", { params });
+}

@@ -163,7 +163,28 @@
               进度查询
             </el-button>
           </div>
-          <div
+          <el-card style="height: 235px">
+            <template #header>
+              <div>文件下载</div>
+            </template>
+            <el-row>
+              <el-col v-for="item in fileDataList" :span="12">
+                <el-button
+                  link
+                  type="primary"
+                  @click="
+                    download({
+                      Id: item.id,
+                      fileName: item.name,
+                    })
+                  "
+                >
+                  {{ item.name }}
+                </el-button>
+              </el-col>
+            </el-row>
+          </el-card>
+          <!-- <div
             style="
               height: 227px;
               display: flex;
@@ -209,7 +230,7 @@
                 </el-button>
               </el-col>
             </el-row>
-          </div>
+          </div> -->
         </el-col>
       </el-row>
     </el-card>
@@ -365,10 +386,12 @@
 
 <script setup lang="ts">
 import {
+  fileListType,
   getMessageListData,
   getTotalListData,
   MessageListData,
 } from "@/api/home";
+import { downloadType, downloadAxios } from "@/api/system";
 import router from "@/router";
 import { reactive, ref } from "vue";
 
@@ -395,9 +418,12 @@ const messageList = ref<MessageListData[]>([
   },
 ]);
 
+const fileDataList = ref<fileListType[]>([]);
+
 const getMessage = async () => {
   const { data } = await getMessageListData();
-  messageList.value = data;
+  messageList.value = data.messageData;
+  fileDataList.value = data.fileData;
 };
 getMessage();
 
@@ -413,6 +439,10 @@ const firstApplication = () => {
 
 const questionShow = () => {
   questionDialogVisible.value = true;
+};
+
+const download = async (params: downloadType) => {
+  await downloadAxios(params);
 };
 </script>
 

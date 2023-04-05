@@ -98,9 +98,10 @@
       <el-descriptions-item label="申请材料">
         <el-button
           link
+          :disabled="recordData.fileName === '无'"
           type="primary"
           @click="
-            download({ Id: recordData.filePath, fileName: recordData.fileName })
+            download({ Id: recordData.fileId, fileName: recordData.fileName })
           "
         >
           {{ recordData.fileName }}
@@ -116,12 +117,11 @@
 <script setup lang="ts">
 import { timeFormat, hourFormat } from "@/utils/timeformat";
 import { downloadAxios, downloadType } from "@/api/system";
-import axios from "axios";
 
 const props = defineProps(["recordData"]);
 const { recordData } = props;
 
-const download = async (params: optionIdType) => {
+const download = async (params: downloadType) => {
   await downloadAxios(params);
 };
 </script>

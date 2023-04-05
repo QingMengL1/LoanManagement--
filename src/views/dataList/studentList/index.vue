@@ -70,13 +70,27 @@
         </el-row>
       </el-form>
       <el-divider> </el-divider>
+      <div
+        style="width: 100%; margin-bottom: 16px; text-align: right"
+        @click="allDelete"
+      >
+        <span>
+          <el-button :disabled="!allAgreeApplyList.length" type="primary"
+            >批量删除</el-button
+          >
+        </span>
+      </div>
       <el-table
         :data="tableData"
         style="width: 100%"
         :cell-style="{ textAlign: 'center' }"
         :header-cell-style="{ 'text-align': 'center' }"
         :border="true"
+        row-key="studentId"
+        @select-all="selectAll"
+        @selection-change="selectChange"
       >
+        <el-table-column type="selection" width="50" />
         <el-table-column prop="studentId" label="学号" min-width="120" />
         <el-table-column prop="name" label="姓名" min-width="80" />
         <el-table-column prop="ruxueyear" label="年级" min-width="80" />
@@ -86,9 +100,15 @@
         <el-table-column prop="xueli" label="学历" min-width="80" />
         <el-table-column prop="phone" label="联系电话" min-width="120" />
         <el-table-column prop="wechat" label="微信" min-width="120" />
-        <el-table-column prop="minzu" label="民族" min-width="120" />
+        <el-table-column prop="minzu" label="民族" min-width="120">
+          <template #default="row">
+            <div>
+              {{ minzuValue(row.row.minzu) }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column prop="xingbie" label="性别" min-width="80" />
-        <el-table-column label="操作" fixed="right" width="180">
+        <el-table-column label="操作" fixed="right" width="220">
           <template #default="row">
             <el-button
               link
@@ -103,6 +123,13 @@
               size="small"
               @click="resetPassword(row.row.studentId)"
               >重置密码</el-button
+            >
+            <el-button
+              link
+              type="primary"
+              size="small"
+              @click="deleatStudent([row.row.studentId])"
+              >删除</el-button
             >
           </template>
         </el-table-column>
@@ -122,8 +149,9 @@
       </div>
     </el-card>
   </div>
-  <el-dialog v-model="dialogVisible">
-    <el-descriptions title="基本信息" :column="2">
+  <el-dialog v-model="dialogVisible" :destroy-on-close="true">
+    <studentBasicEdit :basic-form-data="recordData"></studentBasicEdit>
+    <!-- <el-descriptions title="基本信息" :column="2">
       <el-descriptions-item label="姓名">
         {{ recordData.name }}
       </el-descriptions-item>
@@ -194,16 +222,26 @@
       <el-descriptions-item label="毕业时间">
         {{ timeFormat(recordData.biyeshijian) }}
       </el-descriptions-item>
-    </el-descriptions>
+    </el-descriptions> -->
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { getStudentData, studentTypes, editPassword } from "@/api/dataList";
+import {
+  getStudentData,
+  studentTypes,
+  editPassword,
+  deleteData,
+} from "@/api/dataList";
 import { reactive, ref } from "vue";
-import { timeFormat } from "@/utils/timeformat";
-import { getXueYuanData, getZhuanYeData, OptionType } from "@/api/system";
+import {
+  getXueYuanData,
+  getZhuanYeData,
+  OptionType,
+  queryMinzuOption,
+} from "@/api/system";
 import { ElMessage } from "element-plus";
+import studentBasicEdit from "@/components/studentBasicEdit.vue";
 
 const pageData = reactive({
   pageSize: 10,
@@ -269,6 +307,21 @@ const resetSearch = () => {
   });
 };
 
+// 多选操作
+const allAgreeApplyList = ref<string[]>([]);
+const selectAll = (row: any) => {
+  allAgreeApplyList.value = [];
+  for (const key in row) {
+    allAgreeApplyList.value.push(row[key].studentId);
+  }
+};
+const selectChange = (row: any) => {
+  allAgreeApplyList.value = [];
+  for (const key in row) {
+    allAgreeApplyList.value.push(row[key].studentId);
+  }
+};
+
 const recordData = ref<any>({});
 const watchStudent = (row: any) => {
   recordData.value = row;
@@ -294,6 +347,37 @@ zhuanyeData();
 const resetPassword = async (studentId: string) => {
   const { data } = await editPassword(studentId);
   ElMessage.success(data);
+};
+
+const minZuoptions = ref<OptionType[]>([]);
+const getMinzuOption = async () => {
+  const { data } = await queryMinzuOption();
+  minZuoptions.value = data;
+};
+getMinzuOption();
+const minzuValue = (id: number) => {
+  let name = "";
+  minZuoptions.value.forEach((element) => {
+    if (element.code === id) {
+      name = element.name;
+    }
+  });
+  return name;
+};
+
+// 删除学生
+const deleatStudent = async (id: string[]) => {
+  const { data } = await deleteData({ ids: id, type: "student" });
+  ElMessage.success(data);
+  getTableData({
+    pageSize: pageData.pageSize,
+    currentPage: pageData.currentPage,
+    search: searchValue,
+  });
+};
+
+const allDelete = () => {
+  deleatStudent(allAgreeApplyList.value);
 };
 </script>
 

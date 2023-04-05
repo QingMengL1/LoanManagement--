@@ -1153,7 +1153,7 @@ const handleExceed: UploadProps["onExceed"] = (file, uploadFiles) => {
 
 const httpRequest = async (file: any) => {
   let formData = new FormData();
-  if (file.file.size < 5242880) {
+  if (file.file.size < 5242880 * 2) {
     formData.append("file", file.file);
     formData.append("fileName", file.file.name);
     const { data } = await uploadAxios(formData);
@@ -1165,7 +1165,7 @@ const httpRequest = async (file: any) => {
       ElMessage.error("上传失败请稍后重试");
     }
   } else {
-    ElMessage.error("上传文件最大为5M");
+    ElMessage.error("上传文件最大为10M");
   }
 };
 

@@ -37,7 +37,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="9" style="text-align: right">
-            <el-button type="primary" @click="serachData">查找</el-button>
+            <el-button type="primary" @click="searchData">查找</el-button>
             <el-button @click="resetSearch">重置</el-button>
           </el-col>
         </el-row>
@@ -124,7 +124,7 @@ const handleCurrentChange = (value: number) => {
   });
 };
 
-const serachData = async () => {
+const searchData = async () => {
   pageData.currentPage = 1;
   console.log(searchValue);
   queryLogData({

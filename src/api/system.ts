@@ -69,3 +69,17 @@ export function downloadAxios(params: downloadType) {
       link.click();
     });
 }
+
+export interface fileType {
+  pageSize: number;
+  currentPage: number;
+  search?: object;
+}
+
+export function getFileData(params: fileType) {
+  return axios.get("/api/system/filedata/", { params });
+}
+
+export function deleteFileData(data: string) {
+  return axios.post("/api/system/deletefile/", data);
+}

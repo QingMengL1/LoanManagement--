@@ -501,27 +501,27 @@ const rulesForm = reactive<FormRules>({
     },
   ],
   idCardQishi: [
-    { required: true, message: "请选择身份证有效起始日期", trigger: "change" },
+    { required: false, message: "请选择身份证有效起始日期", trigger: "change" },
   ],
   idCardJieshu: [
-    { required: true, message: "请选择身份证有效结束日期", trigger: "change" },
+    { required: false, message: "请选择身份证有效结束日期", trigger: "change" },
   ],
 
-  guoji: [{ required: true, message: "请选择国籍", trigger: "change" }],
+  guoji: [{ required: false, message: "请选择国籍", trigger: "change" }],
   idCardType: [
-    { required: true, message: "请选择身份证类型", trigger: "change" },
+    { required: false, message: "请选择身份证类型", trigger: "change" },
   ],
   hukouxingzhi: [
-    { required: true, message: "请选择户口性质", trigger: "change" },
+    { required: false, message: "请选择户口性质", trigger: "change" },
   ],
   minzu: [{ required: true, message: "请选择民族", trigger: "change" }],
   xingbie: [{ required: true, message: "请选择性别", trigger: "change" }],
   hunyinzhuangkuang: [
-    { required: true, message: "请选择婚姻状况", trigger: "change" },
+    { required: false, message: "请选择婚姻状况", trigger: "change" },
   ],
-  zhiye: [{ required: true, message: "请选择职业", trigger: "change" }],
+  zhiye: [{ required: false, message: "请选择职业", trigger: "change" }],
   age: [
-    { required: true, message: "请输入年龄", trigger: "blur" },
+    { required: false, message: "请输入年龄", trigger: "blur" },
     {
       asyncValidator: (rule, value) => {
         return new Promise((resolve, reject) => {
@@ -536,7 +536,7 @@ const rulesForm = reactive<FormRules>({
     },
   ],
   biyezhongxue: [
-    { required: true, message: "请输入毕业中学", trigger: "blur" },
+    { required: false, message: "请输入毕业中学", trigger: "blur" },
   ],
 
   phone: [
@@ -570,8 +570,8 @@ const rulesForm = reactive<FormRules>({
       trigger: "blur",
     },
   ],
-  qqNumber: [{ required: true, message: "请输入QQ", trigger: "blur" }],
-  wechat: [{ required: true, message: "请输入微信", trigger: "blur" }],
+  qqNumber: [{ required: false, message: "请输入QQ", trigger: "blur" }],
+  wechat: [{ required: false, message: "请输入微信", trigger: "blur" }],
   tongxindizhi: [
     { required: true, message: "请输入通信地址", trigger: "blur" },
   ],
