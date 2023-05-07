@@ -228,6 +228,18 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import("@/views/system/filelist/index.vue"),
       },
+      {
+        path: "/system/news",
+        name: "News",
+        meta: {
+          title: "新闻管理",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "Files",
+          roles: ["admin"],
+        },
+        component: () => import("@/views/system/news/index.vue"),
+      },
     ],
   },
   {
@@ -299,6 +311,7 @@ const router = createRouter({
   routes, // `routes: routes` 的缩写
 });
 
+// 路由守卫，判断当前是否登录以及跳转菜单
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
   window.sessionStorage.setItem("activeMenu", to.path);

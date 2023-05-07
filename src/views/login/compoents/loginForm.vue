@@ -56,29 +56,29 @@ import { useUserStore } from "@/store/user";
 import { useStorage } from "@vueuse/core";
 import { reactive, ref } from "vue";
 
+// 调用store
 const userStore = useUserStore();
+// 保存密码相关
 const loginConfig = useStorage("login-config", {
   rememberPassword: true,
   username: "",
   password: "",
 });
+// 登录表单
 const userInfo = reactive({
   username: loginConfig.value.username,
   password: loginConfig.value.password,
 });
-
+// 登录
 const onSubmit = async () => {
-  // router.push({ name: "HomeIndex" });
   try {
     await userStore.login(userInfo);
     await userStore.info();
-
     if (userStore.role === "student") {
       router.push({ name: "HomeIndex" });
     } else {
       router.push({ name: "LoanPass" });
     }
-
     const { rememberPassword } = loginConfig.value;
     const { username, password } = userInfo;
     loginConfig.value.username = rememberPassword ? username : "";
@@ -87,7 +87,7 @@ const onSubmit = async () => {
     router.push({ name: "Login" });
   }
 };
-
+// 查看密码
 const showPassword = ref(false);
 </script>
 

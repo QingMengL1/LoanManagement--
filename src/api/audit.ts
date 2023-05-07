@@ -15,6 +15,10 @@ export function getLoanData(params: LoanDataParamsType) {
   return axios.get("/api/audit/loandata/", { params });
 }
 
+export function queryDeleteLoan(data: string) {
+  return axios.post("/api/audit/deleteloan/", data);
+}
+
 export interface editType {
   number: string | string[];
   refuseValue?: string;

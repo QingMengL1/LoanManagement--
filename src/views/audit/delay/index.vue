@@ -122,14 +122,14 @@
               @click="agreeApply(row.row)"
               >延期</el-button
             >
-            <el-button
+            <!-- <el-button
               link
               type="primary"
               size="small"
               :disabled="buttonLoading"
               @click="refuseApply(row.row)"
               >催款</el-button
-            >
+            > -->
           </template>
         </el-table-column>
       </el-table>

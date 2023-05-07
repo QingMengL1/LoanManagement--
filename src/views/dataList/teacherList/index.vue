@@ -50,16 +50,25 @@
         </el-row>
       </el-form>
       <el-divider> </el-divider>
-      <div
-        style="width: 100%; margin-bottom: 16px; text-align: right"
-        @click="allDelete"
-      >
-        <span>
-          <el-button :disabled="!allAgreeApplyList.length" type="primary"
-            >批量删除</el-button
-          >
-        </span>
-      </div>
+      <el-row style="margin-bottom: 16px">
+        <el-col :span="12">
+          <el-button type="primary" @click="addTeacherVisible = true">
+            添加教师
+          </el-button>
+        </el-col>
+        <el-col :span="12">
+          <div style="text-align: right">
+            <el-popconfirm title="确认删除？" @confirm="allDelete">
+              <template #reference>
+                <el-button link type="primary" size="small">
+                  批量删除
+                </el-button>
+              </template>
+            </el-popconfirm>
+          </div>
+        </el-col>
+      </el-row>
+
       <el-table
         :data="tableData"
         style="width: 100%"
@@ -86,13 +95,14 @@
               @click="watchTeacher(row.row)"
               >查看详情</el-button
             >
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click="deleatTeacher([row.row.teacherId])"
-              >删除</el-button
+            <el-popconfirm
+              title="确认删除？"
+              @confirm="deleatTeacher([row.row.teacherId])"
             >
+              <template #reference>
+                <el-button link type="primary" size="small"> 删除 </el-button>
+              </template>
+            </el-popconfirm>
             <!-- <el-button link type="primary" size="small">操作</el-button> -->
           </template>
         </el-table-column>
@@ -115,14 +125,57 @@
   <el-dialog title="修改信息" v-model="dialogVisible" :destroy-on-close="true">
     <teacherBasicEdit :teacher-id="recordData"></teacherBasicEdit>
   </el-dialog>
+  <el-dialog
+    v-model="addTeacherVisible"
+    title="添加教师"
+    :width="600"
+    :destroy-on-close="true"
+    @close="addTeacherForm = getAddForm()"
+  >
+    <el-form
+      ref="addTeacherFormRef"
+      :model="addTeacherForm"
+      label-width="120px"
+      :rules="rulesForm"
+    >
+      <el-form-item label="教师号" prop="teacherId">
+        <el-input v-model="addTeacherForm.teacherId" style="width: 320px" />
+      </el-form-item>
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="addTeacherForm.name" style="width: 320px" />
+      </el-form-item>
+
+      <el-form-item label="学院" :required="true" prop="xueyuan">
+        <el-select style="width: 100%" v-model="addTeacherForm.xueyuan">
+          <el-option
+            v-for="item in xueYuanOptions"
+            :label="item.name"
+            :value="item.name"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" @click="okAddTeacher">添加</el-button>
+        <el-button @click="addTeacherVisible = false">取消</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { deleteData, getTeacherData, teacherTypes } from "@/api/dataList";
+import {
+  deleteData,
+  getTeacherData,
+  queryAddTeacher,
+  teacherTypes,
+} from "@/api/dataList";
 import { reactive, ref } from "vue";
 import { getXueYuanData, OptionType } from "@/api/system";
 import teacherBasicEdit from "@/components/teacherBasicEdit.vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, FormRules } from "element-plus";
+import { nameTest } from "@/utils/tegTest";
 
 const pageData = reactive({
   pageSize: 10,
@@ -167,6 +220,7 @@ const handleCurrentChange = (value: number) => {
 };
 
 const searchData = () => {
+  pageData.currentPage = 1;
   getTableData({
     pageSize: pageData.pageSize,
     currentPage: pageData.currentPage,
@@ -225,6 +279,60 @@ const deleatTeacher = async (id: string[]) => {
 
 const allDelete = () => {
   deleatTeacher(allAgreeApplyList.value);
+};
+
+const addTeacherVisible = ref(false);
+
+const getAddForm = () => {
+  return {
+    teacherId: "",
+    name: "",
+    xueyuan: "",
+  };
+};
+
+const addTeacherFormRef = ref();
+const addTeacherForm = ref(getAddForm());
+
+const rulesForm = reactive<FormRules>({
+  name: [
+    { required: true, message: "请输入姓名", trigger: "blur" },
+    {
+      type: "string",
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!nameTest.test(value)) {
+            reject("请输入正确的姓名");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  xueyuan: [{ required: true, message: "请输入学院名称", trigger: "change" }],
+  teacherId: [{ required: true, message: "请输入教师号", trigger: "blur" }],
+});
+
+const okAddTeacher = async () => {
+  let flog = true;
+  await addTeacherFormRef.value.validate((valid: any, fields: any) => {
+    if (!valid) {
+      flog = false;
+      return false;
+    }
+  });
+  if (flog) {
+    const { data } = await queryAddTeacher(addTeacherForm.value);
+    ElMessage.success(data);
+    addTeacherVisible.value = false;
+    addTeacherForm.value = getAddForm();
+    getTableData({
+      pageSize: pageData.pageSize,
+      currentPage: pageData.currentPage,
+    });
+  }
 };
 </script>
 

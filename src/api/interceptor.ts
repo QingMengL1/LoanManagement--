@@ -6,6 +6,7 @@ import router from "@/router";
 
 axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    // 请求拦截器，向请求中添加token之后发送请求
     const token = getToken();
     if (token) {
       if (!config.headers) {
@@ -25,6 +26,7 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response: AxiosResponse) => {
+    // 响应拦截器，判断相应状态是否正确做出对应操作
     const res = response.data;
     if (res.code !== 2000) {
       ElMessage.error(res.msg);

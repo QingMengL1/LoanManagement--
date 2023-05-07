@@ -1,6 +1,5 @@
 import { UserState } from "@/store/types";
 import axios from "axios";
-import { da } from "element-plus/es/locale";
 
 export interface LoginData {
   username: string;

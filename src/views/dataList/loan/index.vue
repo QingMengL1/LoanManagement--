@@ -82,13 +82,7 @@
         <el-table-column prop="username" label="姓名" min-width="160" />
         <el-table-column prop="userIdCard" label="身份证号" min-width="220" />
         <el-table-column prop="amount" label="借款金额" min-width="140" />
-        <el-table-column prop="year" label="借款年限" min-width="120" />
-        <el-table-column prop="userphone" label="联系电话" min-width="180" />
-        <el-table-column prop="tijiaoTime" label="申请时间" min-width="240">
-          <template #default="row">
-            {{ hourFormat(row.row.tijiaoTime) }}
-          </template>
-        </el-table-column>
+        <el-table-column prop="huankuan" label="还款金额" min-width="140" />
         <el-table-column
           prop="status"
           label="贷款状态"
@@ -116,6 +110,14 @@
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="year" label="借款年限" min-width="120" />
+        <el-table-column prop="userphone" label="联系电话" min-width="180" />
+        <el-table-column prop="tijiaoTime" label="申请时间" min-width="240">
+          <template #default="row">
+            {{ hourFormat(row.row.tijiaoTime) }}
+          </template>
+        </el-table-column>
+
         <el-table-column
           prop="cause"
           label="申请原因"
@@ -136,8 +138,16 @@
               size="small"
               @click="showMessage(row.row)"
             >
-              查看详情</el-button
+              查看详情
+            </el-button>
+            <el-popconfirm
+              title="确认删除？"
+              @confirm="deledtLoan(row.row.number)"
             >
+              <template #reference>
+                <el-button link type="primary" size="small"> 删除 </el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -162,11 +172,12 @@
 </template>
 
 <script setup lang="ts">
-import { getLoanData, LoanDataParamsType } from "@/api/audit";
+import { getLoanData, LoanDataParamsType, queryDeleteLoan } from "@/api/audit";
 import { OptionType, queryMinzuOption } from "@/api/system";
 import { reactive, ref } from "vue";
 import { hourFormat } from "@/utils/timeformat";
 import LoanMessage from "@/views/audit/common/loanMessage.vue";
+import { ElMessage } from "element-plus";
 
 const dialogVisible = ref(false);
 const recordData = ref<any>();
@@ -248,6 +259,15 @@ const resetSearch = () => {
   searchValue.academicYear = "";
   searchValue.cause = "";
   searchValue.status = "";
+  queryLoanData({
+    pageSize: pageData.pageSize,
+    currentPage: pageData.currentPage,
+  });
+};
+
+const deledtLoan = async (id: string) => {
+  const { data } = await queryDeleteLoan(id);
+  ElMessage.success(data);
   queryLoanData({
     pageSize: pageData.pageSize,
     currentPage: pageData.currentPage,

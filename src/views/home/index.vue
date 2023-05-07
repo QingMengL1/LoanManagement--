@@ -163,7 +163,7 @@
               进度查询
             </el-button>
           </div>
-          <el-card style="height: 235px">
+          <el-card style="height: 235px; overflow: auto">
             <template #header>
               <div>文件下载</div>
             </template>

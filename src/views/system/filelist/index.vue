@@ -92,14 +92,12 @@
             >
               下载</el-button
             >
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click="deleteFile(row.row.id)"
-            >
-              删除</el-button
-            >
+
+            <el-popconfirm title="确认删除？" @confirm="deleteFile(row.row.id)">
+              <template #reference>
+                <el-button link type="primary" size="small"> 删除 </el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -176,6 +174,7 @@ const handleCurrentChange = (value: number) => {
 };
 
 const searchData = () => {
+  pageData.currentPage = 1;
   getTableData({
     pageSize: pageData.pageSize,
     currentPage: pageData.currentPage,

@@ -47,3 +47,11 @@ export function deleteData(data: Types) {
 export function editTeacher(data: object) {
   return axios.post("/api/datalist/teacheredit/", data);
 }
+
+export function queryAddStudent(data: object) {
+  return axios.post("/api/datalist/addstudent/", data);
+}
+
+export function queryAddTeacher(data: object) {
+  return axios.post("/api/datalist/addteacher/", data);
+}

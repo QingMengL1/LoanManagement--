@@ -70,16 +70,24 @@
         </el-row>
       </el-form>
       <el-divider> </el-divider>
-      <div
-        style="width: 100%; margin-bottom: 16px; text-align: right"
-        @click="allDelete"
-      >
-        <span>
-          <el-button :disabled="!allAgreeApplyList.length" type="primary"
-            >批量删除</el-button
-          >
-        </span>
-      </div>
+      <el-row style="margin-bottom: 16px">
+        <el-col :span="12">
+          <el-button type="primary" @click="addStudentVisible = true">
+            添加学生
+          </el-button>
+        </el-col>
+        <el-col :span="12">
+          <div style="text-align: right">
+            <el-button
+              :disabled="!allAgreeApplyList.length"
+              type="primary"
+              @click="allDelete"
+            >
+              批量删除
+            </el-button>
+          </div>
+        </el-col>
+      </el-row>
       <el-table
         :data="tableData"
         style="width: 100%"
@@ -124,13 +132,14 @@
               @click="resetPassword(row.row.studentId)"
               >重置密码</el-button
             >
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click="deleatStudent([row.row.studentId])"
-              >删除</el-button
+            <el-popconfirm
+              title="确认删除？"
+              @confirm="deleatStudent([row.row.studentId])"
             >
+              <template #reference>
+                <el-button link type="primary" size="small"> 删除 </el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -224,6 +233,65 @@
       </el-descriptions-item>
     </el-descriptions> -->
   </el-dialog>
+  <el-dialog
+    v-model="addStudentVisible"
+    title="添加学生"
+    :width="600"
+    :destroy-on-close="true"
+    @close="addStudentForm = getAddForm()"
+  >
+    <el-form
+      ref="addStudentFormRef"
+      :model="addStudentForm"
+      label-width="120px"
+      :rules="rulesForm"
+    >
+      <el-form-item label="学号" prop="studentId">
+        <el-input v-model="addStudentForm.studentId" style="width: 320px" />
+      </el-form-item>
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="addStudentForm.name" style="width: 320px" />
+      </el-form-item>
+      <el-form-item label="年级" :required="true" prop="ruxueyear">
+        <el-select style="width: 100%" v-model="addStudentForm.ruxueyear">
+          <el-option value="2018">2018</el-option>
+          <el-option value="2019">2019</el-option>
+          <el-option value="2020">2020</el-option>
+          <el-option value="2021">2021</el-option>
+          <el-option value="2022">2022</el-option>
+          <el-option value="2023">2023</el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="学院" :required="true" prop="xueyuan">
+        <el-select style="width: 100%" v-model="addStudentForm.xueyuan">
+          <el-option
+            v-for="item in xueYuanOptions"
+            :label="item.name"
+            :value="item.name"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="专业" :required="true" prop="zhuanye">
+        <el-select style="width: 100%" v-model="addStudentForm.zhuanye">
+          <el-option
+            v-for="item in zhuanYeOptions"
+            :label="item.name"
+            :value="item.name"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="班级" :required="true" prop="classnumber">
+        <el-input style="width: 100%" v-model="addStudentForm.classnumber">
+        </el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="okAddStudent">添加</el-button>
+        <el-button @click="addStudentVisible = false">取消</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -232,6 +300,7 @@ import {
   studentTypes,
   editPassword,
   deleteData,
+  queryAddStudent,
 } from "@/api/dataList";
 import { reactive, ref } from "vue";
 import {
@@ -240,8 +309,9 @@ import {
   OptionType,
   queryMinzuOption,
 } from "@/api/system";
-import { ElMessage } from "element-plus";
+import { ElMessage, FormRules } from "element-plus";
 import studentBasicEdit from "@/components/studentBasicEdit.vue";
+import { nameTest } from "@/utils/tegTest";
 
 const pageData = reactive({
   pageSize: 10,
@@ -288,6 +358,7 @@ const handleCurrentChange = (value: number) => {
 };
 
 const searchData = () => {
+  pageData.currentPage = 1;
   getTableData({
     pageSize: pageData.pageSize,
     currentPage: pageData.currentPage,
@@ -301,6 +372,7 @@ const resetSearch = () => {
   searchValue.studentId = "";
   searchValue.zhuanye = "";
   searchValue.xueyuan = "";
+  pageData.currentPage = 1;
   getTableData({
     pageSize: pageData.pageSize,
     currentPage: pageData.currentPage,
@@ -378,6 +450,66 @@ const deleatStudent = async (id: string[]) => {
 
 const allDelete = () => {
   deleatStudent(allAgreeApplyList.value);
+};
+
+const addStudentVisible = ref(false);
+
+const getAddForm = () => {
+  return {
+    studentId: "",
+    name: "",
+    ruxueyear: "",
+    xueyuan: "",
+    zhuanye: "",
+    classnumber: "",
+  };
+};
+
+const addStudentFormRef = ref();
+const addStudentForm = ref(getAddForm());
+
+const rulesForm = reactive<FormRules>({
+  name: [
+    { required: true, message: "请输入姓名", trigger: "blur" },
+    {
+      type: "string",
+      asyncValidator: (rule, value) => {
+        return new Promise((resolve, reject) => {
+          if (!nameTest.test(value)) {
+            reject("请输入正确的姓名");
+          } else {
+            resolve();
+          }
+        });
+      },
+      trigger: "blur",
+    },
+  ],
+  xueyuan: [{ required: true, message: "请输入学院名称", trigger: "change" }],
+  zhuanye: [{ required: true, message: "请输入专业名称", trigger: "change" }],
+  ruxueyear: [{ required: true, message: "请选择入学年份", trigger: "change" }],
+  studentId: [{ required: true, message: "请输入学号", trigger: "blur" }],
+  classnumber: [{ required: true, message: "请输入班级", trigger: "blur" }],
+});
+
+const okAddStudent = async () => {
+  let flog = true;
+  await addStudentFormRef.value.validate((valid: any, fields: any) => {
+    if (!valid) {
+      flog = false;
+      return false;
+    }
+  });
+  if (flog) {
+    const { data } = await queryAddStudent(addStudentForm.value);
+    ElMessage.success(data);
+    addStudentVisible.value = false;
+    addStudentForm.value = getAddForm();
+    getTableData({
+      pageSize: pageData.pageSize,
+      currentPage: pageData.currentPage,
+    });
+  }
 };
 </script>
 

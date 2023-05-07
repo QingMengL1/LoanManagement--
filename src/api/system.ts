@@ -54,18 +54,24 @@ export function downloadAxios(params: downloadType) {
       params,
     })
     .then((response) => {
+      // 获取文件名
       const filename = response.data.filename;
+      // 获取文件数据
       const data = response.data.data;
+      // 转换成二进制数据
       const byteCharacters = atob(data);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
+      // 转换成Blob对象
       const byteArray = new Uint8Array(byteNumbers);
       const blob = new Blob([byteArray], { type: "application/octet-stream" });
+      // 创建一个a标签
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = filename;
+      // 下载文件
       link.click();
     });
 }
@@ -82,4 +88,27 @@ export function getFileData(params: fileType) {
 
 export function deleteFileData(data: string) {
   return axios.post("/api/system/deletefile/", data);
+}
+
+export interface NewsType {
+  pageSize: number;
+  currentPage: number;
+  title?: string;
+}
+
+export function getNewsData(params: NewsType) {
+  return axios.get("/api/system/newsdata/", { params });
+}
+
+export interface AddNewsType {
+  title: string;
+  link: string;
+}
+
+export function queryAddNews(data: AddNewsType) {
+  return axios.post("/api/system/addnews/", data);
+}
+
+export function queryDeleteNews(data: string) {
+  return axios.post("/api/system/deletenews/", data);
 }

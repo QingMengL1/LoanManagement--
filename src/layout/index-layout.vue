@@ -12,10 +12,7 @@
             <el-dropdown trigger="click">
               <el-button link>
                 <template #default>
-                  <el-avatar
-                    :size="45"
-                    src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202104%2F22%2F20210422220415_2e4bd.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1679317245&t=afd654f85eabab5d4b50cb0011748cb9"
-                  />
+                  <el-avatar :size="45" :src="userPNG" />
                   <span style="margin-left: 10px; font-size: 18px">
                     你好，{{ name }}
                   </span>
@@ -94,6 +91,7 @@
 import router from "@/router";
 import { useUserStore } from "@/store/user";
 import { ref, watch } from "vue";
+import userPNG from "../assets/images/user.png";
 
 const { logout } = useUserStore();
 const { role } = useUserStore();
