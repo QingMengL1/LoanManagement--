@@ -112,3 +112,20 @@ export function queryAddNews(data: AddNewsType) {
 export function queryDeleteNews(data: string) {
   return axios.post("/api/system/deletenews/", data);
 }
+
+export interface SendMessageType {
+  id: string;
+  read: boolean;
+  send: string;
+  to: string;
+  event: string;
+  uploaded: string;
+}
+
+export function querySendMessage(params: { type: string }) {
+  return axios.get("/api/system/sendmessage/", { params });
+}
+
+export function queryReadMessage(data: string) {
+  return axios.post("/api/system/readmessage/", data);
+}

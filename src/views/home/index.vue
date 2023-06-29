@@ -184,53 +184,6 @@
               </el-col>
             </el-row>
           </el-card>
-          <!-- <div
-            style="
-              height: 227px;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-around;
-            "
-          >
-            <el-row :gutter="12">
-              <el-col :span="12">
-                <el-button
-                  type="primary"
-                  style="width: 100%; height: 88px; margin: 0"
-                  @click="firstApplication"
-                >
-                  首贷申请流程
-                </el-button>
-              </el-col>
-              <el-col :span="12">
-                <el-button
-                  type="primary"
-                  style="width: 100%; height: 88px; margin: 0"
-                >
-                  续贷流程
-                </el-button>
-              </el-col>
-            </el-row>
-            <el-row :gutter="12">
-              <el-col :span="12">
-                <el-button
-                  type="warning"
-                  style="width: 100%; height: 88px; margin: 0"
-                  @click="questionShow"
-                >
-                  常见问题
-                </el-button>
-              </el-col>
-              <el-col :span="12">
-                <el-button
-                  type="warning"
-                  style="width: 100%; height: 88px; margin: 0"
-                >
-                  提前还款帮助
-                </el-button>
-              </el-col>
-            </el-row>
-          </div> -->
         </el-col>
       </el-row>
     </el-card>

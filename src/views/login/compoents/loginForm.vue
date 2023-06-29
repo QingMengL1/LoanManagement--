@@ -74,10 +74,11 @@ const onSubmit = async () => {
   try {
     await userStore.login(userInfo);
     await userStore.info();
+    console.log(userStore.role);
     if (userStore.role === "student") {
       router.push({ name: "HomeIndex" });
     } else {
-      router.push({ name: "LoanPass" });
+      router.push({ name: "adminhome" });
     }
     const { rememberPassword } = loginConfig.value;
     const { username, password } = userInfo;

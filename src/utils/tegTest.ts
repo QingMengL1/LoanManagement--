@@ -20,3 +20,5 @@ export const emailTest = new RegExp(
 export const passwordTest = new RegExp(
   /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_!@#$%^&*`~()-+=]+$)(?![a-z0-9]+$)(?![a-z\W_!@#$%^&*`~()-+=]+$)(?![0-9\W_!@#$%^&*`~()-+=]+$)[a-zA-Z0-9\W_!@#$%^&*`~()-+=]/
 );
+
+export const numberText = new RegExp(/^-?\d+$/);

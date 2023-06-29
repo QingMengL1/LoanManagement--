@@ -47,6 +47,31 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    path: "/adminhome",
+    name: "Adminhome",
+    meta: {
+      title: "首页",
+      isShow: false,
+      Icon: "House",
+      roles: ["teacher", "admin"],
+    },
+    component: () => import("@/layout/index-layout.vue"),
+    children: [
+      {
+        path: "/Adminhome",
+        name: "adminhome",
+        meta: {
+          title: "首页",
+          isShow: true,
+          requiresAuth: true,
+          Icon: "House",
+          roles: ["teacher", "admin"],
+        },
+        component: () => import("@/views/home/compoents/home.vue"),
+      },
+    ],
+  },
+  {
     path: "/myLoan",
     name: "MyLoan",
     meta: {

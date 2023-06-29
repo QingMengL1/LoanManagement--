@@ -83,6 +83,11 @@
         <el-table-column prop="userIdCard" label="身份证号" min-width="220" />
         <el-table-column prop="amount" label="借款金额" min-width="140" />
         <el-table-column prop="huankuan" label="还款金额" min-width="140" />
+        <el-table-column prop="huankuan" label="剩余还款" min-width="140">
+          <template #default="row">
+            {{ row.row.amount - row.row.huankuan }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="status"
           label="贷款状态"

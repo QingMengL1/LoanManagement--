@@ -646,7 +646,13 @@ import {
 } from "element-plus";
 import { computed, reactive, ref } from "vue";
 import { useUserStore } from "@/store/user";
-import { idCardTest, nameTest, phoneTest, youbianTest } from "@/utils/tegTest";
+import {
+  idCardTest,
+  nameTest,
+  numberText,
+  phoneTest,
+  youbianTest,
+} from "@/utils/tegTest";
 import { timeFormat } from "@/utils/timeformat";
 import { conmmonDataType, getCommonData } from "@/api/user";
 
@@ -737,8 +743,13 @@ const rulesOne = reactive<FormRules>({
       type: "number",
       asyncValidator: (rule, value) => {
         return new Promise((resolve, reject) => {
-          if (parseInt(value, 10) < 1000 || parseInt(value, 10) > 12000) {
-            reject("贷款金额为1000-12000");
+          console.log(numberText.test(value));
+          if (
+            !numberText.test(value) ||
+            parseInt(value, 10) < 1000 ||
+            parseInt(value, 10) > 12000
+          ) {
+            reject("贷款金额为1000-12000的整数");
           } else {
             resolve();
           }

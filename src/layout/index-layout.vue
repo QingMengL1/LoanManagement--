@@ -8,6 +8,9 @@
         <div class="tatle"><b>助学贷款管理系统</b></div>
         <!-- 头像部分 -->
         <ul class="heard-right">
+          <el-badge :value="noRead" class="item" style="margin-right: 18px">
+            <i-ep-ChatDotRound :size="50" @click="messageDrawer = true" />
+          </el-badge>
           <li>
             <el-dropdown trigger="click">
               <el-button link>
@@ -84,6 +87,29 @@
         </el-main>
       </el-container>
     </el-container>
+    <el-drawer v-model="messageDrawer" title="我的消息" :with-header="false">
+      <el-tabs v-model="activeName" class="demo-tabs" @tab-change="handleClick">
+        <el-tab-pane label="全部消息" name="all"> </el-tab-pane>
+        <el-tab-pane label="未读消息" name="no"></el-tab-pane>
+      </el-tabs>
+      <el-card
+        v-for="item in sendMessageData"
+        :key="item.id"
+        class="box-card"
+        style="margin-bottom: 16px"
+        @click="readMessage(item)"
+      >
+        <template #header>
+          <div class="card-header">
+            <span>{{ item.send }}发来消息 </span>
+            <span>
+              {{ hourFormat(item.uploaded) }}
+            </span>
+          </div>
+        </template>
+        <P>{{ item.event }}</P>
+      </el-card>
+    </el-drawer>
   </div>
 </template>
 
@@ -91,7 +117,14 @@
 import router from "@/router";
 import { useUserStore } from "@/store/user";
 import { ref, watch } from "vue";
+import { timeFormat, hourFormat } from "@/utils/timeformat";
 import userPNG from "../assets/images/user.png";
+import {
+  SendMessageType,
+  queryReadMessage,
+  querySendMessage,
+} from "@/api/system";
+import { ElMessage } from "element-plus";
 
 const { logout } = useUserStore();
 const { role } = useUserStore();
@@ -140,6 +173,32 @@ const handleLogout = () => {
 
 const handleSetting = () => {
   router.push({ name: "Setting" });
+};
+
+const messageDrawer = ref(false);
+
+const activeName = ref("no");
+
+const sendMessageData = ref<SendMessageType[]>();
+const noRead = ref(0);
+const getSendMessage = async (type: string) => {
+  const { data } = await querySendMessage({ type: type });
+  sendMessageData.value = data.data;
+  noRead.value = data.no;
+};
+getSendMessage("no");
+
+const handleClick = (name: string) => {
+  activeName.value = name;
+  getSendMessage(name);
+};
+
+const readMessage = async (item: any) => {
+  if (!item.read) {
+    const { data } = await queryReadMessage(item.id);
+    ElMessage.success(data);
+    getSendMessage(activeName.value);
+  }
 };
 </script>
 

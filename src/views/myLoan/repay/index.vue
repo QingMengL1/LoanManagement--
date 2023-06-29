@@ -85,7 +85,7 @@
             </el-row>
             <div style="position: absolute; bottom: 12px">
               <el-button
-                :disabled="item.status === '申请中' || item.hetongyve === 0"
+                :disabled="item.status !== '已放款' || item.hetongyve === 0"
                 type="primary"
                 @click.stop="advanceClick(item)"
               >
@@ -170,6 +170,7 @@ import {
   advanceDataType,
   repayment,
 } from "@/api/myLoan";
+import { numberText } from "@/utils/tegTest";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
 
@@ -244,16 +245,20 @@ const allHuankuan = async (record: advanceDataType) => {
 const huankuan = async (record: advanceDataType) => {
   buttonLoading.value = true;
   try {
-    if (record.huankuan <= Number(record.yve)) {
-      const { data } = await repayment({
-        hetongbianhao: record.hetongbianhao,
-        huankuan: Number(record.huankuan),
-      });
-      ElMessage.success(data);
-      advanceVisible.value = false;
-      queryLoanStatus();
+    if (numberText.test(record.huankuan.toString())) {
+      if (record.huankuan <= Number(record.yve)) {
+        const { data } = await repayment({
+          hetongbianhao: record.hetongbianhao,
+          huankuan: Number(record.huankuan),
+        });
+        ElMessage.success(data);
+        advanceVisible.value = false;
+        queryLoanStatus();
+      } else {
+        ElMessage.error("还款金额大于剩余金额，请重新输入");
+      }
     } else {
-      ElMessage.error("还款金额大于剩余金额，请重新输入");
+      ElMessage.error("请输入整数");
     }
   } catch (error) {
     console.log(error);

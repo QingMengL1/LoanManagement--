@@ -61,6 +61,7 @@ export const useUserStore = defineStore("counter", {
         await userLogout();
       } finally {
         this.logoutCallBack();
+        window.sessionStorage.removeItem("activeMenu");
         router.push({ name: "Login" });
       }
     },
